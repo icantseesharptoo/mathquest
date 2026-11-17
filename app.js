@@ -5,9 +5,22 @@ const rndSeed=()=>Math.floor(Math.random()*1e9);
 
 // ---------------- state ----------------
 const KEY='mathquest.v1';
-const DEF={year:7,level:'easy',coins:100,xp:0,streak:0,best:0,solved:0,pity:0,tickets:0,inv:{},proj:false};
+// progress (coins, collection...) is stored separately for each year group
+const PDEF=()=>({coins:100,xp:0,streak:0,best:0,solved:0,pity:0,tickets:0,inv:{}});
+const PKEYS=Object.keys(PDEF());
+const DEF={year:7,level:'easy',proj:false,prog:{},...PDEF()};
 let S=Object.assign({},DEF,(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}})());
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+S.prog=S.prog||{};
+// older saves had flat progress: it stays with the year that was active
+const snap=()=>JSON.parse(JSON.stringify(PKEYS.reduce((o,k)=>(o[k]=S[k],o),{})));
+const save=()=>{try{S.prog[S.year]=snap();localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+function switchYear(y){
+  if(y===S.year)return;
+  S.prog[S.year]=snap();
+  Object.assign(S,JSON.parse(JSON.stringify(S.prog[y]||PDEF())));
+  S.year=y;save();
+}
+function resetYear(){Object.assign(S,PDEF());save()}
 const REWARD={easy:10,medium:20,hard:35};
 const TITLES=['Rookie','Explorer','Apprentice','Solver','Wizard','Master','Legend'];
 function hud(){
@@ -204,7 +217,7 @@ function renderGacha(){
     $('#p1').disabled=!(S.tickets>0||S.coins>=PULL);$('#p10').disabled=S.coins<PULL*9;$('#p1').textContent=S.tickets>0?'Pull ×1 (🎟️)':'Pull ×1';};
   refresh();
   $('#demoCoins').onclick=()=>{S.coins+=200;save();refresh()};
-  $('#resetAll').onclick=()=>{if(confirm('Reset all progress?')){S=Object.assign({},DEF);save();hud();renderGacha()}};
+  $('#resetAll').onclick=()=>{if(confirm(`Reset Year ${S.year} progress? (Year ${S.year===7?10:7} is not affected)`)){resetYear();hud();renderGacha()}};
   let busy=false;
   $('#sumBtn').onclick=async()=>{
     if(busy)return;busy=true;const cap=$('#cap1');cap.classList.add('spin');await sleep(1400);cap.classList.remove('spin');
@@ -324,7 +337,7 @@ function openTab(t){
 }
 const curTab=()=>$('nav.tabs button.on').dataset.t;
 $$('nav.tabs button').forEach(b=>b.onclick=()=>openTab(b.dataset.t));
-$$('#yearSeg button').forEach(b=>b.onclick=()=>{S.year=+b.dataset.y;HW.title='';save();hud();openTab(curTab())});
+$$('#yearSeg button').forEach(b=>b.onclick=()=>{switchYear(+b.dataset.y);HW.title='';hud();openTab(curTab())});
 $('#projBtn').onclick=()=>{S.proj=!S.proj;save();hud()};
 
 function selfTest(){
@@ -350,6 +363,11 @@ function selfTest(){
     $('input',host).value=fmtAns(p.ans).split(' ')[0].replace('−','-');$('.check',host).click();
     if(!$('.fb',host).classList.contains('ok')||S.coins<=c0)bad.push('correct answer failed y'+y+' '+fmtAns(p.ans));
   }
+  // separate progress per year
+  {S.year=7;S.coins=777;S.inv={c1:2};switchYear(10);
+   if(S.coins===777||S.inv.c1)bad.push('Y10 shares Y7 progress');
+   S.coins=55;S.inv={e1:1};switchYear(7);
+   if(S.coins!==777||!S.inv.c1||S.inv.e1)bad.push('Y7 progress lost after switching');}
   // gacha distribution + pity
   const cnt={common:0,rare:0,epic:0,legend:0};S.pity=0;let maxGap=0,gap=0;
   for(let i=0;i<20000;i++){const o=pullOne();cnt[o.m.r]++;if(o.m.r==='epic'||o.m.r==='legend'){gap=0}else{gap++;maxGap=Math.max(maxGap,gap)}}
@@ -373,6 +391,6 @@ function selfTest(){
     return;
   }
   const m=h.match(/^#tab=(\w+)(?:&year=(\d+))?/);
-  if(m&&m[2]){S.year=+m[2]}
+  if(m&&m[2]){switchYear(+m[2])}
   hud();openTab(m&&R_[m[1]]?m[1]:'learn');
 })();
