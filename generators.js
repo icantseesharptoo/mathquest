@@ -49,31 +49,49 @@ function arcPath(cx,cy,r,a0,a1){
   const [x0,y0]=P(cx,cy,r,a0),[x1,y1]=P(cx,cy,r,a1);
   return `M${f1(x0)},${f1(y0)} A${r},${r} 0 ${(a1-a0)>180?1:0} 0 ${f1(x1)},${f1(y1)}`;
 }
-const svgWrap=(inner,w=260,h=180)=>`<svg viewBox="0 0 ${w} ${h}" class="svg-fig" xmlns="http://www.w3.org/2000/svg" font-family="Arial,Helvetica,sans-serif">${inner}</svg>`;
-const txt=(x,y,t,unk,fs)=>`<text x="${f1(x)}" y="${f1(y)}" text-anchor="middle" dominant-baseline="central" font-size="${fs||(unk?16:13)}" font-weight="${unk?700:600}" fill="${unk?'#d9480f':'#1f2937'}">${t}</text>`;
+// pad adds a margin around the drawing so labels can sit outside the lines when a sector/angle is too narrow
+const svgWrap=(inner,w=260,h=180,pad=0,cls='')=>`<svg viewBox="${-pad} ${-pad*.6} ${w+2*pad} ${h+pad*1.2}" class="svg-fig ${cls}" xmlns="http://www.w3.org/2000/svg" font-family="Arial,Helvetica,sans-serif">${inner}</svg>`;
+// text with a white halo so it stays readable if it ever touches a line
+const txt=(x,y,t,unk,fs,anchor='middle')=>`<text x="${f1(x)}" y="${f1(y)}" text-anchor="${anchor}" dominant-baseline="central" font-size="${fs||(unk?18:15)}" font-weight="${unk?700:600}" fill="${unk?'#d9480f':'#1f2937'}" stroke="#fff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">${t}</text>`;
 const COL_ARC='#4f46e5', COL_UNK='#d9480f';
+const plainLen=t=>String(t).replace(/<[^>]+>/g,'').length;
+const boxW=(t,fs)=>plainLen(t)*fs*.62+6;        // estimated pixel width of a label
 
-function raysDiagram({cx,cy,R,start=0,parts,labels,unk=[],line=false,lr=60,ar=20,w=260,h=180}){
-  const un=Array.isArray(unk)?unk:[unk];
+// bounding box tracker: the viewBox is fitted to the drawing PLUS its label boxes, so nothing is ever clipped
+function Ext(){const e={x0:1e9,y0:1e9,x1:-1e9,y1:-1e9};e.add=(x,y,w=0,h=0)=>{e.x0=Math.min(e.x0,x-w/2);e.x1=Math.max(e.x1,x+w/2);e.y0=Math.min(e.y0,y-h/2);e.y1=Math.max(e.y1,y+h/2)};return e}
+const svgFit=(inner,e,cls='',m=8)=>`<svg viewBox="${f1(e.x0-m)} ${f1(e.y0-m)} ${f1(e.x1-e.x0+2*m)} ${f1(e.y1-e.y0+2*m)}" class="svg-fig ${cls}" xmlns="http://www.w3.org/2000/svg" font-family="Arial,Helvetica,sans-serif">${inner}</svg>`;
+
+function raysDiagram({cx,cy,R,start=0,parts,labels,unk=[],line=false,lr=60,ar=20}){
+  const K=1.25;cx*=K;cy*=K;R*=K;lr*=K;ar*=K*.9;            // draw the geometry larger relative to the text
+  const un=Array.isArray(unk)?unk:[unk],E=Ext();
   let s='';
   const b=[start]; parts.forEach(p=>b.push(b[b.length-1]+p));
-  if(line) s+=`<line x1="${cx-R-8}" y1="${cy}" x2="${cx+R+8}" y2="${cy}" stroke="#111827" stroke-width="2.2"/>`;
+  if(line){s+=`<line x1="${cx-R-8}" y1="${cy}" x2="${cx+R+8}" y2="${cy}" stroke="#111827" stroke-width="2.6"/>`;E.add(cx-R-8,cy);E.add(cx+R+8,cy)}
   b.forEach((a,i)=>{
     if(line&&(i===0||i===b.length-1))return;
     if(i===b.length-1&&Math.abs(b[b.length-1]-b[0]-360)<1e-6)return;
-    const [x,y]=P(cx,cy,R,a);
-    s+=`<line x1="${cx}" y1="${cy}" x2="${f1(x)}" y2="${f1(y)}" stroke="#111827" stroke-width="2.2"/>`;
+    const [x,y]=P(cx,cy,R,a);E.add(x,y);
+    s+=`<line x1="${cx}" y1="${cy}" x2="${f1(x)}" y2="${f1(y)}" stroke="#111827" stroke-width="2.6"/>`;
   });
+  if(!line&&Math.abs(b[b.length-1]-b[0]-360)<1e-6){for(let a=0;a<360;a+=45)E.add(...P(cx,cy,R,a))}
   parts.forEach((p,i)=>{
     const isU=un.includes(i);
-    s+=`<path d="${arcPath(cx,cy,ar,b[i],b[i+1])}" fill="none" stroke="${isU?COL_UNK:COL_ARC}" stroke-width="2.2"/>`;
-    const m=(b[i]+b[i+1])/2, [lx,ly]=P(cx,cy,lr,m);
-    s+=txt(lx,ly,labels[i],isU);
+    s+=`<path d="${arcPath(cx,cy,ar,b[i],b[i+1])}" fill="none" stroke="${isU?COL_UNK:COL_ARC}" stroke-width="2.6"/>`;
+    const lab=labels[i];if(lab===''||lab==null)return;
+    const fs=isU?19:16,wpx=boxW(lab,fs),hpx=fs+4,m=(b[i]+b[i+1])/2;
+    // find a radius at which the label box clears both boundary rays; if impossible, put it outside the lines
+    let rr=Math.max(lr,ar+hpx);
+    if(p<180){
+      const proj=Math.max(...[b[i],b[i+1]].map(a=>Math.abs(Math.sin(rad(a)))*wpx/2+Math.abs(Math.cos(rad(a)))*hpx/2));
+      rr=Math.max(rr,(proj+6)/Math.sin(rad(p/2)));
+    }
+    if(rr>R-8)rr=R+14+Math.abs(Math.cos(rad(m)))*wpx/2+Math.abs(Math.sin(rad(m)))*hpx/2;
+    const [lx,ly]=P(cx,cy,rr,m);
+    s+=txt(lx,ly,lab,isU,fs);E.add(lx,ly,wpx,hpx);
   });
-  s+=`<circle cx="${cx}" cy="${cy}" r="3" fill="#111827"/>`;
-  return svgWrap(s,w,h);
+  s+=`<circle cx="${cx}" cy="${cy}" r="3.5" fill="#111827"/>`;E.add(cx,cy);
+  return svgFit(s,E);
 }
-
 // polygon with exact interior angles (angles in degrees, counter-clockwise from A→B)
 function polyFromAngles(ang,r){
   const n=ang.length;
@@ -101,34 +119,45 @@ function polyFromAngles(ang,r){
   for(let i=0;i<n-1;i++){const v=dv(i);pts.push([pts[i][0]+L[i]*v[0],pts[i][1]+L[i]*v[1]])}
   return pts;
 }
-function polyDiagram(ang,labels,unk,{equal=[],names=true,r,w=260,h=180}={}){
+function polyDiagram(ang,labels,unk,{equal=[],names=true,r,w=330,h=225}={}){
   const raw=polyFromAngles(ang,r)||[[0,0],[200,0],[170,90],[30,90]].slice(0,ang.length);
   const xs=raw.map(p=>p[0]),ys=raw.map(p=>p[1]);
   const minx=Math.min(...xs),maxx=Math.max(...xs),miny=Math.min(...ys),maxy=Math.max(...ys);
-  const pad=26, sc=Math.min((w-2*pad)/(maxx-minx||1),(h-2*pad)/(maxy-miny||1));
+  const pad=10, sc=Math.min((w-2*pad)/(maxx-minx||1),(h-2*pad)/(maxy-miny||1));
   const ox=(w-(maxx-minx)*sc)/2, oy=(h-(maxy-miny)*sc)/2;
   const pts=raw.map(p=>[ox+(p[0]-minx)*sc, h-(oy+(p[1]-miny)*sc)]);
-  const n=pts.length, un=Array.isArray(unk)?unk:[unk];
-  let s=`<polygon points="${pts.map(p=>f1(p[0])+','+f1(p[1])).join(' ')}" fill="#eef2ff" stroke="#111827" stroke-width="2.2" stroke-linejoin="round"/>`;
+  const n=pts.length, un=Array.isArray(unk)?unk:[unk],E=Ext();
+  pts.forEach(p=>E.add(p[0],p[1]));
+  let s=`<polygon points="${pts.map(p=>f1(p[0])+','+f1(p[1])).join(' ')}" fill="#eef2ff" stroke="#111827" stroke-width="2.6" stroke-linejoin="round"/>`;
   equal.forEach((ei,k)=>{
     const a=pts[ei],b=pts[(ei+1)%n],mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;
-    const dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy),nx=-dy/len*6,ny=dx/len*6;
-    s+=`<line x1="${f1(mx-nx)}" y1="${f1(my-ny)}" x2="${f1(mx+nx)}" y2="${f1(my+ny)}" stroke="#111827" stroke-width="2.4"/>`;
+    const dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy),nx=-dy/len*7,ny=dx/len*7;
+    s+=`<line x1="${f1(mx-nx)}" y1="${f1(my-ny)}" x2="${f1(mx+nx)}" y2="${f1(my+ny)}" stroke="#111827" stroke-width="2.8"/>`;
   });
-  const cen=[pts.reduce((a,p)=>a+p[0],0)/n,pts.reduce((a,p)=>a+p[1],0)/n];
+  const inPoly=(x,y)=>{let c=false;for(let i=0,j=n-1;i<n;j=i++){const [xi,yi]=pts[i],[xj,yj]=pts[j];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c};
+  const dSeg=(x,y,a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy)));return Math.hypot(x-(a[0]+t*dx),y-(a[1]+t*dy))};
+  const placed=[],hit=(x,y,wp,hp)=>placed.some(q=>Math.abs(q[0]-x)<(q[2]+wp)/2+3&&Math.abs(q[1]-y)<(q[3]+hp)/2+2);
   pts.forEach((v,i)=>{
     const pr=pts[(i+n-1)%n],nx=pts[(i+1)%n];
-    let ux=(pr[0]-v[0])/Math.hypot(pr[0]-v[0],pr[1]-v[1])+(nx[0]-v[0])/Math.hypot(nx[0]-v[0],nx[1]-v[1]);
-    let uy=(pr[1]-v[1])/Math.hypot(pr[0]-v[0],pr[1]-v[1])+(nx[1]-v[1])/Math.hypot(nx[0]-v[0],nx[1]-v[1]);
-    const ul=Math.hypot(ux,uy)||1; ux/=ul; uy/=ul;
-    const plain=String(labels[i]).replace(/<[^>]+>/g,'');
-    const dist=Math.min(58,20+plain.length*4.3);
-    if(labels[i]!==''&&labels[i]!=null) s+=txt(v[0]+ux*dist,v[1]+uy*dist,labels[i],un.includes(i),un.includes(i)?15:12.5);
-    if(names) s+=`<text x="${f1(v[0]-ux*13)}" y="${f1(v[1]-uy*13)}" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#9ca3af">${'ABCD'[i]}</text>`;
+    const l1=Math.hypot(pr[0]-v[0],pr[1]-v[1]),l2=Math.hypot(nx[0]-v[0],nx[1]-v[1]);
+    const e1=[(pr[0]-v[0])/l1,(pr[1]-v[1])/l1],e2=[(nx[0]-v[0])/l2,(nx[1]-v[1])/l2];
+    let ux=e1[0]+e2[0],uy=e1[1]+e2[1];const ul=Math.hypot(ux,uy)||1;ux/=ul;uy/=ul;   // inward bisector
+    const lab=labels[i];let inside=true;
+    if(lab!==''&&lab!=null){
+      const fs=un.includes(i)?19:16,wpx=boxW(lab,fs),hpx=fs+4;
+      const projE=e=>Math.abs(e[1])*wpx/2+Math.abs(e[0])*hpx/2;           // box half-extent along that edge's normal
+      const need=(Math.max(projE(e1),projE(e2))+6)/Math.sin(rad(ang[i]/2));
+      const d=Math.max(28,need),cx=v[0]+ux*d,cy=v[1]+uy*d;
+      const clear=pts.every((p,k)=>dSeg(cx,cy,p,pts[(k+1)%n])>=hpx/2+4);
+      let X,Y;
+      if(d<=.75*Math.min(l1,l2)&&inPoly(cx,cy)&&clear&&!hit(cx,cy,wpx,hpx)){X=cx;Y=cy}
+      else{inside=false;const o=14+Math.abs(ux)*wpx/2+Math.abs(uy)*hpx/2;X=v[0]-ux*o;Y=v[1]-uy*o}
+      s+=txt(X,Y,lab,un.includes(i),fs);placed.push([X,Y,wpx,hpx]);E.add(X,Y,wpx,hpx);
+    }
+    if(names&&inside){const lx=v[0]-ux*17,ly=v[1]-uy*17;s+=`<text x="${f1(lx)}" y="${f1(ly)}" text-anchor="middle" dominant-baseline="central" font-size="14" fill="#9ca3af">${'ABCD'[i]}</text>`;E.add(lx,ly,14,14)}
   });
-  return svgWrap(s,w,h);
+  return svgFit(s,E);
 }
-
 // ---------- number helpers for Year 7 ----------
 function partition(r,n,T,min,max,step=1){
   const t=T/step,mn=Math.ceil(min/step),mx=Math.floor(max/step);

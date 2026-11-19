@@ -1,20 +1,20 @@
 /* Interactive widgets — one per Year 7 topic. Each: {title, controls[], render(state)->html, after?(view,state,redraw)} */
 const PAL=['#4f46e5','#d9480f','#16a34a','#f59e0b','#0ea5e9','#c026d3'];
-function mountWidget(host,def){
+function mountWidget(host,def,init={}){
   const st={};
   host.innerHTML=`<div class="wtitle">🧪 ${def.title}</div><div class="wctl"></div><div class="wview"></div>`;
   const ctl=$('.wctl',host),view=$('.wview',host);
   const draw=()=>{view.innerHTML=def.render(st);if(def.after)def.after(view,st,draw)};
   def.controls.forEach(c=>{
-    st[c.id]=c.val;const d=document.createElement('div');d.className='wc';
+    const v0=init[c.id]!==undefined?init[c.id]:c.val;st[c.id]=v0;const d=document.createElement('div');d.className='wc';
     if(c.type==='select'){
-      d.innerHTML=`<label>${c.label}</label><select>${c.opts.map(o=>`<option value="${o[0]}" ${String(o[0])===String(c.val)?'selected':''}>${o[1]}</option>`).join('')}</select>`;
+      d.innerHTML=`<label>${c.label}</label><select>${c.opts.map(o=>`<option value="${o[0]}" ${String(o[0])===String(v0)?'selected':''}>${o[1]}</option>`).join('')}</select>`;
       $('select',d).onchange=e=>{st[c.id]=e.target.value;draw()};
     }else if(c.type==='text'){
-      d.innerHTML=`<label>${c.label}</label><input type="text" value="${c.val}" style="width:15rem">`;
+      d.innerHTML=`<label>${c.label}</label><input type="text" value="${v0}" style="width:15rem">`;
       $('input',d).oninput=e=>{st[c.id]=e.target.value;draw()};
     }else{
-      d.innerHTML=`<label>${c.label}: <b>${c.val}</b></label><input type="range" min="${c.min}" max="${c.max}" step="${c.step||1}" value="${c.val}">`;
+      d.innerHTML=`<label>${c.label}: <b>${v0}</b></label><input type="range" min="${c.min}" max="${c.max}" step="${c.step||1}" value="${v0}">`;
       $('input',d).oninput=e=>{st[c.id]=+e.target.value;$('b',d).textContent=e.target.value;draw()};
     }
     ctl.appendChild(d);

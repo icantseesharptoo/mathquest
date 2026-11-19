@@ -5,7 +5,7 @@ const rndSeed=()=>Math.floor(Math.random()*1e9);
 
 // ---------------- state ----------------
 const KEY='mathquest.v1';
-const DEF={topic:'t01',level:'easy',proj:false,coins:100,xp:0,streak:0,best:0,solved:0,pity:0,tickets:0,inv:{},tp:{}};
+const DEF={topic:'t01',lesson:1,plesson:0,level:'easy',proj:false,coins:100,xp:0,streak:0,best:0,solved:0,pity:0,tickets:0,inv:{},tp:{}};
 let S=Object.assign({},DEF,(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}})());
 if(S.prog&&S.prog[7])Object.assign(S,S.prog[7]);      // saves from the two-year version: keep Year 7 progress
 delete S.prog;S.tp=S.tp||{};
@@ -13,7 +13,7 @@ if(S.topic!=='all'&&!TMAP[S.topic])S.topic='t01';
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const REWARD={easy:10,medium:20,hard:35};
 const TITLES=['Rookie','Explorer','Apprentice','Solver','Wizard','Master','Legend'];
-const tname=id=>id==='all'?'🌍 Mixed review (all units)':`${TMAP[id].icon} Unit ${TMAP[id].u} · ${TMAP[id].title}`;
+const tname=id=>id==='all'?'🌍 Mixed review (all units)':`${TMAP[id].icon} Week ${TMAP[id].u} · ${TMAP[id].title}`;
 function hud(){
   $('#hCoins').textContent=S.coins;$('#hTix').textContent=S.tickets;$('#hStreak').textContent=S.streak;
   const lv=Math.floor(S.xp/100)+1;$('#hLv').textContent=lv;$('#hTitle').textContent=TITLES[Math.min(TITLES.length-1,Math.floor((lv-1)/2))];
@@ -76,10 +76,10 @@ function mountProblem(host,p,o={}){
 }
 
 // ---------------- worked example stepper ----------------
-function workedExample(host,tid){
+function workedExample(host,tid,li=0){
   let level='easy',p,shown=0;
   const draw=()=>{
-    p=genTopic(tid,level,mkR(rndSeed()));shown=0;
+    p=genTopic(tid,level,mkR(rndSeed()),li);shown=0;
     host.innerHTML=`<h3>🧩 Worked example <span class="tag ${level}">${level}</span></h3>
       <div class="chips">${['easy','medium','hard'].map(l=>`<button class="chip ${l} ${l===level?'on':''}" data-l="${l}">${l}</button>`).join('')}<button class="btn alt" id="exNew">🎲 New numbers</button></div>
       <div class="q-text">${p.text||''}</div>${p.eq?`<div class="eq">${p.eq}</div>`:''}${p.svg?`<div>${p.svg}</div>`:''}${p.note?`<div class="note">${p.note}</div>`:''}
@@ -96,42 +96,45 @@ function workedExample(host,tid){
 
 // ---------------- topic picker ----------------
 function topicSelect(id,val,allowAll=true,onchange){
-  const terms=[1,2,3].map(t=>`<optgroup label="Term ${t}">${TOPICS.filter(x=>x.term===t).map(x=>`<option value="${x.id}" ${x.id===val?'selected':''}>${x.icon} Unit ${x.u} · ${x.title}</option>`).join('')}</optgroup>`).join('');
+  const terms=[1,2,3].map(t=>`<optgroup label="Term ${t}">${TOPICS.filter(x=>x.term===t).map(x=>`<option value="${x.id}" ${x.id===val?'selected':''}>${x.icon} Week ${x.u} · ${x.title}</option>`).join('')}</optgroup>`).join('');
   return `<select id="${id}" class="topicSel">${allowAll?`<option value="all" ${val==='all'?'selected':''}>🌍 Mixed review (all units)</option>`:''}${terms}</select>`;
 }
 
 // ---------------- Year map ----------------
+const lessonSelectAll=(id,tid,val)=>`<select id="${id}" class="topicSel"><option value="0" ${val===0?'selected':''}>Whole week (all lessons)</option>${TMAP[tid].lessons.map(l=>`<option value="${l.n}" ${l.n===val?'selected':''}>Lesson ${l.n}${l.n===6?' · Review &amp; test':' · '+l.title}</option>`).join('')}</select>`;
 function renderMap(){
   const el=$('#tab-map');
-  const card=t=>{const n=(S.tp[t.id]||{}).solved||0;
-    return `<div class="tcard" style="--c:${t.color}"><div class="tc-h"><span class="tc-i">${t.icon}</span><div><b>Unit ${t.u}</b><div class="tc-t">${t.title}</div></div></div>
+  const card=t=>{const n=(S.tp[t.id]||{}).solved||0,best=(S.tp[t.id]||{}).test;
+    return `<div class="tcard" style="--c:${t.color}"><div class="tc-h"><span class="tc-i">${t.icon}</span><div><b>Week ${t.u}</b><div class="tc-t">${t.title}</div></div></div>
     <div class="tc-s">${t.strand}</div><div class="tc-o">${t.obj}</div>
-    <div class="tc-p"><div class="pitybar"><i style="width:${Math.min(100,n/30*100)}%;background:${t.color}"></i></div><small>${n} solved ${stars(n)}</small></div>
-    <div class="row"><button class="btn" data-go="slides" data-t="${t.id}">🖥️ Slides</button><button class="btn alt" data-go="practice" data-t="${t.id}">✏️ Practice</button><button class="btn alt" data-go="hw" data-t="${t.id}">🖨️ PDF</button></div></div>`};
-  const names={1:'Term 1 · Autumn',2:'Term 2 · Spring',3:'Term 3 · Summer'};
-  el.innerHTML=`<h2>🗺️ Year 7 map — 16 units <small style="font-weight:400;color:#6b7280">Cambridge Lower Secondary Mathematics 7</small></h2>
-   <p class="rates">Pick a unit: open its interactive slides, practise with random problems (Easy / Medium / Hard), or make a PDF worksheet. ⭐ = 5, ⭐⭐ = 15, ⭐⭐⭐ = 30 solved. <button class="btn alt" id="mixBtn" style="padding:.2rem .8rem">🌍 Mixed review</button></p>`+
+    <ol class="lessonList">${t.lessons.map(l=>`<li><a href="#" data-go="slides" data-t="${t.id}" data-l="${l.n}"><b>L${l.n}</b> ${l.n===6?'Review &amp; unit test':l.title}</a></li>`).join('')}</ol>
+    <div class="tc-p"><div class="pitybar"><i style="width:${Math.min(100,n/30*100)}%;background:${t.color}"></i></div><small>${n} solved ${stars(n)}${best!==undefined?` · test best ${best}/10`:''}</small></div>
+    <div class="row"><button class="btn alt" data-go="practice" data-t="${t.id}">✏️ Practice</button><button class="btn alt" data-go="hw" data-t="${t.id}">🖨️ PDF worksheets</button></div></div>`};
+  const names={1:'Term 1 · Autumn (weeks 1–5)',2:'Term 2 · Spring (weeks 6–10)',3:'Term 3 · Summer (weeks 11–16)'};
+  el.innerHTML=`<h2>🗺️ Year 7 map — 16 weeks <small style="font-weight:400;color:#6b7280">Cambridge Lower Secondary Mathematics 7 · each week = 1 unit = 6 lessons × 40 min</small></h2>
+   <p class="rates">Click a lesson to open its interactive slides (Lessons 1–5 teach, Lesson 6 = review + unit test). Or practise with random problems, or make PDF worksheets for any lesson. ⭐ = 5, ⭐⭐ = 15, ⭐⭐⭐ = 30 solved. <button class="btn alt" id="mixBtn" style="padding:.2rem .8rem">🌍 Mixed review</button></p>`+
    [1,2,3].map(tm=>`<h3 class="termh">${names[tm]}</h3><div class="tgrid">${TOPICS.filter(t=>t.term===tm).map(card).join('')}</div>`).join('');
-  $$('[data-go]',el).forEach(b=>b.onclick=()=>{S.topic=b.dataset.t;save();openTab(b.dataset.go)});
+  $$('[data-go]',el).forEach(b=>b.onclick=e=>{e.preventDefault();S.topic=b.dataset.t;if(b.dataset.l)S.lesson=+b.dataset.l;save();openTab(b.dataset.go)});
   $('#mixBtn').onclick=()=>{S.topic='all';save();openTab('practice')};
 }
 
 // ---------------- Practice ----------------
 function renderPractice(){
   const el=$('#tab-practice');
-  el.innerHTML=`<h2>✏️ Practice</h2><div class="row">${topicSelect('pTopic',S.topic)}</div>
+  const T=S.topic==='all'?null:TMAP[S.topic],pl=T?S.plesson:0;
+  el.innerHTML=`<h2>✏️ Practice</h2><div class="row">${topicSelect('pTopic',S.topic)}${T?lessonSelectAll('pLesson',S.topic,pl):''}</div>
    <div class="chips" id="lvl" style="margin-top:.6rem">${['easy','medium','hard'].map(l=>`<button class="chip ${l} ${l===S.level?'on':''}" data-l="${l}">${l==='easy'?'🟢 Easy':l==='medium'?'🟡 Medium':'🔴 Hard'} (+${REWARD[l]}🪙)</button>`).join('')}</div>
    <div class="grid2"><div id="pHost"></div>
    <div class="card"><h3>📊 Your stats</h3><p>Solved: <b id="stS"></b> · Best streak: <b id="stB"></b></p>
      <p class="rates">Streak bonus: 3 in a row = +5🪙 · 5 in a row = +10🪙.<br>First-try answers pay full coins. Collect 50🪙 → open a capsule in the 🎰 Gacha tab!</p>
      <p class="rates">Answers: whole numbers, decimals (2.5) or fractions (5/2).</p>
-     ${S.topic!=='all'?`<div class="card" style="background:#eef2ff;margin-top:.6rem"><b>Key ideas — ${TMAP[S.topic].title}</b><ul>${TMAP[S.topic].ideas.map(i=>`<li>${i}</li>`).join('')}</ul></div>`:''}</div></div>`;
-  $('#pTopic').onchange=e=>{S.topic=e.target.value;save();renderPractice()};
+     ${T?`<div class="card" style="background:#eef2ff;margin-top:.6rem"><b>${pl?`Lesson ${pl}: ${T.lessons[pl-1].title}`:`Key ideas — ${T.title}`}</b><ul>${(pl?T.lessons[pl-1].ideas:T.ideas).map(i=>`<li>${i}</li>`).join('')}</ul></div>`:''}</div></div>`;
+  $('#pTopic').onchange=e=>{S.topic=e.target.value;S.plesson=0;save();renderPractice()};
+  if(T)$('#pLesson').onchange=e=>{S.plesson=+e.target.value;save();renderPractice()};
   $$('#lvl .chip').forEach(b=>b.onclick=()=>{S.level=b.dataset.l;save();renderPractice()});
-  const next=()=>{const p=genP(S.level,mkR(rndSeed()));mountProblem($('#pHost'),p,{next,onSolved:()=>{$('#stS').textContent=S.solved;$('#stB').textContent=S.best}})};
+  const next=()=>{const p=genTopic(S.topic,S.level,mkR(rndSeed()),pl);mountProblem($('#pHost'),p,{next,onSolved:()=>{$('#stS').textContent=S.solved;$('#stB').textContent=S.best}})};
   $('#stS').textContent=S.solved;$('#stB').textContent=S.best;next();
 }
-
 // ---------------- Gacha ----------------
 const MON=[
  {id:'c1',n:'Protractor Pup',e:'🐶',r:'common'},{id:'c2',n:'Ruler Rat',e:'🐀',r:'common'},{id:'c3',n:'Pencil Penguin',e:'🐧',r:'common'},
@@ -206,18 +209,18 @@ function renderGacha(){
 
 // ---------------- Worksheets ----------------
 const mixedRemember=`<h4>📌 Remember</h4><ul><li>Read each question carefully and <b>show your working</b>.</li><li>Check that your answer is sensible (estimate first!).</li><li>Use the key facts from each unit — ask your teacher if you are stuck.</li></ul>`;
-const DEFCFG=()=>({topic:S.topic,e:4,m:4,h:2,seed:7001,key:'none',title:'',theory:true,challenge:true});
+const DEFCFG=()=>({topic:S.topic,lesson:0,e:4,m:4,h:2,seed:7001,key:'none',title:'',theory:true,challenge:true});
 let HW=DEFCFG();
 function qCard(p,id){
   return `<div class="qcard ${p.svg?'':'alg'}"><div class="qn">${id}</div><div class="qt">${p.text||''}</div>${p.eq?`<div class="eq">${p.eq}</div>`:''}${p.svg||''}${p.note&&!/Enter a whole/.test(p.note)?`<div class="note">${p.note}</div>`:''}<div class="qa">${p.label||''} <u>&nbsp;</u> ${p.unit||''}</div></div>`;
 }
 function buildSheetHTML(cfg){
-  const tid=cfg.topic,T=tid==='all'?null:TMAP[tid],r=mkR(cfg.seed);
-  const ttl=cfg.title||(T?T.title:'Mixed review');
+  const tid=cfg.topic,T=tid==='all'?null:TMAP[tid],r=mkR(cfg.seed),li=T?(cfg.lesson||0):0,L=li?T.lessons[li-1]:null,isTest=!!(L&&L.test);
+  const ttl=cfg.title||(isTest?T.title+' — unit test':L?L.title:T?T.title:'Mixed review');
   const lv=[['easy','A',cfg.e,'🟢 Level 1 — Warm-up','one or two steps'],['medium','B',cfg.m,'🟡 Level 2 — Getting stronger','more steps'],['hard','C',cfg.h,'🔴 Level 3 — Boss round','think carefully!']];
-  const sets=lv.map(([l,L,n])=>genTopicList(tid,l,n,r));
+  const sets=lv.map(([l,LL,n])=>genTopicList(tid,l,n,r,li));
   const total=cfg.e+cfg.m+cfg.h;
-  const sub=T?`CAMBRIDGE LOWER SECONDARY · MATHEMATICS · YEAR 7 · UNIT ${T.u} · ${T.strand.toUpperCase()}`:'CAMBRIDGE LOWER SECONDARY · MATHEMATICS · YEAR 7 · MIXED REVIEW';
+  const sub=T?`CAMBRIDGE LOWER SECONDARY · MATHEMATICS · YEAR 7 · WEEK ${T.u} · ${li?(isTest?'LESSON 6 OF 6 · TEST':`LESSON ${li} OF 6`):T.strand.toUpperCase()}`:'CAMBRIDGE LOWER SECONDARY · MATHEMATICS · YEAR 7 · MIXED REVIEW';
   const head=(t)=>`<div class="sh-head"><div><div class="sub">${sub}</div><h1>${t}</h1></div><div style="font-size:26pt">${T?T.icon:'🎲'}</div></div>`;
   const key=()=>{
     let rows='';
@@ -225,10 +228,10 @@ function buildSheetHTML(cfg){
     return `<div class="sheet ${cfg.key==='with'?'pb':''}">${head('ANSWER KEY — '+ttl)}<p><b>Teacher copy.</b> Total marks: ${total}. Seed ${cfg.seed}.</p><table class="keytbl"><tr><th>Q</th><th>Answer</th><th>Working</th></tr>${rows}</table></div>`;
   };
   if(cfg.key==='only')return key();
-  let h=`<div class="sheet">${head(ttl)}<div class="sh-fields"><span>Name:</span><span>Class:</span><span>Date:</span><span class="sc">Score: /${total}</span></div>`;
+  let h=`<div class="sheet">${head(ttl)}<div class="sh-fields"><span>Name:</span><span>Class:</span><span>Date:</span><span class="sc">Score: /${total}</span></div>${isTest?`<div class="testnote"><b>Unit test</b> · Time allowed: <b>15 minutes</b> · Show your working · ${total} marks</div>`:L?`<div class="testnote"><b>Lesson ${li}:</b> ${L.obj}</div>`:''}`;
   if(cfg.theory){
-    h+=`<div class="remember">${T?`<h4>📌 Remember</h4><ul>${T.ideas.map(i=>`<li>${i}</li>`).join('')}</ul><div class="gloss"><b>Words:</b> ${T.vocab.join(' · ')}</div>`:mixedRemember}</div>`;
-    const ex=genTopicList(tid,'medium',1,mkR(cfg.seed+777))[0];
+    h+=`<div class="remember">${T?`<h4>📌 Remember</h4><ul>${(L?L.ideas:T.ideas).map(i=>`<li>${i}</li>`).join('')}</ul><div class="gloss"><b>Words:</b> ${T.vocab.join(' · ')}</div>`:mixedRemember}</div>`;
+    const ex=genTopicList(tid,'medium',1,mkR(cfg.seed+777),li)[0];
     h+=`<div class="example"><h4>✍️ Worked example</h4><div class="ex-flex"><div style="flex:1">${ex.text?`<div>${ex.text}</div>`:''}${ex.eq?`<div class="eq">${ex.eq}</div>`:''}<ol>${ex.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div>${ex.svg?`<div style="flex:0 0 170px">${ex.svg}</div>`:''}</div></div>`;
   }
   lv.forEach(([l,L,n,ttl2,sub2],i)=>{if(n>0)h+=`<div class="lvl ${l}">${ttl2}<small>${sub2} · ${n} question${n>1?'s':''}</small></div><div class="qgrid">${sets[i].map((p,j)=>qCard(p,L+(j+1))).join('')}</div>`});
@@ -240,7 +243,7 @@ function buildSheetHTML(cfg){
 function renderHW(){
   const el=$('#tab-hw');HW.topic=S.topic;const c=HW;
   el.innerHTML=`<div class="noprint"><h2>🖨️ PDF worksheets</h2>
-   <div class="card"><div class="row" style="margin-bottom:.6rem"><b>Unit:</b> ${topicSelect('hwTopic',S.topic)}</div>
+   <div class="card"><div class="row" style="margin-bottom:.6rem"><b>Week:</b> ${topicSelect('hwTopic',S.topic)}${S.topic!=='all'?lessonSelectAll('hwLesson',S.topic,c.lesson||0):''}</div>
    <div class="chips"><span style="font-weight:700;padding:.4rem 0">Presets:</span>
      <button class="chip" data-p="4,4,2">Class handout 4/4/2</button><button class="chip" data-p="5,5,3">Homework 5/5/3</button><button class="chip" data-p="0,6,4">Challenge 0/6/4</button><button class="chip" data-p="8,0,0">Easy drill 8/0/0</button></div>
    <div class="ctl">
@@ -262,7 +265,8 @@ function renderHW(){
     c.seed=+$('#hwS').value||1;c.key=$('#hwK').value;c.theory=$('#hwTh').checked;c.challenge=$('#hwCh').checked;
     $('#sheetHost').innerHTML=buildSheetHTML(c);
   };
-  $('#hwTopic').onchange=e=>{S.topic=e.target.value;HW.title='';save();renderHW()};
+  $('#hwTopic').onchange=e=>{S.topic=e.target.value;HW.title='';HW.lesson=0;save();renderHW()};
+  if(S.topic!=='all')$('#hwLesson').onchange=e=>{HW.lesson=+e.target.value;const test=HW.lesson===6,les=HW.lesson>0&&!test;HW.e=test?5:les?3:4;HW.m=test?6:les?3:4;HW.h=test?4:2;HW.theory=!test;HW.challenge=!test;HW.title='';renderHW()};
   $$('.ctl input,.ctl select',el).forEach(i=>i.onchange=upd);
   $$('.chip[data-p]',el).forEach(b=>b.onclick=()=>{const [e,m,h]=b.dataset.p.split(',');$('#hwE').value=e;$('#hwM').value=m;$('#hwH').value=h;upd()});
   $('#hwDice').onclick=()=>{$('#hwS').value=Math.floor(Math.random()*90000)+1000;upd()};
@@ -308,8 +312,16 @@ function selfTest(){
     if(!$('.fb',host).classList.contains('ok')||S.coins<=c0)bad.push('correct answer failed '+tid);
     if(!S.tp[tid]||S.tp[tid].solved<1)bad.push('topic stat not counted '+tid);
   }
-  // deck builds for every topic
-  for(const tp of TOPICS){try{const d=buildDeck(tp);if(d.length<7)bad.push('deck short '+tp.id);const h=document.createElement('div');document.body.appendChild(h);d.forEach(s=>s.mount(h));h.remove()}catch(e){bad.push('deck '+tp.id+': '+e.message)}}
+  // every lesson: valid problem types, problems generate, deck + worksheet build
+  for(const tp of TOPICS){
+    if(tp.lessons.length!==6)bad.push('lessons '+tp.id);
+    for(const L of tp.lessons){
+      for(const [lv,ix] of L.items)if(typeof T7[tp.id][lv][ix]!=='function')bad.push(`bad item ${tp.id} L${L.n} ${lv}${ix}`);
+      for(const lv of ['easy','medium','hard'])for(let i=0;i<40;i++){try{const p=genTopic(tp.id,lv,mkR(i*31+L.n),L.n);if(!Number.isFinite(p.ans)||!checkAnswer(p,String(p.ans)))bad.push(`lesson answer ${tp.id} L${L.n}`)}catch(e){bad.push(`lesson gen ${tp.id} L${L.n}: `+e.message)}}
+      try{const d=buildDeck(tp,L.n);if(d.length<6)bad.push('deck short '+tp.id+' L'+L.n);const h=document.createElement('div');document.body.appendChild(h);d.forEach(s=>s.mount(h));if(/NaN|undefined/.test(h.innerHTML))bad.push('deck NaN '+tp.id+' L'+L.n);h.remove()}catch(e){bad.push('deck '+tp.id+' L'+L.n+': '+e.message)}
+      try{const sh=buildSheetHTML({topic:tp.id,lesson:L.n,e:4,m:4,h:2,seed:99,key:'with',title:'',theory:!L.test,challenge:!L.test});if(/NaN|undefined/.test(sh))bad.push('sheet NaN '+tp.id+' L'+L.n)}catch(e){bad.push('sheet '+tp.id+' L'+L.n+': '+e.message)}
+    }
+  }
   // gacha pity
   S.pity=0;let gap=0,maxGap=0;for(let i=0;i<5000;i++){const o=pullOne();if(o.m.r==='epic'||o.m.r==='legend')gap=0;else{gap++;maxGap=Math.max(maxGap,gap)}}
   if(maxGap>9)bad.push('pity broken');
@@ -320,6 +332,17 @@ function selfTest(){
 (function init(){
   const h=location.hash;
   if(h.startsWith('#selftest')){selfTest();return}
+  if(h.startsWith('#scheme')){   // printable scheme of work: 16 weeks x 6 lessons
+    const rows=TOPICS.map(t=>`<tr class="wk"><td colspan="3"><b>Week ${t.u}</b> · ${t.icon} ${t.title} <span class="st">${t.strand} · Term ${t.term}</span></td></tr>`+t.lessons.map(l=>`<tr><td class="ln">L${l.n}</td><td><b>${l.n===6?'Review &amp; unit test':l.title}</b></td><td>${l.obj}</td></tr>`).join('')).join('');
+    document.body.innerHTML=`<div class="sheet" style="box-shadow:none;width:auto;max-width:none"><div class="sh-head"><div><div class="sub">CAMBRIDGE LOWER SECONDARY · MATHEMATICS · YEAR 7</div><h1>Scheme of work — 16 weeks × 6 lessons × 40 minutes</h1></div><div style="font-size:26pt">🗓️</div></div>
+      <p><b>Each week is one unit.</b> Lessons 1–5 teach new content; Lesson 6 is review + a 15-minute unit test. Every lesson has interactive slides (MathQuest → Interactive slides) and a printable worksheet with answer key; every week has a homework sheet.</p>
+      <div class="remember"><h4>⏱ Lesson structure (40 min)</h4>Starter 5′ (recall) → Explore 8′ (key ideas + interactive widget) → Worked example 7′ → Your turn 12′ (Easy / Medium / Hard) → Spot the mistake 3′ → Plenary 5′ &nbsp;·&nbsp; Extension: boss challenge for early finishers.<br><b>Lesson 6:</b> Starter 5′ → Revise 8′ → Mixed practice 7′ → Unit test 15′ → Reflect 5′.</div>
+      <table class="keytbl"><tr><th style="width:7%">Lesson</th><th style="width:28%">Title</th><th>Learning objective</th></tr>${rows}</table></div>`;
+    const st=document.createElement('style');st.textContent='tr.wk td{background:#e0e7ff;font-size:11pt}.st{float:right;font-weight:400;color:#4b5563;font-size:9pt}td.ln{font-weight:800;text-align:center}tr{break-inside:avoid}body{background:#fff}';document.head.appendChild(st);return}
+  if(h.startsWith('#figs')){   // developer aid: show many figures at once to check label placement
+    const ids=(new URLSearchParams(h.split('?')[1]||'').get('t')||'t05').split(','),lv=['medium','hard'];let out='';
+    ids.forEach(id=>lv.forEach(l=>{for(let i=0;i<6;i++){const p=genTopic(id,l,mkR(500+i*17));out+=`<div style="border:1px solid #ccc;padding:4px;width:380px;display:inline-block;vertical-align:top;font-size:12px">${p.text||''}${p.svg||''}<b>${ansText(p)}</b></div>`}}));
+    document.body.innerHTML='<div style="background:#fff;padding:6px">'+out+'</div>';return}
   if(h.startsWith('#dump')){   // developer aid: print sample problems with answers for proof-reading
     const out=[];const strip=s=>String(s||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ');
     for(const tp of TOPICS)for(const l of ['easy','medium','hard'])for(let i=0;i<2;i++){const p=genTopic(tp.id,l,mkR(100+i*13+tp.u));out.push(`${tp.id} ${l}: ${strip(p.text)} ${strip(p.eq)} => ${ansText(p)} || ${strip(p.steps.join(' ; '))}`)}
@@ -327,13 +350,14 @@ function selfTest(){
   if(h.startsWith('#sheet')){
     const q=new URLSearchParams(h.split('?')[1]||'');
     document.body.classList.add('sheet-only');
-    HW={topic:q.get('topic')||'t01',e:+(q.get('e')??4),m:+(q.get('m')??4),h:+(q.get('h')??2),seed:+(q.get('seed')||7001),key:q.get('key')||'none',title:q.get('title')||'',theory:q.get('theory')!=='0',challenge:q.get('challenge')!=='0'};
+    HW={topic:q.get('topic')||'t01',lesson:+(q.get('lesson')||0),e:+(q.get('e')??4),m:+(q.get('m')??4),h:+(q.get('h')??2),seed:+(q.get('seed')||7001),key:q.get('key')||'none',title:q.get('title')||'',theory:q.get('theory')!=='0',challenge:q.get('challenge')!=='0'};
     $$('.tab').forEach(s=>s.classList.toggle('on',s.id==='tab-hw'));
     $('#tab-hw').innerHTML=`<div class="preview" id="sheetHost">${buildSheetHTML(HW)}</div>`;
     return;
   }
-  const m=h.match(/^#tab=(\w+)(?:&topic=(\w+))?(?:&slide=(\d+))?/);
+  const m=h.match(/^#tab=(\w+)(?:&topic=(\w+))?(?:&lesson=(\d+))?(?:&slide=(\d+))?/);
   if(m&&m[2]&&(m[2]==='all'||TMAP[m[2]]))S.topic=m[2];
+  if(m&&m[3])S.lesson=+m[3];
   hud();openTab(m&&R_[m[1]]?m[1]:'map');
-  if(m&&m[1]==='slides'&&m[3])goSlide(+m[3]);
+  if(m&&m[1]==='slides'&&m[4])goSlide(+m[4]);
 })();

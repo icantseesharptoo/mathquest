@@ -23,20 +23,20 @@ function gridSvg({R=6,pts=[],polys=[],vlines=[],fns=[]}){
   const u=120/R,o=130,X=x=>o+x*u,Y=y=>o-y*u;let s='';
   for(let i=-R;i<=R;i++){
     s+=`<line x1="${X(i)}" y1="${Y(-R)}" x2="${X(i)}" y2="${Y(R)}" stroke="${i===0?'#111827':'#d1d5db'}" stroke-width="${i===0?1.6:.7}"/><line x1="${X(-R)}" y1="${Y(i)}" x2="${X(R)}" y2="${Y(i)}" stroke="${i===0?'#111827':'#d1d5db'}" stroke-width="${i===0?1.6:.7}"/>`;
-    if(i!==0&&i%2===0)s+=`<text x="${X(i)}" y="${Y(0)+11}" font-size="9" text-anchor="middle" fill="#6b7280">${i}</text><text x="${X(0)-8}" y="${Y(i)+3}" font-size="9" text-anchor="end" fill="#6b7280">${i}</text>`;
+    if(i!==0&&i%2===0)s+=`<text x="${X(i)}" y="${Y(0)+11}" font-size="12" text-anchor="middle" fill="#4b5563" stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">${i}</text><text x="${X(0)-7}" y="${Y(i)+4}" font-size="12" text-anchor="end" fill="#4b5563" stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">${i}</text>`;
   }
-  vlines.forEach(v=>{s+=`<line x1="${X(v.x)}" y1="${Y(-R)}" x2="${X(v.x)}" y2="${Y(R)}" stroke="#d9480f" stroke-width="2" stroke-dasharray="5 3"/><text x="${X(v.x)+3}" y="${Y(R)+10}" font-size="10" fill="#d9480f">${v.label||''}</text>`});
+  vlines.forEach(v=>{s+=`<line x1="${X(v.x)}" y1="${Y(-R)}" x2="${X(v.x)}" y2="${Y(R)}" stroke="#d9480f" stroke-width="2" stroke-dasharray="5 3"/><text x="${X(v.x)+3}" y="${Y(R)+10}" font-size="13" font-weight="700" fill="#d9480f" stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">${v.label||''}</text>`});
   fns.forEach(f=>{const a=[];for(let x=-R;x<=R;x+=.25){const y=f.m*x+f.c;if(Math.abs(y)<=R)a.push(`${X(x)},${Y(y)}`)}s+=`<polyline points="${a.join(' ')}" fill="none" stroke="${f.color||'#4f46e5'}" stroke-width="2.4"/>`});
   polys.forEach(p=>{s+=`<polygon points="${p.pts.map(q=>X(q[0])+','+Y(q[1])).join(' ')}" fill="${p.color||'#6366f1'}" fill-opacity=".25" stroke="${p.color||'#4f46e5'}" stroke-width="2"/>`;
-    if(p.names)p.pts.forEach((q,i)=>{s+=`<text x="${X(q[0])+4}" y="${Y(q[1])-5}" font-size="11" font-weight="700" fill="${p.color||'#4f46e5'}">${p.names[i]}</text>`})});
-  pts.forEach(p=>{s+=`<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="4.5" fill="${p.color||'#d9480f'}"/><text x="${X(p.x)+7}" y="${Y(p.y)-6}" font-size="12" font-weight="700" fill="${p.color||'#d9480f'}">${p.label||''}</text>`});
-  return svgWrap(s,260,260);
+    if(p.names)p.pts.forEach((q,i)=>{s+=`<text x="${X(q[0])+4}" y="${Y(q[1])-5}" font-size="14" font-weight="700" fill="${p.color||'#4f46e5'}" stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">${p.names[i]}</text>`})});
+  pts.forEach(p=>{s+=`<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="4.5" fill="${p.color||'#d9480f'}"/><text x="${X(p.x)+7}" y="${Y(p.y)-6}" font-size="15" font-weight="700" fill="${p.color||'#d9480f'}" stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">${p.label||''}</text>`});
+  return svgWrap(s,260,260,14,'sq');
 }
-function barSvg(labels,vals,{max,unit='',w=300,h=190,color='#6366f1'}={}){
-  const m=max||Math.ceil(Math.max(...vals)/5)*5||5,bx=34,bw=(w-bx-10)/vals.length;let s='';
+function barSvg(labels,vals,{max,unit='',w=340,h=220,color='#6366f1'}={}){
+  const m=max||Math.ceil(Math.max(...vals)/5)*5||5,bx=40,bw=(w-bx-10)/vals.length;let s='';
   const step=m<=10?1:m<=20?2:m<=50?5:10;
-  for(let v=0;v<=m;v+=step){const y=h-28-(v/m)*(h-50);s+=`<line x1="${bx}" y1="${y}" x2="${w-6}" y2="${y}" stroke="#e5e7eb"/><text x="${bx-4}" y="${y+3}" font-size="9" text-anchor="end" fill="#6b7280">${v}</text>`}
-  vals.forEach((v,i)=>{const bh=(v/m)*(h-50),x=bx+i*bw+bw*.15;s+=`<rect x="${x}" y="${h-28-bh}" width="${bw*.7}" height="${bh}" fill="${color}"/><text x="${x+bw*.35}" y="${h-15}" font-size="10" text-anchor="middle" fill="#1f2937">${labels[i]}</text>`});
+  for(let v=0;v<=m;v+=step){const y=h-28-(v/m)*(h-50);s+=`<line x1="${bx}" y1="${y}" x2="${w-6}" y2="${y}" stroke="#e5e7eb"/><text x="${bx-4}" y="${y+3}" font-size="12" text-anchor="end" fill="#4b5563">${v}</text>`}
+  vals.forEach((v,i)=>{const bh=(v/m)*(h-50),x=bx+i*bw+bw*.15;s+=`<rect x="${x}" y="${h-28-bh}" width="${bw*.7}" height="${bh}" fill="${color}"/><text x="${x+bw*.35}" y="${h-15}" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">${labels[i]}</text>`});
   s+=`<line x1="${bx}" y1="10" x2="${bx}" y2="${h-28}" stroke="#111827" stroke-width="1.5"/><line x1="${bx}" y1="${h-28}" x2="${w-6}" y2="${h-28}" stroke="#111827" stroke-width="1.5"/>`;
   return svgWrap(s,w,h);
 }
@@ -44,21 +44,21 @@ function polySymSvg(n,lines=true){
   const cx=130,cy=90,R=74,pts=[];for(let i=0;i<n;i++)pts.push(P(cx,cy,R,90+i*360/n));
   let s=`<polygon points="${pts.map(p=>f1(p[0])+','+f1(p[1])).join(' ')}" fill="#eef2ff" stroke="#111827" stroke-width="2.4"/>`;
   if(lines)for(let k=0;k<n;k++){const a=P(cx,cy,R+10,90+k*180/n),b=P(cx,cy,R+10,270+k*180/n);s+=`<line x1="${f1(a[0])}" y1="${f1(a[1])}" x2="${f1(b[0])}" y2="${f1(b[1])}" stroke="#d9480f" stroke-width="1.4" stroke-dasharray="5 3"/>`}
-  return svgWrap(s,260,180);
+  return svgWrap(s,260,180,20);
 }
 function rectSvg(w,h,u='cm',labels=true){
   const sc=Math.min(190/w,110/h),W=w*sc,H=h*sc,x=(260-W)/2,y=(150-H)/2+5;
-  return svgWrap(`<rect x="${x}" y="${y}" width="${W}" height="${H}" fill="#eef2ff" stroke="#111827" stroke-width="2.4"/>`+txt(x+W/2,y+H+14,w+' '+u)+txt(x-22,y+H/2,h+' '+u),260,170);
+  return svgWrap(`<rect x="${x}" y="${y}" width="${W}" height="${H}" fill="#eef2ff" stroke="#111827" stroke-width="2.4"/>`+txt(x+W/2,y+H+20,w+' '+u,false,16)+txt(x-10,y+H/2,h+' '+u,false,16,'end'),260,170,50);
 }
 function triSvg(b,h,u='cm'){
   const sc=Math.min(190/b,110/h),W=b*sc,H=h*sc,x=(260-W)/2,y=(150-H)/2+5,ax=x+W*.3;
-  return svgWrap(`<polygon points="${x},${y+H} ${x+W},${y+H} ${ax},${y}" fill="#eef2ff" stroke="#111827" stroke-width="2.4"/><line x1="${ax}" y1="${y}" x2="${ax}" y2="${y+H}" stroke="#d9480f" stroke-dasharray="4 3" stroke-width="1.6"/>`+txt(x+W/2,y+H+14,b+' '+u)+txt(ax+22,y+H/2,h+' '+u),260,170);
+  return svgWrap(`<polygon points="${x},${y+H} ${x+W},${y+H} ${ax},${y}" fill="#eef2ff" stroke="#111827" stroke-width="2.4"/><line x1="${ax}" y1="${y}" x2="${ax}" y2="${y+H}" stroke="#d9480f" stroke-dasharray="4 3" stroke-width="1.6"/>`+txt(x+W/2,y+H+20,b+' '+u,false,16)+txt(ax+9,y+H/2,h+' '+u,false,16,'start'),260,170,50);
 }
 function lShapeSvg(a,b,c,d,u='cm'){            // outer a(w) x b(h), top-right corner cut c(w) x d(h)
   const sc=Math.min(170/a,110/b),X0=45,Y0=20,A=a*sc,B=b*sc,C=c*sc,D=d*sc;
   const pts=[[X0,Y0+D],[X0+A-C,Y0+D],[X0+A-C,Y0],[X0+A,Y0],[X0+A,Y0+B],[X0,Y0+B]];  // simplified outline
   const p=[[X0,Y0],[X0+A-C,Y0],[X0+A-C,Y0+D],[X0+A,Y0+D],[X0+A,Y0+B],[X0,Y0+B]];
-  return svgWrap(`<polygon points="${p.map(q=>q.join(',')).join(' ')}" fill="#eef2ff" stroke="#111827" stroke-width="2.4"/>`+txt(X0+A/2,Y0+B+13,a+' '+u)+txt(X0-20,Y0+B/2,b+' '+u)+txt(X0+A-C/2,Y0+D+13,c+' '+u)+txt(X0+A-C-17,Y0+D/2,d+' '+u),260,175);
+  return svgWrap(`<polygon points="${p.map(q=>q.join(',')).join(' ')}" fill="#eef2ff" stroke="#111827" stroke-width="2.4"/>`+txt(X0+A/2,Y0+B+20,a+' '+u,false,16)+txt(X0-10,Y0+B/2,b+' '+u,false,16,'end')+txt(X0+A-C/2,Y0+D-14,c+' '+u,false,16)+txt(X0+A-C-9,Y0+D/2,d+' '+u,false,16,'end'),260,175,50);
 }
 function bagSvg(c){
   const cols={red:'#dc2626',blue:'#2563eb',green:'#16a34a',yellow:'#eab308'};let items=[];
@@ -67,13 +67,13 @@ function bagSvg(c){
   items.forEach((col,i)=>{const y=48+Math.floor(i/per)*30,x=per>1?78+(i%per)*(104/(per-1)):130;s+=`<circle cx="${x}" cy="${y}" r="11" fill="${col}" stroke="#fff" stroke-width="2"/>`});
   return svgWrap(s,260,170);
 }
-function lineChartSvg(labels,vals,{max,w=300,h=190}={}){
-  const m=max||Math.ceil(Math.max(...vals)/5)*5,bx=34,dx=(w-bx-20)/(vals.length-1);let s='';
+function lineChartSvg(labels,vals,{max,w=340,h=220}={}){
+  const m=max||Math.ceil(Math.max(...vals)/5)*5,bx=40,dx=(w-bx-24)/(vals.length-1);let s='';
   const step=m<=10?1:m<=20?2:m<=50?5:10;
-  for(let v=0;v<=m;v+=step){const y=h-28-(v/m)*(h-50);s+=`<line x1="${bx}" y1="${y}" x2="${w-6}" y2="${y}" stroke="#e5e7eb"/><text x="${bx-4}" y="${y+3}" font-size="9" text-anchor="end" fill="#6b7280">${v}</text>`}
+  for(let v=0;v<=m;v+=step){const y=h-28-(v/m)*(h-50);s+=`<line x1="${bx}" y1="${y}" x2="${w-6}" y2="${y}" stroke="#e5e7eb"/><text x="${bx-4}" y="${y+3}" font-size="12" text-anchor="end" fill="#4b5563">${v}</text>`}
   const pts=vals.map((v,i)=>[bx+10+i*dx,h-28-(v/m)*(h-50)]);
   s+=`<polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#4f46e5" stroke-width="2.6"/>`;
-  pts.forEach((p,i)=>{s+=`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#d9480f"/><text x="${p[0]}" y="${h-14}" font-size="10" text-anchor="middle">${labels[i]}</text>`});
+  pts.forEach((p,i)=>{s+=`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#d9480f"/><text x="${p[0]}" y="${h-12}" font-size="13" font-weight="600" text-anchor="middle">${labels[i]}</text>`});
   s+=`<line x1="${bx}" y1="10" x2="${bx}" y2="${h-28}" stroke="#111827" stroke-width="1.5"/><line x1="${bx}" y1="${h-28}" x2="${w-6}" y2="${h-28}" stroke="#111827" stroke-width="1.5"/>`;
   return svgWrap(s,w,h);
 }
@@ -536,9 +536,18 @@ const TOPICS=[
 ];
 const TMAP=Object.fromEntries(TOPICS.map(t=>[t.id,t]));
 
-function genTopic(tid,level,r){
-  if(tid==='all')tid=r.pick(TOPICS).id;
-  const list=T7[tid][level];
+// a lesson (1-6) uses only the problem types listed in lessons.js; li=0 means the whole unit
+function poolFor(tid,li,level){
+  if(li&&tid!=='all'){
+    const les=lessonOf(tid,li);
+    const order={easy:['easy','medium','hard'],medium:['medium','easy','hard'],hard:['hard','medium','easy']}[level];
+    for(const lv of order){const f=les.items.filter(x=>x[0]===lv).map(x=>T7[tid][lv][x[1]]);if(f.length)return f}
+  }
+  return T7[tid][level];
+}
+function genTopic(tid,level,r,li=0){
+  if(tid==='all'){tid=r.pick(TOPICS).id;li=0}
+  const list=poolFor(tid,li,level);
   for(let t=0;t<60;t++){
     let p;try{p=r.pick(list)(r)}catch(e){p=null}
     if(!p)continue;
@@ -553,10 +562,10 @@ function finishP(p,tid,level){
   if(!p.tol)p.tol=1e-6;
   return p;
 }
-function genTopicList(tid,level,n,r){
+function genTopicList(tid,level,n,r,li=0){
   const out=[];
   if(tid==='all'){for(let i=0;i<n;i++)out.push(genTopic('all',level,r));return out}
-  const gens=r.shuffle(T7[tid][level]);
+  const gens=r.shuffle(poolFor(tid,li,level));
   for(let i=0;i<n;i++){
     let p=null;for(let t=0;t<30&&!p;t++){try{p=gens[(i+t)%gens.length](r)}catch(e){p=null}}
     out.push(finishP(p,tid,level));
