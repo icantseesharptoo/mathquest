@@ -1,57 +1,49 @@
-/* MathQuest app logic */
+/* MathQuest — Year 7 (Cambridge Lower Secondary Mathematics) */
 const $=(s,e=document)=>e.querySelector(s), $$=(s,e=document)=>[...e.querySelectorAll(s)];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const rndSeed=()=>Math.floor(Math.random()*1e9);
 
 // ---------------- state ----------------
 const KEY='mathquest.v1';
-// progress (coins, collection...) is stored separately for each year group
-const PDEF=()=>({coins:100,xp:0,streak:0,best:0,solved:0,pity:0,tickets:0,inv:{}});
-const PKEYS=Object.keys(PDEF());
-const DEF={year:7,level:'easy',proj:false,prog:{},...PDEF()};
+const DEF={topic:'t01',level:'easy',proj:false,coins:100,xp:0,streak:0,best:0,solved:0,pity:0,tickets:0,inv:{},tp:{}};
 let S=Object.assign({},DEF,(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}})());
-S.prog=S.prog||{};
-// older saves had flat progress: it stays with the year that was active
-const snap=()=>JSON.parse(JSON.stringify(PKEYS.reduce((o,k)=>(o[k]=S[k],o),{})));
-const save=()=>{try{S.prog[S.year]=snap();localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
-function switchYear(y){
-  if(y===S.year)return;
-  S.prog[S.year]=snap();
-  Object.assign(S,JSON.parse(JSON.stringify(S.prog[y]||PDEF())));
-  S.year=y;save();
-}
-function resetYear(){Object.assign(S,PDEF());save()}
+if(S.prog&&S.prog[7])Object.assign(S,S.prog[7]);      // saves from the two-year version: keep Year 7 progress
+delete S.prog;S.tp=S.tp||{};
+if(S.topic!=='all'&&!TMAP[S.topic])S.topic='t01';
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const REWARD={easy:10,medium:20,hard:35};
 const TITLES=['Rookie','Explorer','Apprentice','Solver','Wizard','Master','Legend'];
+const tname=id=>id==='all'?'🌍 Mixed review (all units)':`${TMAP[id].icon} Unit ${TMAP[id].u} · ${TMAP[id].title}`;
 function hud(){
   $('#hCoins').textContent=S.coins;$('#hTix').textContent=S.tickets;$('#hStreak').textContent=S.streak;
   const lv=Math.floor(S.xp/100)+1;$('#hLv').textContent=lv;$('#hTitle').textContent=TITLES[Math.min(TITLES.length-1,Math.floor((lv-1)/2))];
-  $('#hXp').style.width=(S.xp%100)+'%';
-  $$('#yearSeg button').forEach(b=>b.classList.toggle('on',+b.dataset.y===S.year));
-  document.body.classList.toggle('proj',!!S.proj);
+  $('#hXp').style.width=(S.xp%100)+'%';document.body.classList.toggle('proj',!!S.proj);
 }
 function toast(msg,ms=2200){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),ms)}
 var burst=function(emojis='🎉✨⭐',n=18,x=innerWidth/2,y=innerHeight/2){
   for(let i=0;i<n;i++){const e=document.createElement('span');e.className='burst';e.textContent=emojis[Math.floor(Math.random()*emojis.length)];
     e.style.left=x+'px';e.style.top=y+'px';e.style.setProperty('--dx',(Math.random()*500-250)+'px');e.style.setProperty('--dy',(Math.random()*-400-50)+'px');
     document.body.appendChild(e);setTimeout(()=>e.remove(),1300)}
-}
-function award(base,tries){
+};
+function award(base,tries,tid){
   const c=Math.round(base*(tries===0?1:tries===1?.6:.3));
   S.streak++;S.best=Math.max(S.best,S.streak);
   const bonus=S.streak>=5?10:S.streak>=3?5:0;
-  S.coins+=c+bonus;S.xp+=base;S.solved++;save();hud();return {c,bonus};
+  S.coins+=c+bonus;S.xp+=base;S.solved++;
+  if(tid){const t=S.tp[tid]=S.tp[tid]||{solved:0};t.solved++}
+  save();hud();return {c,bonus};
 }
-const topic=()=>S.year===7?'Angles':'Linear equations';
+const stars=n=>n>=30?'⭐⭐⭐':n>=15?'⭐⭐':n>=5?'⭐':'';
+const genP=(level,r,tid=S.topic)=>genTopic(tid,level,r);
 
 // ---------------- problem card ----------------
 function mountProblem(host,p,o={}){
   const reward=o.reward??REWARD[p.level];
   let tries=0,done=false,shown=0;
   host.innerHTML=`<div class="card ${o.boss?'boss':''}">
-    <div class="row"><span class="tag ${p.level}">${p.level.toUpperCase()}</span>${o.boss?'<span class="tag r-legend">⚔️ BOSS ×3</span>':''}<span class="sp"></span><span class="pill" style="background:#fef3c7;color:#92400e">+${reward} 🪙</span></div>
+    <div class="row"><span class="tag ${p.level}">${p.level.toUpperCase()}</span>${o.boss?'<span class="tag r-legend">⚔️ BOSS ×3</span>':''}${p.tid?`<span class="tag tid" style="background:${TMAP[p.tid].color}">${TMAP[p.tid].icon} Unit ${TMAP[p.tid].u}</span>`:''}<span class="sp"></span><span class="pill" style="background:#fef3c7;color:#92400e">+${reward} 🪙</span></div>
     <div class="q-text">${p.text||''}</div>${p.eq?`<div class="eq">${p.eq}</div>`:''}${p.svg?`<div>${p.svg}</div>`:''}${p.note?`<div class="note">${p.note}</div>`:''}
-    <div class="ansrow"><label>${p.label}</label><input inputmode="decimal" autocomplete="off" aria-label="answer"><span style="font-size:1.3rem">${p.unit||''}</span><button class="btn check">Check ✔</button></div>
+    <div class="ansrow"><label>${p.label||''}</label><input inputmode="decimal" autocomplete="off" aria-label="answer"><span style="font-size:1.3rem">${p.unit||''}</span><button class="btn check">Check ✔</button></div>
     <div class="fb"></div>
     <div class="row" style="justify-content:center"><button class="btn alt hint">💡 Hint (−5🪙)</button><button class="btn alt sol">👁 Solution step by step</button>${o.next?'<button class="btn next">Next ➜</button>':''}</div>
     <ol class="steps" hidden></ol></div>`;
@@ -60,7 +52,7 @@ function mountProblem(host,p,o={}){
   const check=()=>{
     if(done)return; if(inp.value.trim()===''){inp.focus();return}
     if(checkAnswer(p,inp.value)){
-      done=true;const a=award(reward,tries);
+      done=true;const a=award(reward,tries,p.tid);
       finish(`✅ Correct! ${ansText(p)}   +${a.c}🪙${a.bonus?` +${a.bonus} streak bonus`:''}`,'ok');
       const r=inp.getBoundingClientRect();burst(o.boss?'👑🏆💎✨':'🎉✨⭐🪙',o.boss?30:14,r.left+60,r.top);
       if(o.onSolved)o.onSolved(p);
@@ -77,99 +69,66 @@ function mountProblem(host,p,o={}){
   };
   $('.check',host).onclick=check;
   inp.addEventListener('keydown',e=>{if(e.key==='Enter')check()});
-  $('.hint',host).onclick=()=>{if(S.coins>=5){S.coins-=5;save();hud()}finish('💡 '+p.hint,'ok')};
+  $('.hint',host).onclick=()=>{if(S.coins>=5){S.coins-=5;save();hud()}finish('💡 '+(p.hint||'Think about the key idea of this unit.'),'ok')};
   $('.sol',host).onclick=()=>showSteps(shown+1);
   if(o.next)$('.next',host).onclick=o.next;
   setTimeout(()=>inp.focus(),50);
-  return {reveal:()=>showSteps(99)};
 }
 
-// ---------------- Learn ----------------
-let EX=null; // current worked example
-function workedExample(host,year,withGuess){
+// ---------------- worked example stepper ----------------
+function workedExample(host,tid){
   let level='easy',p,shown=0;
   const draw=()=>{
-    p=genProblem(year,level,mkR(rndSeed()));EX=p;shown=0;
+    p=genTopic(tid,level,mkR(rndSeed()));shown=0;
     host.innerHTML=`<h3>🧩 Worked example <span class="tag ${level}">${level}</span></h3>
       <div class="chips">${['easy','medium','hard'].map(l=>`<button class="chip ${l} ${l===level?'on':''}" data-l="${l}">${l}</button>`).join('')}<button class="btn alt" id="exNew">🎲 New numbers</button></div>
       <div class="q-text">${p.text||''}</div>${p.eq?`<div class="eq">${p.eq}</div>`:''}${p.svg?`<div>${p.svg}</div>`:''}${p.note?`<div class="note">${p.note}</div>`:''}
       <div class="row" style="justify-content:center"><button class="btn green" id="exNext">▶ Next step</button><button class="btn alt" id="exAll">Show all</button></div>
-      <ol class="steps" id="exSteps"></ol>
-      ${withGuess?`<hr><h3>⚖️ Guess &amp; check</h3><div class="q-text">Try a value of x. Does the balance stay level?</div>
-        <div class="ansrow"><label>x =</label><input id="gIn" inputmode="decimal"><button class="btn" id="gBtn">Test</button></div><div class="eq" id="gOut" style="font-size:1.3rem"></div>`:''}`;
+      <ol class="steps" id="exSteps"></ol>`;
     $$('.chip',host).forEach(b=>b.onclick=()=>{level=b.dataset.l;draw()});
     $('#exNew',host).onclick=draw;
-    const upd=()=>{$('#exSteps',host).innerHTML=p.steps.slice(0,shown).map(s=>`<li>${s}</li>`).join('')};
+    const upd=()=>{$('#exSteps',host).innerHTML=p.steps.slice(0,shown).map(s=>`<li>${s}</li>`).join('')+(shown>=p.steps.length?`<li style="background:#fef9c3;border-color:#eab308">Answer: <b>${ansText(p)}</b></li>`:'')};
     $('#exNext',host).onclick=()=>{shown=Math.min(p.steps.length,shown+1);upd()};
     $('#exAll',host).onclick=()=>{shown=99;upd()};
-    if(withGuess){
-      const go=()=>{const v=parseNum($('#gIn',host).value);if(v===null)return;
-        const l=p.L(v),rr=p.R(v),f=n=>Math.round(n*1000)/1000;
-        $('#gOut',host).innerHTML=`Left = ${M(f(l))} &nbsp; Right = ${M(f(rr))}<br>`+(Math.abs(l-rr)<1e-9?'⚖️ <b style="color:#16a34a">Balanced! x is the solution.</b>':l>rr?'⬅️ Left side is heavier':'Right side is heavier ➡️')};
-      $('#gBtn',host).onclick=go;$('#gIn',host).addEventListener('keydown',e=>{if(e.key==='Enter')go()});
-    }
   };
   draw();
 }
-const EXPL={
-  line:{name:'Straight line',n:'180°',txt:'Angles on a straight line add up to 180°',sl:[['Angle a',20,160,60]]},
-  point:{name:'Around a point',n:'360°',txt:'Angles around a point add up to 360°',sl:[['Angle a',40,160,100],['Angle b',40,160,110]]},
-  vo:{name:'Vertically opposite',n:'a = a',txt:'Vertically opposite angles are equal',sl:[['Angle a',35,145,65]]},
-  tri:{name:'Triangle',n:'180°',txt:'Angles in a triangle add up to 180°',sl:[['Angle A',30,100,55],['Angle B',30,100,65]]},
-  quad:{name:'Quadrilateral',n:'360°',txt:'Angles in a quadrilateral add up to 360°',sl:[['Angle A',60,120,80],['Angle B',60,120,95],['Angle C',60,120,100]]},
-};
-function explorerDraw(k,v){
-  let svg,sum;
-  if(k==='line'){const a=v[0],b=180-a;svg=raysDiagram({cx:130,cy:150,R:112,parts:[a,b],labels:[a+'°',b+'°'],lr:66});sum=`${a}° + ${b}° = 180°`}
-  else if(k==='point'){let a=v[0],b=v[1];if(360-a-b<40)b=320-a;const c=360-a-b;svg=raysDiagram({cx:130,cy:92,R:84,start:20,parts:[a,b,c],labels:[a+'°',b+'°',c+'°'],lr:50});sum=`${a}° + ${b}° + ${c}° = 360°`}
-  else if(k==='vo'){const a=v[0],b=180-a;svg=raysDiagram({cx:130,cy:90,R:92,start:15,parts:[a,b,a,b],labels:[a+'°',b+'°',a+'°',b+'°'],lr:50,ar:22});sum=`Opposite pairs: ${a}° = ${a}° and ${b}° = ${b}°`}
-  else if(k==='tri'){let A=v[0],B=v[1];if(A+B>155)B=155-A;const C=180-A-B;svg=polyDiagram([A,B,C],[A+'°',B+'°',C+'°'],[]);sum=`${A}° + ${B}° + ${C}° = 180°`}
-  else{let [A,B,C]=v;if(A+B+C>310)C=310-A-B;const D=360-A-B-C;svg=polyDiagram([A,B,C,D],[A+'°',B+'°',C+'°',D+'°'],[]);sum=`${A}° + ${B}° + ${C}° + ${D}° = 360°`}
-  return {svg,sum};
+
+// ---------------- topic picker ----------------
+function topicSelect(id,val,allowAll=true,onchange){
+  const terms=[1,2,3].map(t=>`<optgroup label="Term ${t}">${TOPICS.filter(x=>x.term===t).map(x=>`<option value="${x.id}" ${x.id===val?'selected':''}>${x.icon} Unit ${x.u} · ${x.title}</option>`).join('')}</optgroup>`).join('');
+  return `<select id="${id}" class="topicSel">${allowAll?`<option value="all" ${val==='all'?'selected':''}>🌍 Mixed review (all units)</option>`:''}${terms}</select>`;
 }
-function renderLearn(){
-  const el=$('#tab-learn');
-  if(S.year===7){
-    el.innerHTML=`<h2>📘 Year 7 · Angles <small style="font-weight:400;color:#6b7280">— Cambridge Lower Secondary, Unit 5 “Angles and constructions”</small></h2>
-    <div class="grid2"><div class="card"><h3>🔭 Angle Explorer — drag the sliders</h3><div class="facts" id="facts"></div><div id="expSl"></div><div id="expFig"></div><div class="eq" id="expSum" style="font-size:1.3rem"></div></div>
-    <div class="card" id="exCard"></div></div>`;
-    let cur='line';const vals={};
-    const facts=$('#facts');
-    const draw=()=>{
-      const E=EXPL[cur];$$('.fact',facts).forEach(f=>f.classList.toggle('on',f.dataset.k===cur));
-      $('#expSl').innerHTML=E.sl.map((s,i)=>`<div class="row"><label style="min-width:5rem;font-weight:700">${s[0]}</label><input type="range" min="${s[1]}" max="${s[2]}" value="${vals[cur][i]}" data-i="${i}" style="flex:1"></div>`).join('');
-      $$('#expSl input').forEach(r=>r.oninput=()=>{vals[cur][+r.dataset.i]=+r.value;fig()});fig();
-    };
-    const fig=()=>{const o=explorerDraw(cur,vals[cur]);$('#expFig').innerHTML=o.svg;$('#expSum').textContent=EXPL[cur].txt+' → '+o.sum};
-    Object.entries(EXPL).forEach(([k,E])=>{vals[k]=E.sl.map(s=>s[3]);const d=document.createElement('div');d.className='fact';d.dataset.k=k;d.innerHTML=`<b class="n">${E.n}</b><span><b>${E.name}</b><br>${E.txt}</span>`;d.onclick=()=>{cur=k;draw()};facts.appendChild(d)});
-    draw();workedExample($('#exCard'),7,false);
-  }else{
-    el.innerHTML=`<h2>📘 Year 10 · Solving linear equations <small style="font-weight:400;color:#6b7280">— Cambridge IGCSE Mathematics 0580, Algebra</small></h2>
-    <div class="grid2"><div class="card"><h3>⚖️ The Golden Rules</h3>
-      <div class="facts">
-      <div class="fact"><b class="n">⚖️</b><span><b>Keep it balanced</b><br>Whatever you do to one side, do to the other side.</span></div>
-      <div class="fact"><b class="n">+ ↔ −</b><span><b>Inverse operations</b><br>Undo + with −, undo × with ÷.</span></div>
-      <div class="fact"><b class="n">①②③</b><span><b>Order of attack</b><br>1 Expand brackets / clear fractions · 2 x-terms together · 3 numbers together · 4 divide</span></div>
-      <div class="fact"><b class="n">✔</b><span><b>Always check</b><br>Substitute your x back into the original equation.</span></div></div>
-      <div class="eq" style="font-size:1.3rem">3x + 5 = 20 &nbsp;→&nbsp; 3x = 15 &nbsp;→&nbsp; x = 5</div></div>
-    <div class="card" id="exCard"></div></div>`;
-    workedExample($('#exCard'),10,true);
-  }
+
+// ---------------- Year map ----------------
+function renderMap(){
+  const el=$('#tab-map');
+  const card=t=>{const n=(S.tp[t.id]||{}).solved||0;
+    return `<div class="tcard" style="--c:${t.color}"><div class="tc-h"><span class="tc-i">${t.icon}</span><div><b>Unit ${t.u}</b><div class="tc-t">${t.title}</div></div></div>
+    <div class="tc-s">${t.strand}</div><div class="tc-o">${t.obj}</div>
+    <div class="tc-p"><div class="pitybar"><i style="width:${Math.min(100,n/30*100)}%;background:${t.color}"></i></div><small>${n} solved ${stars(n)}</small></div>
+    <div class="row"><button class="btn" data-go="slides" data-t="${t.id}">🖥️ Slides</button><button class="btn alt" data-go="practice" data-t="${t.id}">✏️ Practice</button><button class="btn alt" data-go="hw" data-t="${t.id}">🖨️ PDF</button></div></div>`};
+  const names={1:'Term 1 · Autumn',2:'Term 2 · Spring',3:'Term 3 · Summer'};
+  el.innerHTML=`<h2>🗺️ Year 7 map — 16 units <small style="font-weight:400;color:#6b7280">Cambridge Lower Secondary Mathematics 7</small></h2>
+   <p class="rates">Pick a unit: open its interactive slides, practise with random problems (Easy / Medium / Hard), or make a PDF worksheet. ⭐ = 5, ⭐⭐ = 15, ⭐⭐⭐ = 30 solved. <button class="btn alt" id="mixBtn" style="padding:.2rem .8rem">🌍 Mixed review</button></p>`+
+   [1,2,3].map(tm=>`<h3 class="termh">${names[tm]}</h3><div class="tgrid">${TOPICS.filter(t=>t.term===tm).map(card).join('')}</div>`).join('');
+  $$('[data-go]',el).forEach(b=>b.onclick=()=>{S.topic=b.dataset.t;save();openTab(b.dataset.go)});
+  $('#mixBtn').onclick=()=>{S.topic='all';save();openTab('practice')};
 }
 
 // ---------------- Practice ----------------
-let curP=null;
 function renderPractice(){
   const el=$('#tab-practice');
-  el.innerHTML=`<h2>✏️ Practice — ${topic()}</h2>
-   <div class="chips" id="lvl">${['easy','medium','hard'].map(l=>`<button class="chip ${l} ${l===S.level?'on':''}" data-l="${l}">${l==='easy'?'🟢 Easy':l==='medium'?'🟡 Medium':'🔴 Hard'} (+${REWARD[l]}🪙)</button>`).join('')}</div>
+  el.innerHTML=`<h2>✏️ Practice</h2><div class="row">${topicSelect('pTopic',S.topic)}</div>
+   <div class="chips" id="lvl" style="margin-top:.6rem">${['easy','medium','hard'].map(l=>`<button class="chip ${l} ${l===S.level?'on':''}" data-l="${l}">${l==='easy'?'🟢 Easy':l==='medium'?'🟡 Medium':'🔴 Hard'} (+${REWARD[l]}🪙)</button>`).join('')}</div>
    <div class="grid2"><div id="pHost"></div>
    <div class="card"><h3>📊 Your stats</h3><p>Solved: <b id="stS"></b> · Best streak: <b id="stB"></b></p>
      <p class="rates">Streak bonus: 3 in a row = +5🪙 · 5 in a row = +10🪙.<br>First-try answers pay full coins. Collect 50🪙 → open a capsule in the 🎰 Gacha tab!</p>
-     <p class="rates">Answer formats: whole numbers, decimals (2.5) or fractions (5/2).</p></div></div>`;
+     <p class="rates">Answers: whole numbers, decimals (2.5) or fractions (5/2).</p>
+     ${S.topic!=='all'?`<div class="card" style="background:#eef2ff;margin-top:.6rem"><b>Key ideas — ${TMAP[S.topic].title}</b><ul>${TMAP[S.topic].ideas.map(i=>`<li>${i}</li>`).join('')}</ul></div>`:''}</div></div>`;
+  $('#pTopic').onchange=e=>{S.topic=e.target.value;save();renderPractice()};
   $$('#lvl .chip').forEach(b=>b.onclick=()=>{S.level=b.dataset.l;save();renderPractice()});
-  const next=()=>{curP=genProblem(S.year,S.level,mkR(rndSeed()));
-    mountProblem($('#pHost'),curP,{next,onSolved:()=>{$('#stS').textContent=S.solved;$('#stB').textContent=S.best}});};
+  const next=()=>{const p=genP(S.level,mkR(rndSeed()));mountProblem($('#pHost'),p,{next,onSolved:()=>{$('#stS').textContent=S.solved;$('#stB').textContent=S.best}})};
   $('#stS').textContent=S.solved;$('#stB').textContent=S.best;next();
 }
 
@@ -202,7 +161,8 @@ function renderGacha(){
   el.innerHTML=`<h2>🎰 Gacha Lab</h2>
   <div class="grid2">
    <div class="card machine"><h3>🎲 Problem Capsule <small style="color:#6b7280">(free!)</small></h3>
-     <div class="capsule" id="cap1">🔮</div><div><button class="btn gold" id="sumBtn">✨ Summon a ${topic()} problem</button></div>
+     <div>${topicSelect('gTopic',S.topic)}</div>
+     <div class="capsule" id="cap1">🔮</div><div><button class="btn gold" id="sumBtn">✨ Summon a problem</button></div>
      <p class="rates">Common (easy) 55% · Rare (medium) 30% · Epic (hard) 12% · <b>Legendary BOSS</b> 3% — pays ×3 coins + a 🎟️ free-pull ticket!</p></div>
    <div class="card machine"><h3>🎁 Prize Capsule <small style="color:#6b7280">(${PULL}🪙 or 🎟️)</small></h3>
      <div class="capsule" id="cap2">🥚</div><div class="row" style="justify-content:center">
@@ -216,17 +176,18 @@ function renderGacha(){
   const refresh=()=>{hud();$('#pity').style.width=Math.min(100,S.pity*10)+'%';$('#pityTxt').textContent=`Guaranteed Epic+ in ${Math.max(0,10-S.pity)} pulls`;$('#coll').innerHTML=collectionHTML();
     $('#p1').disabled=!(S.tickets>0||S.coins>=PULL);$('#p10').disabled=S.coins<PULL*9;$('#p1').textContent=S.tickets>0?'Pull ×1 (🎟️)':'Pull ×1';};
   refresh();
+  $('#gTopic').onchange=e=>{S.topic=e.target.value;save()};
   $('#demoCoins').onclick=()=>{S.coins+=200;save();refresh()};
-  $('#resetAll').onclick=()=>{if(confirm(`Reset Year ${S.year} progress? (Year ${S.year===7?10:7} is not affected)`)){resetYear();hud();renderGacha()}};
+  $('#resetAll').onclick=()=>{if(confirm('Reset all progress (coins, collection, solved counts)?')){const t=S.topic;S=Object.assign({},DEF,{topic:t});save();hud();renderGacha()}};
   let busy=false;
   $('#sumBtn').onclick=async()=>{
     if(busy)return;busy=true;const cap=$('#cap1');cap.classList.add('spin');await sleep(1400);cap.classList.remove('spin');
     const x=Math.random();const rar=x<.03?'legend':x<.15?'epic':x<.45?'rare':'common';
     const lvl={common:'easy',rare:'medium',epic:'hard',legend:'hard'}[rar],rew={common:15,rare:30,epic:60,legend:150}[rar];
-    const p=genProblem(S.year,lvl,mkR(rndSeed()));
+    const p=genP(lvl,mkR(rndSeed()),$('#gTopic').value);
     $('#pRes').innerHTML=`<div class="row" style="justify-content:center"><span class="tag r-${rar}" style="font-size:1rem">${RAR[rar].name} PROBLEM</span></div><div id="pc" style="max-width:640px;margin:.5rem auto"></div>`;
     burst(rar==='legend'?'👑💎🔥':'✨',rar==='common'?5:16);
-    mountProblem($('#pc'),p,{reward:rew,boss:rar==='legend',next:null,onSolved:()=>{if(rar==='legend'){S.tickets++;toast('🎟️ Boss defeated! Free pull ticket earned');}save();refresh()}});
+    mountProblem($('#pc'),p,{reward:rew,boss:rar==='legend',onSolved:()=>{if(rar==='legend'){S.tickets++;toast('🎟️ Boss defeated! Free pull ticket earned')}save();refresh()}});
     busy=false;
   };
   const doPull=async n=>{
@@ -236,7 +197,7 @@ function renderGacha(){
     busy=true;save();hud();const cap=$('#cap2');cap.classList.add('spin');$('#gRes').innerHTML='';await sleep(1400);cap.classList.remove('spin');
     const res=[];for(let i=0;i<n;i++)res.push(pullOne());save();
     $('#gRes').innerHTML=res.map(o=>monHTML(o.m,o.dup?`<small>Duplicate → +${RAR[o.m.r].refund}🪙</small>`:'<small>✨ NEW!</small>')).join('');
-    const best=res.reduce((a,o)=>['common','rare','epic','legend'].indexOf(o.m.r)>a?['common','rare','epic','legend'].indexOf(o.m.r):a,0);
+    const order=['common','rare','epic','legend'],best=res.reduce((a,o)=>Math.max(a,order.indexOf(o.m.r)),0);
     burst(best>=3?'👑💎🔥🌟':best==2?'💜✨':'✨',best*8+8);
     refresh();busy=false;
   };
@@ -244,66 +205,46 @@ function renderGacha(){
 }
 
 // ---------------- Worksheets ----------------
-const TITLES_SHEET={7:'Angles: lines, points &amp; triangles',10:'Solving linear equations'};
-const SUB={7:'CAMBRIDGE LOWER SECONDARY · MATHEMATICS · YEAR 7 · GEOMETRY',10:'CAMBRIDGE IGCSE MATHEMATICS (0580) · YEAR 10 · ALGEBRA'};
-const REMEMBER={
-7:`<h4>📌 Remember</h4><ul><li>Angles on a <b>straight line</b> add up to <b>180°</b></li><li>Angles around a <b>point</b> add up to <b>360°</b></li><li><b>Vertically opposite</b> angles (X-shape) are <b>equal</b></li><li>Angles in a <b>triangle</b> add up to <b>180°</b>; in a <b>quadrilateral</b> to <b>360°</b></li><li>Equal sides (dashes) in an isosceles triangle mean <b>equal base angles</b></li></ul>
-<div class="gloss"><b>Words:</b> angle — угол · vertex — вершина · straight line — прямая · vertically opposite — вертикальные углы · triangle — треугольник · quadrilateral — четырёхугольник · sum — сумма · protractor — транспортир</div>`,
-10:`<h4>📌 Remember</h4><ul><li><b>Golden rule:</b> whatever you do to one side, do the same to the other side.</li><li>Use <b>inverse operations</b>: + ↔ −, × ↔ ÷</li><li><b>Order:</b> ① expand brackets / clear fractions ② x-terms to one side ③ numbers to the other ④ divide ⑤ <b>check</b> by substituting</li></ul>
-<div class="gloss"><b>Words:</b> equation — уравнение · solve — решить · expand — раскрыть скобки · inverse operation — обратная операция · term — слагаемое · coefficient — коэффициент · fraction — дробь · substitute — подставить</div>`};
-const DEFCFG=()=>({year:S.year,e:4,m:4,h:2,seed:7001,key:'none',title:'',theory:true,challenge:true});
+const mixedRemember=`<h4>📌 Remember</h4><ul><li>Read each question carefully and <b>show your working</b>.</li><li>Check that your answer is sensible (estimate first!).</li><li>Use the key facts from each unit — ask your teacher if you are stuck.</li></ul>`;
+const DEFCFG=()=>({topic:S.topic,e:4,m:4,h:2,seed:7001,key:'none',title:'',theory:true,challenge:true});
 let HW=DEFCFG();
-
-function genList(year,level,n,r){
-  const gens=r.shuffle(GEN[year][level]),out=[];
-  for(let i=0;i<n;i++){
-    let p=null;for(let t=0;t<30&&!p;t++){try{p=gens[(i+t)%gens.length](r)}catch(e){p=null}}
-    p.year=year;p.level=level;p.label=p.label||'x =';
-    if(year===10){p.unit='';if(p.text===undefined)p.text='Solve the equation.';p.svg=null}
-    out.push(p);
-  }
-  return out;
-}
 function qCard(p,id){
-  return `<div class="qcard ${p.year===10?'alg':''}"><div class="qn">${id}</div><div class="qt">${p.text||''}</div>${p.eq?`<div class="eq">${p.eq}</div>`:''}${p.svg||''}${p.note?`<div class="note">${p.note}</div>`:''}<div class="qa">${p.label} <u>&nbsp;</u> ${p.unit||''}</div></div>`;
+  return `<div class="qcard ${p.svg?'':'alg'}"><div class="qn">${id}</div><div class="qt">${p.text||''}</div>${p.eq?`<div class="eq">${p.eq}</div>`:''}${p.svg||''}${p.note&&!/Enter a whole/.test(p.note)?`<div class="note">${p.note}</div>`:''}<div class="qa">${p.label||''} <u>&nbsp;</u> ${p.unit||''}</div></div>`;
 }
 function buildSheetHTML(cfg){
-  const y=cfg.year,r=mkR(cfg.seed);
+  const tid=cfg.topic,T=tid==='all'?null:TMAP[tid],r=mkR(cfg.seed);
+  const ttl=cfg.title||(T?T.title:'Mixed review');
   const lv=[['easy','A',cfg.e,'🟢 Level 1 — Warm-up','one or two steps'],['medium','B',cfg.m,'🟡 Level 2 — Getting stronger','more steps'],['hard','C',cfg.h,'🔴 Level 3 — Boss round','think carefully!']];
-  const sets=lv.map(([l,L,n])=>genList(y,l,n,r));
+  const sets=lv.map(([l,L,n])=>genTopicList(tid,l,n,r));
   const total=cfg.e+cfg.m+cfg.h;
-  const head=`<div class="sh-head"><div><div class="sub">${SUB[y]}</div><h1>${cfg.title||TITLES_SHEET[y]}</h1></div><div style="font-size:26pt">🎲</div></div>`;
+  const sub=T?`CAMBRIDGE LOWER SECONDARY · MATHEMATICS · YEAR 7 · UNIT ${T.u} · ${T.strand.toUpperCase()}`:'CAMBRIDGE LOWER SECONDARY · MATHEMATICS · YEAR 7 · MIXED REVIEW';
+  const head=(t)=>`<div class="sh-head"><div><div class="sub">${sub}</div><h1>${t}</h1></div><div style="font-size:26pt">${T?T.icon:'🎲'}</div></div>`;
   const key=()=>{
     let rows='';
     lv.forEach(([l,L],i)=>sets[i].forEach((p,j)=>{rows+=`<tr><td><b>${L}${j+1}</b></td><td class="a">${ansText(p)}</td><td class="eqs">${p.eq?p.eq+' &nbsp;→&nbsp; ':''}${p.steps.join(' &nbsp;→&nbsp; ')}</td></tr>`}));
-    return `<div class="sheet ${cfg.key==='with'?'pb':''}" style="${cfg.key==='with'?'':''}">${head.replace(cfg.title||TITLES_SHEET[y],'ANSWER KEY — '+(cfg.title||TITLES_SHEET[y]))}<p><b>Teacher copy.</b> Total marks: ${total}. Seed ${cfg.seed}.</p><table class="keytbl"><tr><th>Q</th><th>Answer</th><th>Working</th></tr>${rows}</table></div>`;
+    return `<div class="sheet ${cfg.key==='with'?'pb':''}">${head('ANSWER KEY — '+ttl)}<p><b>Teacher copy.</b> Total marks: ${total}. Seed ${cfg.seed}.</p><table class="keytbl"><tr><th>Q</th><th>Answer</th><th>Working</th></tr>${rows}</table></div>`;
   };
   if(cfg.key==='only')return key();
-  let h=`<div class="sheet">${head}<div class="sh-fields"><span>Name:</span><span>Class:</span><span>Date:</span><span class="sc">Score: /${total}</span></div>`;
+  let h=`<div class="sheet">${head(ttl)}<div class="sh-fields"><span>Name:</span><span>Class:</span><span>Date:</span><span class="sc">Score: /${total}</span></div>`;
   if(cfg.theory){
-    h+=`<div class="remember">${REMEMBER[y]}</div>`;
-    const ex=genList(y,'medium',1,mkR(cfg.seed+777))[0];
+    h+=`<div class="remember">${T?`<h4>📌 Remember</h4><ul>${T.ideas.map(i=>`<li>${i}</li>`).join('')}</ul><div class="gloss"><b>Words:</b> ${T.vocab.join(' · ')}</div>`:mixedRemember}</div>`;
+    const ex=genTopicList(tid,'medium',1,mkR(cfg.seed+777))[0];
     h+=`<div class="example"><h4>✍️ Worked example</h4><div class="ex-flex"><div style="flex:1">${ex.text?`<div>${ex.text}</div>`:''}${ex.eq?`<div class="eq">${ex.eq}</div>`:''}<ol>${ex.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div>${ex.svg?`<div style="flex:0 0 170px">${ex.svg}</div>`:''}</div></div>`;
   }
-  lv.forEach(([l,L,n,ttl,sub],i)=>{if(n>0)h+=`<div class="lvl ${l}">${ttl}<small>${sub} · ${n} question${n>1?'s':''}</small></div><div class="qgrid">${sets[i].map((p,j)=>qCard(p,L+(j+1))).join('')}</div>`});
-  if(cfg.challenge){
-    const rr=mkR(cfg.seed+31);
-    h+=y===7?`<div class="challenge"><h4>🏆 Challenge corner — measure &amp; draw</h4>
-      Use a protractor and ruler. Draw angle <b>${rr.int(3,8)*10+5}°</b> and angle <b>${rr.int(11,16)*10+5}°</b> (label the vertex). Then draw two crossing lines, measure all four angles and check that they add up to <b>360°</b>.<div class="drawbox"></div></div>`
-      :`<div class="challenge"><h4>🏆 Challenge corner</h4><b>Error hunt:</b> Sam solves 3(x + 4) = 21 like this: <i>3x + 4 = 21 → 3x = 17 → x = 17/3</i>. Find Sam’s mistake and solve it correctly.<br><b>Create:</b> write your own equation with x on both sides whose solution is x = 5. Swap with a partner and solve it!<div class="drawbox" style="height:22mm"></div></div>`;
-  }
-  h+=`<div class="exit"><span><b>Exit ticket:</b> Today I learned …………………………………………</span><span>I feel: 😟 &nbsp; 😐 &nbsp; 🙂 &nbsp; 😄</span></div><div class="seedtag">MathQuest · seed ${cfg.seed}</div></div>`;
+  lv.forEach(([l,L,n,ttl2,sub2],i)=>{if(n>0)h+=`<div class="lvl ${l}">${ttl2}<small>${sub2} · ${n} question${n>1?'s':''}</small></div><div class="qgrid">${sets[i].map((p,j)=>qCard(p,L+(j+1))).join('')}</div>`});
+  if(cfg.challenge)h+=`<div class="challenge"><h4>🏆 Challenge corner</h4>${T?T.challenge:'Pick your favourite question above and write a new one with different numbers. Swap with a partner and solve each other’s!'}<div class="drawbox"></div></div>`;
+  h+=`<div class="exit"><span><b>Exit ticket:</b> Today I learned …………………………………………</span><span>I feel: 😟 &nbsp; 😐 &nbsp; 🙂 &nbsp; 😄</span></div><div class="seedtag">MathQuest · Year 7 · seed ${cfg.seed}</div></div>`;
   if(cfg.key==='with')h+=key();
   return h;
 }
 function renderHW(){
-  const el=$('#tab-hw');HW.year=S.year;
-  const c=HW;
-  el.innerHTML=`<div class="noprint"><h2>🖨️ PDF worksheets — ${topic()}</h2>
-   <div class="card"><div class="chips"><span style="font-weight:700;padding:.4rem 0">Presets:</span>
+  const el=$('#tab-hw');HW.topic=S.topic;const c=HW;
+  el.innerHTML=`<div class="noprint"><h2>🖨️ PDF worksheets</h2>
+   <div class="card"><div class="row" style="margin-bottom:.6rem"><b>Unit:</b> ${topicSelect('hwTopic',S.topic)}</div>
+   <div class="chips"><span style="font-weight:700;padding:.4rem 0">Presets:</span>
      <button class="chip" data-p="4,4,2">Class handout 4/4/2</button><button class="chip" data-p="5,5,3">Homework 5/5/3</button><button class="chip" data-p="0,6,4">Challenge 0/6/4</button><button class="chip" data-p="8,0,0">Easy drill 8/0/0</button></div>
    <div class="ctl">
-    <div><label>Title (optional)</label><input id="hwT" value="${c.title}" placeholder="${TITLES_SHEET[S.year].replace(/&amp;/g,'&')}"></div>
+    <div><label>Title (optional)</label><input id="hwT" value="${c.title}"></div>
     <div><label>🟢 Easy</label><input id="hwE" type="number" min="0" max="12" value="${c.e}"></div>
     <div><label>🟡 Medium</label><input id="hwM" type="number" min="0" max="12" value="${c.m}"></div>
     <div><label>🔴 Hard</label><input id="hwH" type="number" min="0" max="12" value="${c.h}"></div>
@@ -313,7 +254,7 @@ function renderHW(){
     <div><label>&nbsp;</label><label style="font-size:.9rem;color:#111"><input type="checkbox" id="hwCh" ${c.challenge?'checked':''} style="width:auto"> Challenge corner</label></div>
    </div>
    <div class="row" style="margin-top:.8rem"><button class="btn alt" id="hwDice">🎲 New numbers</button><button class="btn green" id="hwPrint">🖨️ Print / Save as PDF</button>
-   <span class="rates">In the print dialog choose <b>“Save as PDF”</b>, paper A4, margins Default, turn <b>off</b> “Headers and footers”.</span></div></div></div>
+   <span class="rates">In the print dialog choose <b>“Save as PDF”</b>, A4, and turn <b>off</b> “Headers and footers”.</span></div></div></div>
    <div class="preview" id="sheetHost"></div>`;
   $('#hwK').value=c.key;
   const upd=()=>{
@@ -321,6 +262,7 @@ function renderHW(){
     c.seed=+$('#hwS').value||1;c.key=$('#hwK').value;c.theory=$('#hwTh').checked;c.challenge=$('#hwCh').checked;
     $('#sheetHost').innerHTML=buildSheetHTML(c);
   };
+  $('#hwTopic').onchange=e=>{S.topic=e.target.value;HW.title='';save();renderHW()};
   $$('.ctl input,.ctl select',el).forEach(i=>i.onchange=upd);
   $$('.chip[data-p]',el).forEach(b=>b.onclick=()=>{const [e,m,h]=b.dataset.p.split(',');$('#hwE').value=e;$('#hwM').value=m;$('#hwH').value=h;upd()});
   $('#hwDice').onclick=()=>{$('#hwS').value=Math.floor(Math.random()*90000)+1000;upd()};
@@ -329,68 +271,69 @@ function renderHW(){
 }
 
 // ---------------- tabs / init ----------------
-const R_={learn:renderLearn,practice:renderPractice,gacha:renderGacha,hw:renderHW};
+const R_={map:renderMap,slides:renderSlides,practice:renderPractice,gacha:renderGacha,hw:renderHW};
 function openTab(t){
   $$('nav.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
   $$('.tab').forEach(s=>s.classList.toggle('on',s.id==='tab-'+t));
-  R_[t]();
+  R_[t]();window.scrollTo(0,0);
 }
-const curTab=()=>$('nav.tabs button.on').dataset.t;
 $$('nav.tabs button').forEach(b=>b.onclick=()=>openTab(b.dataset.t));
-$$('#yearSeg button').forEach(b=>b.onclick=()=>{switchYear(+b.dataset.y);HW.title='';hud();openTab(curTab())});
 $('#projBtn').onclick=()=>{S.proj=!S.proj;save();hud()};
 
 function selfTest(){
   const bad=[];let n=0;
-  for(const y of [7,10])for(const l of ['easy','medium','hard'])for(let i=0;i<1500;i++){
+  for(const tp of TOPICS)for(const l of ['easy','medium','hard'])for(let i=0;i<300;i++){
     n++;let p;
-    try{p=genProblem(y,l,mkR(i*7919+y))}catch(e){bad.push(`${y}/${l}/${i}: ${e.message}`);continue}
-    if(!Number.isFinite(p.ans)||!p.steps.length)bad.push(`${y}/${l}/${i}: no answer`);
-    if(y===10&&Math.abs(p.L(p.ans)-p.R(p.ans))>1e-9)bad.push(`10/${l}/${i}: L!=R ${p.L(p.ans)} ${p.R(p.ans)} ${p.eq}`);
-    if(y===10&&p.eq&&/NaN|undefined/.test(p.eq+p.steps.join('')))bad.push(`10/${l}/${i}: NaN text`);
-    if(y===7&&/NaN|undefined/.test((p.svg||'')+p.steps.join('')))bad.push(`7/${l}/${i}: NaN svg`);
+    try{p=genTopic(tp.id,l,mkR(i*7919+tp.u))}catch(e){bad.push(`${tp.id}/${l}/${i}: ${e.message}`);continue}
+    const ctx=`${tp.id}/${l}/${i}`;
+    if(!Number.isFinite(p.ans))bad.push(ctx+': ans not finite');
+    if(!p.steps||!p.steps.length)bad.push(ctx+': no steps');
+    if(/NaN|undefined|Infinity/.test((p.text||'')+(p.eq||'')+(p.svg||'')+p.steps.join('')+ansText(p)))bad.push(ctx+': bad text '+(p.text||'').slice(0,60));
+    if(!checkAnswer(p,String(p.ans)))bad.push(ctx+': own answer rejected');
+    if(p.ansStr&&/^-?\d+\/\d+/.test(p.ansStr)&&!checkAnswer(p,p.ansStr.split(' ')[0]))bad.push(ctx+': ansStr rejected '+p.ansStr);
+    if(tp.id==='t02'&&p.L&&Math.abs(p.L(p.ans)-p.R(p.ans))>1e-9)bad.push(ctx+': L!=R');
   }
-  // UI flow: correct answer pays out, wrong one does not
-  if(location.hash!=='#selftest-anim')burst=()=>{};   // headless browsers crash on the emoji animation
-  if(location.hash!=='#selftest-gen')for(const y of [7,10]){
+  // worksheets build for every topic
+  for(const tp of [...TOPICS,{id:'all'}]){try{const h=buildSheetHTML({topic:tp.id,e:4,m:4,h:2,seed:1234,key:'with',title:'',theory:true,challenge:true});if(/NaN|undefined/.test(h))bad.push('sheet '+tp.id+' has NaN/undefined')}catch(e){bad.push('sheet '+tp.id+' '+e.message)}}
+  // widgets render without error
+  for(const tp of TOPICS){try{const host=document.createElement('div');document.body.appendChild(host);mountWidget(host,W[tp.widget]);if(/NaN|undefined/.test(host.innerHTML))bad.push('widget '+tp.widget+' NaN');host.remove()}catch(e){bad.push('widget '+tp.widget+': '+e.message)}}
+  // UI flow
+  if(location.hash!=='#selftest-anim')burst=()=>{};
+  for(const tid of ['t01','t07']){
     const host=document.createElement('div');document.body.appendChild(host);
-    const p=genProblem(y,'medium',mkR(5));const c0=S.coins;
-    mountProblem(host,p,{});
-    if(location.hash==='#selftest-mount'){continue}
-    $('input',host).value='12345';$('.check',host).click();
+    const p=genTopic(tid,'medium',mkR(5));const c0=S.coins;
+    mountProblem(host,p,{});$('input',host).value='12345';$('.check',host).click();
     if(!$('.fb',host).classList.contains('bad'))bad.push('wrong answer not flagged');
-    if(location.hash==='#selftest-wrong'){continue}
-    $('input',host).value=fmtAns(p.ans).split(' ')[0].replace('−','-');$('.check',host).click();
-    if(!$('.fb',host).classList.contains('ok')||S.coins<=c0)bad.push('correct answer failed y'+y+' '+fmtAns(p.ans));
+    $('input',host).value=String(p.ans);$('.check',host).click();
+    if(!$('.fb',host).classList.contains('ok')||S.coins<=c0)bad.push('correct answer failed '+tid);
+    if(!S.tp[tid]||S.tp[tid].solved<1)bad.push('topic stat not counted '+tid);
   }
-  // separate progress per year
-  {S.year=7;S.coins=777;S.inv={c1:2};switchYear(10);
-   if(S.coins===777||S.inv.c1)bad.push('Y10 shares Y7 progress');
-   S.coins=55;S.inv={e1:1};switchYear(7);
-   if(S.coins!==777||!S.inv.c1||S.inv.e1)bad.push('Y7 progress lost after switching');}
-  // gacha distribution + pity
-  const cnt={common:0,rare:0,epic:0,legend:0};S.pity=0;let maxGap=0,gap=0;
-  for(let i=0;i<20000;i++){const o=pullOne();cnt[o.m.r]++;if(o.m.r==='epic'||o.m.r==='legend'){gap=0}else{gap++;maxGap=Math.max(maxGap,gap)}}
-  if(maxGap>9)bad.push('pity broken, gap '+maxGap);
-  bad.push('INFO pulls '+JSON.stringify(cnt)+' maxGap '+maxGap);
-  document.title='SELFTEST '+n+' problems, '+bad.filter(b=>!b.startsWith('INFO')).length+' bad';
-  const pre=document.createElement('pre');pre.id='selftest';pre.textContent=document.title+'\n'+bad.slice(0,30).join('\n');document.body.prepend(pre);
+  // deck builds for every topic
+  for(const tp of TOPICS){try{const d=buildDeck(tp);if(d.length<7)bad.push('deck short '+tp.id);const h=document.createElement('div');document.body.appendChild(h);d.forEach(s=>s.mount(h));h.remove()}catch(e){bad.push('deck '+tp.id+': '+e.message)}}
+  // gacha pity
+  S.pity=0;let gap=0,maxGap=0;for(let i=0;i<5000;i++){const o=pullOne();if(o.m.r==='epic'||o.m.r==='legend')gap=0;else{gap++;maxGap=Math.max(maxGap,gap)}}
+  if(maxGap>9)bad.push('pity broken');
+  document.title='SELFTEST '+n+' problems, '+bad.length+' bad';
+  const pre=document.createElement('pre');pre.id='selftest';pre.textContent=document.title+'\n'+bad.slice(0,40).join('\n');document.body.prepend(pre);
 }
 
 (function init(){
   const h=location.hash;
   if(h.startsWith('#selftest')){selfTest();return}
+  if(h.startsWith('#dump')){   // developer aid: print sample problems with answers for proof-reading
+    const out=[];const strip=s=>String(s||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ');
+    for(const tp of TOPICS)for(const l of ['easy','medium','hard'])for(let i=0;i<2;i++){const p=genTopic(tp.id,l,mkR(100+i*13+tp.u));out.push(`${tp.id} ${l}: ${strip(p.text)} ${strip(p.eq)} => ${ansText(p)} || ${strip(p.steps.join(' ; '))}`)}
+    document.body.innerHTML='<pre id="dump">'+out.join('\n').replace(/</g,'&lt;')+'</pre>';return}
   if(h.startsWith('#sheet')){
     const q=new URLSearchParams(h.split('?')[1]||'');
     document.body.classList.add('sheet-only');
-    S.year=+(q.get('year')||7);
-    HW={year:S.year,e:+(q.get('e')??4),m:+(q.get('m')??4),h:+(q.get('h')??2),seed:+(q.get('seed')||7001),key:q.get('key')||'none',title:q.get('title')||'',theory:q.get('theory')!=='0',challenge:q.get('challenge')!=='0'};
+    HW={topic:q.get('topic')||'t01',e:+(q.get('e')??4),m:+(q.get('m')??4),h:+(q.get('h')??2),seed:+(q.get('seed')||7001),key:q.get('key')||'none',title:q.get('title')||'',theory:q.get('theory')!=='0',challenge:q.get('challenge')!=='0'};
     $$('.tab').forEach(s=>s.classList.toggle('on',s.id==='tab-hw'));
-    // build sheet directly (no controls)
     $('#tab-hw').innerHTML=`<div class="preview" id="sheetHost">${buildSheetHTML(HW)}</div>`;
     return;
   }
-  const m=h.match(/^#tab=(\w+)(?:&year=(\d+))?/);
-  if(m&&m[2]){switchYear(+m[2])}
-  hud();openTab(m&&R_[m[1]]?m[1]:'learn');
+  const m=h.match(/^#tab=(\w+)(?:&topic=(\w+))?(?:&slide=(\d+))?/);
+  if(m&&m[2]&&(m[2]==='all'||TMAP[m[2]]))S.topic=m[2];
+  hud();openTab(m&&R_[m[1]]?m[1]:'map');
+  if(m&&m[1]==='slides'&&m[3])goSlide(+m[3]);
 })();

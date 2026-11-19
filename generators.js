@@ -355,5 +355,8 @@ function genProblem(year,level,r){
   }
   throw new Error('generator failed');
 }
-function checkAnswer(p,s){const v=parseNum(s);return v!==null&&Math.abs(v-p.ans)<1e-6}
-function ansText(p){return p.year===7&&p.unit==='°'?fmtAns(p.ans)+'°':'x = '+fmtAns(p.ans)}
+function checkAnswer(p,s){const v=parseNum(s);return v!==null&&Math.abs(v-p.ans)<=(p.tol||1e-6)}
+function ansText(p){
+  const v=p.ansStr||(p.tid?M(rd(p.ans,4)):fmtAns(p.ans));   // Year 7 topics show plain decimals
+  return `${p.label||''} ${v}${p.unit||''}`.trim();
+}

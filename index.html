@@ -80,6 +80,33 @@ h2{margin:.2rem 0 .8rem}h3{margin:.3rem 0 .5rem}
 .ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;align-items:end}
 .ctl label{font-size:.8rem;font-weight:700;color:var(--mute);display:block}.ctl input,.ctl select{width:100%;padding:.45rem;border:2px solid #c7d2fe;border-radius:10px;font-size:1rem}
 .preview{background:#cbd5e1;padding:1rem;border-radius:12px;margin-top:1rem;overflow:auto}
+/* ===== topics, widgets, slides ===== */
+.termh{margin:1.2rem 0 .4rem;color:#312e81}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.tcard{background:#fff;border-radius:var(--r);border:1px solid #e5e7eb;border-top:6px solid var(--c);padding:.8rem 1rem;box-shadow:0 2px 10px rgba(15,23,42,.08);display:flex;flex-direction:column;gap:.35rem}
+.tc-h{display:flex;gap:.7rem;align-items:center}.tc-i{font-size:2.2rem}.tc-t{font-weight:800;font-size:1.05rem;color:#111827}
+.tc-s{font-size:.75rem;font-weight:700;color:var(--c);letter-spacing:.5px;text-transform:uppercase}.tc-o{font-size:.85rem;color:#4b5563;flex:1}
+.tcard .btn{padding:.4rem .7rem;font-size:.85rem;box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.topicSel{padding:.5rem .8rem;border:2px solid #c7d2fe;border-radius:12px;font-size:1rem;font-weight:700;background:#fff;color:#312e81;max-width:100%}
+.tag.tid{font-size:.75rem}
+.wtitle{font-weight:800;color:#312e81;margin-bottom:.4rem}.wctl{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;margin-bottom:.4rem}
+.wc label{display:block;font-size:.8rem;font-weight:700;color:#4b5563}.wc input[type=range]{width:150px}.wc select,.wc input[type=text]{padding:.3rem;border:2px solid #c7d2fe;border-radius:8px;font-size:.95rem}
+.wout{text-align:center;font-size:1.1rem;margin:.4rem 0}
+table.pvt{border-collapse:collapse;margin:.4rem auto;font-size:1rem}table.pvt th,table.pvt td{border:1px solid #9ca3af;padding:.2rem .6rem;text-align:center}table.pvt th{background:#e0e7ff}
+table.pvt .hl{background:#fde68a;font-weight:800}table.pvt .nx{background:#fecaca}
+table.mini{border-collapse:collapse;margin:.4rem 0}table.mini th,table.mini td{border:1px solid #9ca3af;padding:.15rem .6rem;text-align:center}table.mini th{background:#e0e7ff}
+.ideas{list-style:none;padding:0;margin:0}.ideas li{background:#eef2ff;border-left:5px solid var(--c,#6366f1);padding:.5rem .7rem;border-radius:8px;margin:.4rem 0;cursor:pointer;font-size:1.05rem;transition:filter .25s}
+.ideas li.blur{filter:blur(7px);user-select:none}
+.deck{border:3px solid var(--c);border-radius:18px;background:#fff;overflow:hidden}
+.deck:fullscreen{background:#f8fafc;overflow:auto;border:0;border-radius:0}
+.deckbar{display:flex;gap:1rem;align-items:center;background:var(--c);color:#fff;padding:.5rem 1rem;font-size:1.1rem}
+.dots{display:flex;gap:.4rem;justify-content:center;padding:.4rem;background:#f1f5f9}.dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--c);background:#fff;cursor:pointer;padding:0}.dot.seen{background:#c7d2fe}.dot.on{background:var(--c)}
+.stage{padding:1rem 1.2rem;min-height:60vh}.slideIn{animation:fadein .3s}@keyframes fadein{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.decknav{display:flex;justify-content:space-between;align-items:center;padding:.6rem 1rem;background:#f1f5f9;font-weight:700}
+.s-title{text-align:center;padding:2rem 1rem}.s-title .s-ico{font-size:5rem}.s-title h1{font-size:2.6rem;margin:.2rem 0;color:var(--c)}.s-u{font-weight:800;letter-spacing:1px;color:#6b7280;text-transform:uppercase}.s-obj{font-size:1.3rem;max-width:760px;margin:.6rem auto}
+.s-vocab{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin:1rem 0}.s-vocab span{background:#eef2ff;border-radius:999px;padding:.25rem .8rem;font-weight:600}
+.wrongbox{background:#fef2f2;border:2px solid #dc2626;border-radius:12px;padding:.6rem 1rem;font-size:1.4rem;font-family:"Cambria Math",Georgia,serif;margin:.6rem 0}
+.ick{display:block;margin:.4rem 0;font-size:1.05rem;cursor:pointer}.ick input{width:1.2rem;height:1.2rem;vertical-align:middle}
 /* ===== A4 sheet ===== */
 .sheet{background:#fff;width:210mm;max-width:100%;margin:0 auto 1rem;padding:11mm 12mm;color:#111;font-size:10.5pt;box-shadow:0 4px 18px rgba(0,0,0,.2);font-family:"Segoe UI",Arial,sans-serif}
 .sh-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #4f46e5;padding-bottom:4px;margin-bottom:6px}
@@ -126,8 +153,7 @@ body.sheet-only .preview{background:#fff;padding:0;margin:0}body.sheet-only .she
 </head>
 <body>
 <header class="top noprint-ok">
-  <div class="logo">🎲 MathQuest<small>ANGLES &amp; EQUATIONS · GACHA LAB</small></div>
-  <div class="seg" id="yearSeg"><button data-y="7">Year 7 · Angles</button><button data-y="10">Year 10 · Linear equations</button></div>
+  <div class="logo">🎲 MathQuest<small>YEAR 7 MATHEMATICS · CAMBRIDGE LOWER SECONDARY · GACHA LAB</small></div>
   <div class="hud">
     <span class="pill coin">🪙 <span id="hCoins">0</span></span>
     <span class="pill">🎟️ <span id="hTix">0</span></span>
@@ -137,18 +163,23 @@ body.sheet-only .preview{background:#fff;padding:0;margin:0}body.sheet-only .she
   </div>
 </header>
 <nav class="tabs">
-  <button data-t="learn" class="on">📘 Learn &amp; Demo</button>
+  <button data-t="map" class="on">🗺️ Year map</button>
+  <button data-t="slides">🖥️ Interactive slides</button>
   <button data-t="practice">✏️ Practice</button>
   <button data-t="gacha">🎰 Gacha</button>
   <button data-t="hw">🖨️ PDF Worksheets</button>
 </nav>
 <main>
-  <section class="tab on" id="tab-learn"></section>
+  <section class="tab on" id="tab-map"></section>
+  <section class="tab" id="tab-slides"></section>
   <section class="tab" id="tab-practice"></section>
   <section class="tab" id="tab-gacha"></section>
   <section class="tab" id="tab-hw"></section>
 </main>
 <script src="generators.js"></script>
+<script src="topics.js"></script>
+<script src="widgets.js"></script>
+<script src="slides.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
