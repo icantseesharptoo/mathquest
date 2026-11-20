@@ -1,0 +1,26 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>test</title></head><body><pre id="out">running…</pre>
+<script src="data/y8.js"></script><script src="data/y10.js"></script>
+<script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script>
+<script src="js/skills.js"></script><script src="js/engine.js"></script>
+<script>
+const bad=[];let n=0;
+const names=new Set();
+for(const cid of COURSE_IDS)for(const sec of Object.keys(SKILLS[cid]))SKILLS[cid][sec].forEach(s=>names.add(s));
+for(const s of names)if(typeof G[s]!=='function')bad.push('missing generator '+s);
+for(const cid of COURSE_IDS){
+  // every lesson has skills
+  for(const l of allLessons(cid))if(!sectionSkills(cid,l.sec).length)bad.push('no skills '+cid+' '+l.sec);
+}
+for(const s of names)for(let lv=0;lv<3;lv++)for(let i=0;i<150;i++){
+  n++;let p;try{p=makeProblem(s,mkR(i*7919+lv*31+s.length),lv)}catch(e){bad.push(s+' lv'+lv+' seed'+i+': '+e.message);continue}
+  const blob=(p.text||'')+(p.eq||'')+(p.svg||'')+p.steps.join('')+ansText(p)+(p.choices?p.choices.join(''):'');
+  if(/NaN|undefined|Infinity|\[object/.test(blob))bad.push(s+' lv'+lv+' bad text: '+blob.replace(/<[^>]+>/g,'').slice(0,90));
+  const sub=p.mc?String(p.ans):(p.ansStr&&/^-?\d+\/\d+/.test(p.ansStr)?p.ansStr.split(' ')[0]:String(p.ans));
+  if(!checkAnswer(p,sub))bad.push(s+' lv'+lv+' own answer rejected: '+sub);
+}
+// full sets build
+for(const cid of COURSE_IDS){let k=0;for(const l of allLessons(cid)){try{lessonProblems(cid,l,12,l.n)}catch(e){bad.push('lesson '+cid+' '+l.n+': '+e.message)}k++}
+  for(const d of examDefs(cid)){try{examProblems(cid,d.weeks,d.n,1)}catch(e){bad.push('exam '+d.id+': '+e.message)}}}
+document.getElementById('out').textContent='TEST '+n+' problems, '+bad.length+' bad\n'+bad.slice(0,60).join('\n');
+document.title='TEST '+n+' '+bad.length;
+</script></body></html>

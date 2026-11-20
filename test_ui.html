@@ -1,0 +1,44 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ui test</title><link rel="stylesheet" href="css/style.css"></head><body>
+<header class="top"><a class="logo" href="#/">Maths</a><nav><a data-nav="y8"></a><a data-nav="y10"></a><a data-nav="exams"></a></nav><button id="themeBtn"></button></header><main id="app"></main><pre id="res"></pre>
+<script>localStorage.clear();location.hash='#/y8/l/5/practice';window.confirm=()=>true;</script>
+<script src="data/y8.js"></script><script src="data/y10.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/skills.js"></script><script src="js/engine.js"></script><script src="js/ui.js"></script>
+<script>
+const out=[];const log=s=>out.push(s);
+const fill=c=>{const p=c.p;if(p.mc){const r=c.el.querySelector(`input[value="${p.ans}"]`);r.checked=true}else{c.el.querySelector('input[type=text]').value=p.ansStr?p.ansStr.split(' ')[0]:String(p.ans)}};
+setTimeout(()=>{
+  try{
+    // practice: wrong answer then right answers
+    let cards=CARDS();log('practice cards '+cards.length);
+    const first=cards[0];if(!first.p.mc){first.el.querySelector('input[type=text]').value='987654';first.el.querySelector('.chk').click();log('wrong -> '+first.el.className)}
+    cards.forEach(c=>{fill(c);c.el.querySelector('.chk').click()});
+    log('all ok after fill: '+cards.every(c=>c.ok===true)+' ; header '+document.getElementById('cc').textContent+'/'+document.getElementById('ct').textContent);
+    log('progress saved: '+JSON.stringify(ST.done));
+    document.querySelector('#more').click();log('after more: '+CARDS().length);
+    document.querySelector('#newset').click();log('new set: '+CARDS().length+' ok count '+CARDS().filter(c=>c.ok).length);
+    // slides
+    location.hash='#/y8/l/5/slides';
+  }catch(e){log('ERR '+e.stack)}
+  setTimeout(()=>{
+    try{
+      const stage=()=>document.getElementById('stage').innerText.length;
+      let names=[];for(let i=0;i<8;i++){const n=document.getElementById('dn');if(!n)break;names.push(n.textContent);const b=document.getElementById('nt');if(b.disabled)break;b.click()}
+      log('slides: '+names.join(' | '));
+      location.hash='#/exam/y8-w1';
+    }catch(e){log('ERR '+e.stack)}
+    setTimeout(()=>{
+      try{
+        document.getElementById('start').click();
+        const cards=CARDS();log('exam questions '+cards.length);
+        cards.slice(0,9).forEach(fill);
+        document.getElementById('sub').click();
+        log('result: '+document.querySelector('.result').textContent);
+        log('best saved: '+JSON.stringify(ST.exams));
+        location.hash='#/exams';
+      }catch(e){log('ERR '+e.stack)}
+      setTimeout(()=>{log('exams page best badge: '+(document.querySelector('.best')||{}).textContent);
+        for(const h of ['#/','#/y8','#/y10','#/exams','#/y10/l/135/slides','#/y10/l/1/practice','#/exam/y10-final','#/exam/y8-t2']){location.hash=h;}
+        document.getElementById('res').textContent=out.join('\n');document.title='UITEST done';},300);
+    },300);
+  },300);
+},300);
+</script></body></html>
