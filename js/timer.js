@@ -17,14 +17,14 @@ function ltTone(freq,start,dur,vol=.35,type='sine'){
 }
 const ltWarnSound=()=>{[0,.35,.7].forEach(s=>ltTone(880,s,.25,.4,'square'))};
 const ltEndSound=()=>{[[784,0],[659,.3],[523,.6],[392,.9]].forEach(([f,s])=>ltTone(f,s,.9,.4,'triangle'))};
-function ltBanner(msg,cls){
-  const b=document.createElement('div');b.className='ltbanner '+cls;b.innerHTML=`<b>${msg}</b><button>OK</button>`;
-  (document.fullscreenElement||document.body).appendChild(b);$('button',b).onclick=()=>b.remove();setTimeout(()=>b.remove(),12000);
+function ltBanner(msg,cls,extra=''){
+  const b=document.createElement('div');b.className='ltbanner '+cls;b.innerHTML=`<b>${msg}</b>${extra}<button class="ltok">OK</button>`;b.addEventListener('click',e=>{if(e.target.closest('[data-tool]'))b.remove()});
+  (document.fullscreenElement||document.body).appendChild(b);$('.ltok',b).onclick=()=>b.remove();setTimeout(()=>b.remove(),12000);
 }
 function ltFmt(sec){const s=Math.max(0,Math.ceil(sec));return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`}
 function ltTick(){
   const rem=LT_TOTAL-ltElapsed();
-  if(LT.run&&rem<=LT_WARN&&!LT.warned){LT.warned=true;ltSave();ltWarnSound();ltBanner('⏰ 5 minutes left in the lesson — time to wrap up!','warn')}
+  if(LT.run&&rem<=LT_WARN&&!LT.warned){LT.warned=true;ltSave();ltWarnSound();ltBanner('⏰ 5 minutes left in the lesson — time to wrap up!',  'warn',window.onLessonWarn?window.onLessonWarn():'')}
   if(LT.run&&rem<=0&&!LT.ended){LT.ended=true;LT.el=LT_TOTAL;LT.run=false;ltSave();ltEndSound();ltBanner('🔔 The 40-minute lesson is over.','over')}
   const state=LT.ended?'over':rem<=LT_WARN&&(LT.run||LT.el>0)?'warn':'';
   $$('.lt').forEach(el=>{el.className='lt '+state+(LT.run?' run':'');const t=$('.ltime',el);if(t)t.textContent=ltFmt(rem);const b=$('[data-lt=toggle]',el);if(b){b.textContent=LT.run?'⏸':'▶';b.title=LT.run?'Pause the lesson timer':'Start the 40-minute lesson timer'}});

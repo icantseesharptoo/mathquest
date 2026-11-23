@@ -1,7 +1,7 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>ui test</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/app.css"></head><body>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ui test</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/app.css"><link rel="stylesheet" href="css/tools.css"></head><body>
 <header class="top"><a class="logo" href="#/">MathQuest</a><nav><a data-nav="y8"></a><a data-nav="y10"></a><a data-nav="exams"></a></nav><span id="hdrTimer"></span><details class="tools"><summary>Tools</summary><div id="toolsMenu"></div></details><button id="themeBtn"></button></header><main id="app"></main><pre id="res"></pre>
 <script>localStorage.clear();location.hash='#/y8/l/5/practice';window.confirm=()=>true;</script>
-<script src="data/y8.js"></script><script src="data/y10.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/g_y8.js"></script><script src="js/g_extra.js"></script><script src="js/engine.js"></script><script src="js/demos.js"></script><script src="js/timer.js"></script><script src="js/ui.js"></script>
+<script src="data/y8.js"></script><script src="data/y10.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/g_y8.js"></script><script src="js/g_extra.js"></script><script src="js/engine.js"></script><script src="js/demos.js"></script><script src="js/timer.js"></script><script src="js/tools.js"></script><script src="js/ui.js"></script>
 <script>
 const out=[],bad=[];const log=s=>out.push(s),fail=s=>{bad.push(s);out.push('FAIL '+s)};
 const fill=c=>{const p=c.p;if(p.mc){c.el.querySelector(`input[value="${p.ans}"]`).checked=true}else{c.el.querySelector('input[type=text]').value=p.ansStr?p.ansStr.split(' ')[0].replace(/−/g,'-'):String(p.ans)}};
@@ -39,6 +39,37 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
   log('timer at 5 min: warned='+LT.warned+' banner='+!!document.querySelector('.ltbanner.warn')+' class='+document.querySelector('.lt').className);
   LT.el=LT_TOTAL+1;await wait(400);log('timer end: ended='+LT.ended+' text='+document.querySelector('.ltime').textContent);
   document.querySelector('[data-lt=reset]').click();log('timer reset: '+document.querySelector('.ltime').textContent);
+  // exit ticket for every topic: 20 blocks, 4 distinct options, exactly one correct
+  let xtSame=0,xtTot=0;
+  for(const cid of COURSE_IDS)for(const l of allLessons(cid)){
+    const ps=exitTicketSet(l,l.n*31+7);xtTot++;
+    if(ps.length!==20)fail(`exit ticket size ${cid} ${l.n}`);
+    const shapes=new Set(ps.map(shapeOf));if(shapes.size===1)xtSame++;
+    ps.forEach((p,i)=>{const o=p.opts;if(o.list.length!==4||new Set(o.list).size!==4)fail(`exit ticket options ${cid} ${l.n} #${i}: ${o.list.join(' | ')}`);
+      if(/NaN|undefined|Infinity/.test(o.list.join('')+p.text))fail(`exit ticket text ${cid} ${l.n}`);
+      if(!p.mc){const okv=o.list[o.ok].replace(p.unit||'','');if(!checkAnswer(p,okv.replace(/−/g,'-')))fail(`exit ticket correct option rejected ${cid} ${l.n}: ${okv} vs ${ansText(p)}`);
+        o.list.forEach((t,j)=>{if(j!==o.ok&&checkAnswer(p,t.replace(p.unit||'','').replace(/−/g,'-')))fail(`exit ticket two right options ${cid} ${l.n}: ${t}`)})}});
+  }
+  log(`exit tickets: ${xtTot} topics, ${xtSame} use one question shape for all 20 blocks`);
+  location.hash='#/y8/l/34/slides';await wait(30);document.querySelector('.deckbar [data-tool=exit]').click();
+  log('exit ticket overlay blocks: '+document.querySelectorAll('.xtb').length);
+  const b0=document.querySelector('.xtb');b0.querySelectorAll('.xto button')[0].click();log('exit ticket after one answer: '+document.querySelector('.xtscore').textContent);
+  closeOverlay();
+  // battle: wrong answer on the left, right answer on the right
+  for(const n of [34,2,51]){location.hash=`#/y8/l/${n}/slides`;await wait(30);document.querySelector('.deckbar [data-tool=battle]').click();
+    const ov=document.querySelector('.battle'),press=(s,txt)=>{for(const ch of txt){const k=ch==='-'?'−':ch;[...ov.querySelectorAll(`.bside[data-s=${s}] .bpad button`)].find(b=>b.dataset.k===k).click()}ov.querySelector(`.bside[data-s=${s}] .bgo`).click()};
+    ov.querySelector('.bstart').click();press('L','98765');
+    const p=ov.qs.R,typed=p.mc?String(p.ans+1):String(p.ansStr?p.ansStr.split(' ')[0]:fmtNum(p.ans)).replace(/−/g,'-');press('R',typed);
+    const won=ov.querySelector('.bside[data-s=R]').classList.contains('win');if(!won)fail(`battle ${n}: right side did not win with ${typed}`);
+    log(`battle ${n}: left wrong -> "${ov.querySelector('.bside[data-s=L] .bmsg').textContent.trim()}"; right typed ${typed} -> win=${won}, score L${ov.score.L}:R${ov.score.R}`);
+    closeOverlay();}
+  // whiteboard: draw, undo, text
+  document.querySelector('#toolsMenu [data-tool=board]').click();await wait(50);
+  const cv=document.querySelector('.wbcanvas'),r=cv.getBoundingClientRect(),ev=(t,x,y)=>cv.dispatchEvent(new PointerEvent(t,{clientX:r.left+x,clientY:r.top+y,pointerId:1,bubbles:true,pointerType:'mouse'}));
+  const ink=()=>{const d=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data;let n=0;for(let i=3;i<d.length;i+=4)if(d[i])n++;return n};
+  ev('pointerdown',50,50);ev('pointermove',150,120);ev('pointermove',250,60);ev('pointerup',250,60);const inked=ink();
+  document.querySelector('.wbbar [data-a=undo]').click();log(`whiteboard: canvas ${cv.width}x${cv.height}, ink after stroke ${inked}, after undo ${ink()}`);if(inked<300||ink())fail('whiteboard draw/undo');
+  closeOverlay();
   // exams
   location.hash='#/exam/y8-m1';await wait(50);document.getElementById('start').click();cards=CARDS();log('exam questions '+cards.length);
   cards.slice(0,9).forEach(fill);document.getElementById('sub').click();log('result: '+document.querySelector('.result').textContent);

@@ -13,7 +13,12 @@ function applyTheme(){document.documentElement.dataset.theme=ST.theme;$('#themeB
 $('#themeBtn').onclick=()=>{ST.theme={system:'light',light:'dark',dark:'system'}[ST.theme];saveState();applyTheme()};
 applyTheme();
 $('#hdrTimer').innerHTML=timerHTML();
-$('#toolsMenu').innerHTML=toolLinks();
+let CUR=null;   // the topic being shown, for exit ticket and battle
+const classTools=()=>`<button data-tool="exit" ${CUR?'':'disabled title="Open a topic first"'}>🎟 Exit ticket</button><button data-tool="battle" ${CUR?'':'disabled title="Open a topic first"'}>⚔️ Battle</button><button data-tool="board">🖊 Whiteboard</button><hr>`;
+const refreshTools=()=>{$('#toolsMenu').innerHTML=classTools()+toolLinks()};refreshTools();
+document.addEventListener('click',e=>{const b=e.target.closest('[data-tool]');if(!b||b.disabled)return;const d=b.closest('details');if(d)d.open=false;
+  if(b.dataset.tool==='board')whiteboard();else if(CUR&&b.dataset.tool==='exit')exitTicket(CUR.cid,CUR.l);else if(CUR&&b.dataset.tool==='battle')battle(CUR.cid,CUR.l)});
+window.onLessonWarn=()=>CUR?`<button data-tool="exit" class="btn">Open exit ticket</button>`:'';
 
 // ---------- problem card ----------
 function problemCard(p,o={}){
@@ -73,7 +78,7 @@ function coursePage(cid){
 function lessonPage(cid,n,tab,slide){
   setNav(cid);const l=lessonN(cid,n),c=course(cid);
   if(!l){app.innerHTML='<h1>Not found</h1>';return}
-  const m=c.modules[l.week-1];
+  CUR={cid,l};refreshTools();const m=c.modules[l.week-1];
   app.innerHTML=`${crumbs(['Home','#/'],[c.name,`#/${cid}`],[`Module ${l.week}: ${m.title}`])}<h1>${l.title}</h1>
     <div class="tabs"><a href="#/${cid}/l/${n}/slides" class="${tab==='slides'?'on':''}">Slides</a><a href="#/${cid}/l/${n}/practice" class="${tab==='practice'?'on':''}">Practice</a>${l.videos?`<a href="#/${cid}/l/${n}/videos" class="${tab==='videos'?'on':''}">Videos (${l.videos.length})</a>`:''}<span class="sp"></span>
     ${n>1?`<a href="#/${cid}/l/${n-1}/${tab}" class="pn">← Previous topic</a>`:''}${n<allLessons(cid).length?`<a href="#/${cid}/l/${n+1}/${tab}" class="pn">Next topic →</a>`:''}</div><div id="tabBody"></div>`;
@@ -163,7 +168,7 @@ function slides(cid,l){
       ps.forEach((p,i)=>$('#ck',h).appendChild(problemCard(p,{title:`Question ${i+1}`}).el))}},
     {name:'Practice',mount:h=>{h.innerHTML=`<div class="big">Practice</div><p><a class="btn" href="#/${cid}/l/${l.n}/practice">Start practice (12 questions)</a></p>${l.n<allLessons(cid).length?`<p><a href="#/${cid}/l/${l.n+1}">Next topic: ${lessonN(cid,l.n+1).title} →</a></p>`:''}<p class="note">Quiz the class on Kahoot: <a href="${TOOLS[2].u}" target="_blank" rel="noopener">open the channel ↗</a></p>`}},
   ];
-  body.innerHTML=`<div class="deck" id="deck" style="--mc:${m.color}"><div class="deckbar"><span id="dn"></span><div class="dots" id="dots"></div><span class="sp"></span>${timerHTML()}<details class="dtools"><summary>Tools</summary><div>${toolLinks()}</div></details><button class="ghost" id="fs">Full screen</button></div><div class="stage" id="stage"></div><div class="decknav"><button class="btn alt" id="pv">Back</button><span id="num"></span><span class="note">Space = next step</span><button class="btn" id="nt">Next</button></div></div>`;
+  body.innerHTML=`<div class="deck" id="deck" style="--mc:${m.color}"><div class="deckbar"><span id="dn"></span><div class="dots" id="dots"></div><span class="sp"></span>${timerHTML()}<details class="dtools"><summary>Tools</summary><div>${classTools()}${toolLinks()}</div></details><button class="ghost" data-tool="exit" title="Exit ticket for the last 5 minutes">🎟 Exit ticket</button><button class="ghost" data-tool="battle">⚔️ Battle</button><button class="ghost" data-tool="board">🖊 Board</button><button class="ghost" id="fs">Full screen</button></div><div class="stage" id="stage"></div><div class="decknav"><button class="btn alt" id="pv">Back</button><span id="num"></span><span class="note">Space = next step</span><button class="btn" id="nt">Next</button></div></div>`;
   DECK={i:0,items,h:null};
   $('#pv').onclick=()=>go(DECK.i-1);$('#nt').onclick=()=>go(DECK.i+1);$('#fs').onclick=toggleFS;
   go(0);ltTick();
@@ -178,7 +183,7 @@ function go(i){
 }
 function toggleFS(){const d=$('#deck');if(!d)return;if(document.fullscreenElement)document.exitFullscreen();else (d.requestFullscreen||d.webkitRequestFullscreen||(()=>{})).call(d)}
 document.addEventListener('keydown',e=>{
-  if(!DECK||!$('#deck'))return;if(['INPUT','SELECT','TEXTAREA','BUTTON'].includes(e.target.tagName)&&e.key!=='Escape')return;
+  if(!DECK||!$('#deck')||$('.ovl')||e.target.isContentEditable)return;if(['INPUT','SELECT','TEXTAREA','BUTTON'].includes(e.target.tagName)&&e.key!=='Escape')return;
   if(e.key==='ArrowRight'||e.key==='PageDown')go(DECK.i+1);else if(e.key==='ArrowLeft'||e.key==='PageUp')go(DECK.i-1);else if(e.key==='f'||e.key==='F')toggleFS();
   else if(e.key===' '&&DECK.h&&DECK.h.stepNext){e.preventDefault();DECK.h.stepNext()}
 });
@@ -215,7 +220,7 @@ function runExam(def){
 
 // ---------- router ----------
 function route(){
-  clearInterval(TIMER);DECK=null;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  clearInterval(TIMER);DECK=null;CUR=null;closeOverlay();if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
   const p=location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
   if(!p.length)return home();
   if(p[0]==='exams')return examsPage();

@@ -24,7 +24,11 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
   - sequences
   - curves (Year 10)
 - **Lesson timer** (top bar, and in full-screen slides). It counts down 40 minutes, plays a sound and shows a banner when **5 minutes are left**, and chimes at the end. 🔔 tests the sound. Browsers only play sound after a click, so start the timer with its ▶ button.
-- **Tools menu.** Links to [Wheel of names](https://spinthewheel.io/), [Bouncy Balls](https://bouncyballs.org/) (noise meter) and the [Kahoot channel](https://create.kahoot.it/channel/fb860daf-26f1-43c6-913f-98baf1ad0633).
+- **Classroom tools** (buttons in the slide bar, and in the Tools menu):
+  - **🎟 Exit ticket** for the last 5 minutes. The screen splits into 20 numbered blocks: the same question with different numbers in each, and 4 options to choose from. Each student answers the block with their number; *Show answers* reveals them all. When the timer reaches 5 minutes, its banner has a button that opens it.
+  - **⚔️ Battle.** The screen splits into left and right halves, each with a medium question of the same type but different numbers. Each side answers on its own on-screen numpad. A 2-minute timer runs, and the first correct answer wins the round. Scores add up over the rounds, and you can click a team name to rename it.
+  - **🖊 Whiteboard.** Students can draw and write. It has a pen, straight lines, text, an eraser, 6 colours, 4 sizes, undo and clear, a background that switches between grid, plain and dots, and *Save* to download a PNG. The drawing stays until you clear it.
+- **Tools menu.** Also links to [Wheel of names](https://spinthewheel.io/), [Bouncy Balls](https://bouncyballs.org/) (noise meter) and the [Kahoot channel](https://create.kahoot.it/channel/fb860daf-26f1-43c6-913f-98baf1ad0633).
 - **Practice** (12 random questions per topic, with hints and worked solutions), **module tests** and a **final exam** for each year.
 
 ## Videos
@@ -38,6 +42,7 @@ Year 8 topics embed videos from the playlist *Cambridge Lower Secondary Mathemat
 | `js/lib.js`, `js/g_*.js` | Problem generators. Each one takes `(random, level)` and returns a question with solution steps. Some also return optional figure frames for the step-by-step examples. |
 | `js/demos.js` | Interactive demos. |
 | `js/timer.js` | 40-minute lesson timer. |
+| `js/tools.js`, `css/tools.css` | Exit ticket, battle mode and whiteboard. |
 | `js/engine.js`, `js/ui.js` | Course model, exams, pages and slides. |
 | `test.html`, `test_ui.html` | Self-tests. Open them in a browser; the result is shown at the top of the page. |
 
