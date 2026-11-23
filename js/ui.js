@@ -1,13 +1,19 @@
-/* Pages: home, course, lesson (slides / practice), exams. */
+/* Pages: home, course (module cards), topic (slides / practice / videos), exams, tools. */
 const $=(s,e=document)=>e.querySelector(s),$$=(s,e=document)=>[...e.querySelectorAll(s)];
 const app=$('#app');
-const pad3=n=>String(n).padStart(3,'0');
 let uid=0,DECK=null,TIMER=null;
+const TOOLS=[
+  {n:'Wheel of names',u:'https://spinthewheel.io/',d:'Pick a student at random.'},
+  {n:'Bouncy Balls',u:'https://bouncyballs.org/',d:'Classroom noise meter.'},
+  {n:'Kahoot channel',u:'https://create.kahoot.it/channel/fb860daf-26f1-43c6-913f-98baf1ad0633',d:'Quizzes for the class.'}];
+const toolLinks=(cls='')=>TOOLS.map(t=>`<a class="${cls}" href="${t.u}" target="_blank" rel="noopener" title="${t.d}">${t.n} ↗</a>`).join('');
 
-// ---------- theme ----------
+// ---------- header: theme, timer, tools ----------
 function applyTheme(){document.documentElement.dataset.theme=ST.theme;$('#themeBtn').textContent={system:'System',light:'Light',dark:'Dark'}[ST.theme]}
 $('#themeBtn').onclick=()=>{ST.theme={system:'light',light:'dark',dark:'system'}[ST.theme];saveState();applyTheme()};
 applyTheme();
+$('#hdrTimer').innerHTML=timerHTML();
+$('#toolsMenu').innerHTML=toolLinks();
 
 // ---------- problem card ----------
 function problemCard(p,o={}){
@@ -41,33 +47,51 @@ const crumbs=(...a)=>`<div class="crumbs">${a.map((x,i)=>i<a.length-1?`<a href="
 function setNav(k){$$('header nav a').forEach(a=>a.classList.toggle('on',a.dataset.nav===k))}
 
 function home(){
-  setNav('');app.className='';
-  const n=id=>allLessons(id).length;
-  app.innerHTML=`<h1>Mathematics</h1><div class="cards">${COURSE_IDS.map(id=>`<a class="card" href="#/${id}"><div class="t">${course(id).name}</div><div class="m">${course(id).weeks.length} weeks · ${n(id)} lessons</div><div class="go">Open →</div></a>`).join('')}
-    <a class="card" href="#/exams"><div class="t">Exams</div><div class="m">${examDefs('y8').length+examDefs('y10').length} exams</div><div class="go">Open →</div></a></div>`;
+  setNav('');
+  app.innerHTML=`<h1>Mathematics</h1><div class="cards">${COURSE_IDS.map(id=>{const c=course(id);return `<a class="card" href="#/${id}"><div class="t">${c.name}</div><div class="m">${c.modules.length} modules · ${allLessons(id).length} topics</div><div class="m small">From ${c.source}</div><div class="go">Open →</div></a>`}).join('')}
+    <a class="card" href="#/exams"><div class="t">Exams</div><div class="m">${examDefs('y8').length+examDefs('y10').length} tests and exams</div><div class="go">Open →</div></a></div>
+    <h2>Classroom tools</h2><div class="cards">${TOOLS.map(t=>`<a class="card" href="${t.u}" target="_blank" rel="noopener"><div class="t">${t.n} ↗</div><div class="m">${t.d}</div></a>`).join('')}<div class="card"><div class="t">Lesson timer</div><div class="m">40 minutes, with a sound when 5 minutes are left. It is at the top of every page and in full-screen slides.</div><div style="margin-top:.6rem">${timerHTML()}</div></div></div>`;
+  ltTick();
 }
 
 function coursePage(cid){
-  setNav(cid);app.className='';
-  const c=course(cid),defs=Object.fromEntries(examDefs(cid).map(d=>[d.id,d]));
-  app.innerHTML=`${crumbs(['Home','#/'],[c.name])}<h1>${c.name}</h1><input type="search" class="search" placeholder="Search lessons" aria-label="Search lessons">
-  <div id="weeks">${c.weeks.map(w=>{
-    const done=w.lessons.filter(l=>lessonComplete(cid,l.n)).length,ex=ST.exams[`${cid}-w${w.n}`];
-    return `<details class="week" ${w.n===1?'open':''}><summary><span class="wn">Week ${w.n}</span><span class="wt">${w.title}</span><span class="wp">${done} / ${w.lessons.length}</span></summary>
-      <ul class="lessons">${w.lessons.map(l=>`<li data-t="${(l.title+' '+l.sec).toLowerCase()}"><span class="tick">${lessonComplete(cid,l.n)?'✓':''}</span><span class="n">${l.sec}</span><a href="#/${cid}/l/${l.n}">${l.title}</a></li>`).join('')}
-      <li class="testrow" data-t="test week ${w.n}"><span class="tick">${ex&&ex.best>=Math.ceil(ex.total*.7)?'✓':''}</span><span class="n">Test</span><a href="#/exam/${cid}-w${w.n}">Week ${w.n} test</a>${ex?`<span class="wp">${ex.best} / ${ex.total}</span>`:''}</li></ul></details>`}).join('')}</div>`;
-  const s=$('.search');s.oninput=()=>{const q=s.value.trim().toLowerCase();$$('details.week').forEach(d=>{let any=false;$$('li',d).forEach(li=>{const m=!q||li.dataset.t.includes(q);li.style.display=m?'':'none';if(m)any=true});d.style.display=any?'':'none';if(q&&any)d.open=true})};
+  setNav(cid);const c=course(cid);
+  const card=l=>{const pg=lessonProgress(cid,l.n);return `<a class="tcard" href="#/${cid}/l/${l.n}" data-t="${(l.title+' '+l.plan).toLowerCase()}">
+      <div class="tc-top"><span class="tc-n">${l.sec}</span><span class="tc-l">Lesson${l.nLessons>1?'s':''} ${l.lessons}</span>${lessonComplete(cid,l.n)?'<span class="tc-ok">✓</span>':''}</div>
+      <div class="tc-t">${l.title}</div>
+      <div class="tc-m">${l.review?'Mixed questions from the whole year':`${l.skills.length} question type${l.skills.length>1?'s':''}`}${demoFor(l)?' · interactive demo':''}${l.videos?` · ${l.videos.length} video${l.videos.length>1?'s':''}`:''}</div>
+      ${pg?`<div class="progress"><i style="width:${Math.min(100,pg.best/pg.total*100)}%"></i></div>`:''}</a>`};
+  app.innerHTML=`${crumbs(['Home','#/'],[c.name])}<h1>${c.name}</h1><p class="lead">Topics from the school teaching plan (<i>${c.source}</i>), grouped by module. Each card opens interactive slides and practice.</p>
+   <input type="search" class="search" placeholder="Search topics" aria-label="Search topics">
+   ${c.modules.map(m=>{const done=m.lessons.filter(l=>lessonComplete(cid,l.n)).length,ex=ST.exams[`${cid}-m${m.n}`],real=m.lessons.some(l=>!l.review);
+     return `<section class="module" style="--mc:${m.color}"><div class="modh"><span class="mnum">${m.n}</span><div class="mtt"><div class="mk">Module ${m.n} · lessons ${m.lessons[0].lessons.split('–')[0]}–${m.lessons[m.lessons.length-1].lessons.split('–').pop()}</div><h2>${m.title}</h2></div><span class="sp"></span><span class="wp">${done} / ${m.lessons.length} done</span>${real?`<a class="btn alt" href="#/exam/${cid}-m${m.n}">Module test${ex?` · best ${ex.best}/${ex.total}`:''}</a>`:''}</div>
+      ${m.goals.length?`<details class="goals"><summary>Curriculum objectives (${m.goals.length})</summary><ul>${m.goals.map(g=>`<li>${g}</li>`).join('')}</ul></details>`:''}
+      <div class="tcards">${m.lessons.map(card).join('')}</div></section>`}).join('')}`;
+  const s=$('.search');s.oninput=()=>{const q=s.value.trim().toLowerCase();$$('section.module').forEach(sec=>{let any=false;$$('.tcard',sec).forEach(c=>{const m=!q||c.dataset.t.includes(q);c.style.display=m?'':'none';if(m)any=true});sec.style.display=any?'':'none'})};
 }
 
 function lessonPage(cid,n,tab,slide){
   setNav(cid);const l=lessonN(cid,n),c=course(cid);
   if(!l){app.innerHTML='<h1>Not found</h1>';return}
-  app.className=tab==='practice'?'':'';
-  app.innerHTML=`${crumbs(['Home','#/'],[c.name,`#/${cid}`],[`Week ${l.week}`])}<h1>${l.title}</h1>
-    <div class="tabs"><a href="#/${cid}/l/${n}/slides" class="${tab==='slides'?'on':''}">Slides</a><a href="#/${cid}/l/${n}/practice" class="${tab==='practice'?'on':''}">Practice</a></div><div id="tabBody"></div>`;
-  if(tab==='practice')practice(cid,l);else{slides(cid,l);if(slide)go(+slide)}
+  const m=c.modules[l.week-1];
+  app.innerHTML=`${crumbs(['Home','#/'],[c.name,`#/${cid}`],[`Module ${l.week}: ${m.title}`])}<h1>${l.title}</h1>
+    <div class="tabs"><a href="#/${cid}/l/${n}/slides" class="${tab==='slides'?'on':''}">Slides</a><a href="#/${cid}/l/${n}/practice" class="${tab==='practice'?'on':''}">Practice</a>${l.videos?`<a href="#/${cid}/l/${n}/videos" class="${tab==='videos'?'on':''}">Videos (${l.videos.length})</a>`:''}<span class="sp"></span>
+    ${n>1?`<a href="#/${cid}/l/${n-1}/${tab}" class="pn">← Previous topic</a>`:''}${n<allLessons(cid).length?`<a href="#/${cid}/l/${n+1}/${tab}" class="pn">Next topic →</a>`:''}</div><div id="tabBody"></div>`;
+  if(tab==='practice')practice(cid,l);else if(tab==='videos')videosTab(cid,l);else{slides(cid,l);if(slide)go(+slide)}
   window.scrollTo(0,0);
 }
+
+// ---------- videos ----------
+const fileNote=()=>location.protocol==='file:'?`<p class="note">YouTube does not play videos inside a page opened straight from a file. Use “Open on YouTube”, or open the site through a web address (for example GitHub Pages).</p>`:'';
+const ytFrame=id=>`<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" title="YouTube video" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;
+function videoBlock(cid,l){
+  const v=l.videos;let i=0;const h=document.createElement('div');
+  const draw=()=>{h.innerHTML=`<div class="vidwrap">${ytFrame(v[i][0])}<div class="vlist"><b>Videos for this topic</b>${v.map((x,k)=>`<button class="vbtn ${k===i?'on':''}" data-k="${k}">${x[1]}</button>`).join('')}
+    <a href="https://www.youtube.com/watch?v=${v[i][0]}&list=${course(cid).playlist}&index=${v[i][2]}" target="_blank" rel="noopener">Open on YouTube ↗</a>${fileNote()}</div></div>`;
+    $$('.vbtn',h).forEach(b=>b.onclick=()=>{i=+b.dataset.k;draw()})};
+  draw();return h;
+}
+function videosTab(cid,l){$('#tabBody').appendChild(videoBlock(cid,l))}
 
 // ---------- practice ----------
 function practice(cid,l){
@@ -82,36 +106,71 @@ function practice(cid,l){
   build();
 }
 
+// ---------- step-by-step worked example ----------
+function exampleSlide(h,cid,l,start){
+  let lv=start.lv,skill=start.skill,p,shown=0;
+  const draw=()=>{
+    p=makeProblem(skill,mkR(rndSeed()),lv);shown=0;
+    h.innerHTML=`<div class="row exbar"><span class="lvtag">${['Easy','Medium','Hard'][lv]}</span><select class="exlv" aria-label="Level"><option value="0">Easy</option><option value="1">Medium</option><option value="2">Hard</option></select>
+      ${l.skills.length>1?`<select class="exsk" aria-label="Question type">${l.skills.map((s,i)=>`<option value="${s}" ${s===skill?'selected':''}>Type ${i+1}</option>`).join('')}</select>`:''}
+      <button class="btn alt exnew">New example</button><span class="sp"></span><button class="btn exnext">Show next step ▶</button><button class="btn alt exall">Show all</button></div>
+      <div class="exgrid ${p.svg?'':'nofig'}"><div class="exq q"><div class="qt">${p.text||''}</div>${p.eq?`<div class="eq">${p.eq}</div>`:''}${p.mc?`<ol class="opts mc" type="A">${p.choices.map(c=>`<li>${c}</li>`).join('')}</ol>`:''}
+        <ol class="sol steplist" hidden></ol></div>${p.svg?`<div class="exfig">${p.svg}</div>`:''}</div>`;
+    $('.exlv',h).value=lv;$('.exlv',h).onchange=e=>{lv=+e.target.value;draw()};if($('.exsk',h))$('.exsk',h).onchange=e=>{skill=e.target.value;draw()};
+    $('.exnew',h).onclick=draw;$('.exnext',h).onclick=next;$('.exall',h).onclick=()=>{while(next());};
+  };
+  const upd=()=>{
+    const s=$('.steplist',h),n=p.steps.length;s.hidden=shown===0;
+    s.innerHTML=p.steps.slice(0,shown).map((x,i)=>`<li class="${i===shown-1?'new':''}">${x}</li>`).join('')+(shown>n?`<li class="final new">Answer: <b>${ansText(p)}</b></li>`:'');
+    if(p.frames&&$('.exfig',h)){let f=p.svg;for(let i=0;i<Math.min(shown,n);i++)if(p.frames[i])f=p.frames[i];$('.exfig',h).innerHTML=f}
+    if(p.mc&&shown>n)$$('.opts.mc li',h)[p.ans].classList.add('right');
+    $('.exnext',h).disabled=shown>n;$('.exnext',h).textContent=shown>=n?'Show answer ▶':'Show next step ▶';
+  };
+  function next(){if(shown>p.steps.length)return false;shown++;upd();return true}
+  h.stepNext=next;draw();
+}
+
+// ---------- random problem wheel ----------
+function wheelSlide(h,cid,l){
+  const N=8,cols=['#2455d6','#d9480f','#16a34a','#7c3aed','#0891b2','#be185d','#b45309','#4f46e5'];let rot=0,probs;
+  const fresh=()=>{probs=lessonProblems(cid,l,N,rndSeed(),[0,1,0,1,2,1,0,2])};fresh();
+  let g='';for(let i=0;i<N;i++){const a0=90-i*45,a1=a0-45,[x0,y0]=P(150,150,140,a0),[x1,y1]=P(150,150,140,a1);g+=`<path d="M150,150 L${f1(x0)},${f1(y0)} A140,140 0 0 1 ${f1(x1)},${f1(y1)} Z" fill="${cols[i]}" stroke="#fff" stroke-width="3"/>`;const [tx,ty]=P(150,150,95,a0-22.5);g+=`<text x="${f1(tx)}" y="${f1(ty)}" font-size="26" font-weight="800" fill="#fff" text-anchor="middle" dominant-baseline="central">${i+1}</text>`}
+  h.innerHTML=`<div class="wheelwrap"><div class="wheelbox"><div class="pointer">▼</div><svg viewBox="0 0 300 300" class="wheel">${g}<circle cx="150" cy="150" r="16" fill="#fff" stroke="#111827" stroke-width="3"/></svg>
+    <div class="row" style="justify-content:center"><button class="btn spinw">Spin the wheel</button><button class="btn alt neww">New problems</button></div>
+    <p class="note">Spin for a random problem from this topic. To pick a student, use <a href="https://spinthewheel.io/" target="_blank" rel="noopener">Wheel of names ↗</a>.</p></div><div class="wheelq"><div class="big">Random problem</div><p class="note">Press “Spin the wheel”.</p></div></div>`;
+  const wheel=$('.wheel',h);
+  $('.neww',h).onclick=()=>{fresh();$('.wheelq',h).innerHTML='<div class="big">Random problem</div><p class="note">New problems are ready. Spin!</p>'};
+  $('.spinw',h).onclick=()=>{const b=$('.spinw',h);b.disabled=true;rot+=1440+Math.floor(Math.random()*360);wheel.style.transform=`rotate(${rot}deg)`;
+    setTimeout(()=>{const k=Math.floor(((360-rot%360)%360)/45);const q=$('.wheelq',h);q.innerHTML=`<div class="big" style="color:${cols[k]}">Problem ${k+1}</div>`;q.appendChild(problemCard(probs[k],{title:`Problem ${k+1}`}).el);b.disabled=false},3200)};
+}
+
 // ---------- slides ----------
 function slides(cid,l){
-  const body=$('#tabBody');
+  const body=$('#tabBody'),c=course(cid),m=c.modules[l.week-1],demo=demoFor(l),sk=l.review?lessonProblems(cid,l,3,rndSeed()).map(p=>p.skill):l.skills;
+  const ex=[0,1,2].map(i=>({skill:sk[i%sk.length],lv:i}));
   const items=[
     {name:'Objectives',mount:h=>{
-      const objs=l.obj&&l.obj.length?l.obj:[l.title];
-      h.innerHTML=`<div class="big">${l.title}</div><ul class="objs">${objs.map(o=>`<li>${o}</li>`).join('')}</ul>${l.keys&&l.keys.length?`<div class="keys">${l.keys.map(k=>`<span>${k}</span>`).join('')}</div>`:''}`}},
-    ...l.pages.map((p,i)=>({name:`Book page ${p}`,mount:h=>{h.innerHTML=`<div class="page"><img src="img/${cid}/${pad3(p)}.jpg" alt="Book page ${p}"></div>`;const pg=$('.page',h);pg.onclick=()=>pg.classList.toggle('zoom')}})),
-    {name:'Worked example',mount:h=>{
-      let lv=0;
-      const draw=()=>{const p=makeProblem(pick(mkR(rndSeed()),sectionSkills(cid,l.sec)),mkR(rndSeed()),lv);let shown=0;
-        h.innerHTML=`<div class="row" style="margin-bottom:.6rem"><select id="lv"><option value="0">Easy</option><option value="1">Medium</option><option value="2">Hard</option></select><button class="btn alt" id="nw">New example</button><span class="sp"></span><button class="btn" id="nx">Next step</button><button class="btn alt" id="all">Show all</button></div>
-          <div class="q"><div class="qt">${p.text||''}</div>${p.eq?`<div class="eq">${p.eq}</div>`:''}${p.svg||''}${p.mc?`<div class="opts">${p.choices.map(c=>`<label><span>${c}</span></label>`).join('')}</div>`:''}<ol class="sol" id="st" hidden></ol></div>`;
-        $('#lv',h).value=lv;$('#lv',h).onchange=e=>{lv=+e.target.value;draw()};$('#nw',h).onclick=draw;
-        const upd=()=>{const s=$('#st',h);s.hidden=shown===0;s.innerHTML=p.steps.slice(0,shown).map(x=>`<li>${x}</li>`).join('')+(shown>=p.steps.length?`<li>Answer: <b>${ansText(p)}</b></li>`:'')};
-        $('#nx',h).onclick=()=>{shown=Math.min(p.steps.length+1,shown+1);upd()};$('#all',h).onclick=()=>{shown=99;upd()}};
-      draw()}},
+      h.innerHTML=`<div class="s-title" style="--mc:${m.color}"><div class="s-u">${c.name} · Module ${m.n}: ${m.title} · Lesson${l.nLessons>1?'s':''} ${l.lessons}</div><div class="big">${l.title}</div>
+        <p class="lead">Today: ${demo?'explore with an interactive demo, then ':''}work through examples step by step, try a random problem and check your understanding.</p>
+        ${m.goals.length?`<div class="objbox"><b>Curriculum objectives (module ${m.n})</b><ul class="objs">${m.goals.slice(0,6).map(o=>`<li>${o}</li>`).join('')}</ul></div>`:''}
+        <div class="timeline"><span style="flex:5">Starter 5′</span><span style="flex:8">Demo 8′</span><span style="flex:8">Examples 8′</span><span style="flex:12">Practice 12′</span><span style="flex:7">Check 7′</span></div></div>`}},
+    ...(l.videos?[{name:'Video',mount:h=>{h.appendChild(videoBlock(cid,l))}}]:[]),
+    ...(demo&&DEMOS[demo]?[{name:'Interactive demo',mount:h=>{const d=document.createElement('div');h.appendChild(d);mountDemo(d,DEMOS[demo]);h.stepNext=()=>d.demoNext?d.demoNext():false}}]:[]),
+    ...ex.map((e,i)=>({name:`Example ${i+1}`,mount:h=>exampleSlide(h,cid,l,e)})),
+    {name:'Random problem',mount:h=>wheelSlide(h,cid,l)},
     {name:'Check',mount:h=>{
-      const ps=lessonProblems(cid,l,3,rndSeed(),[0,1,2]);h.innerHTML='<div id="ck"></div>';
+      const ps=lessonProblems(cid,l,3,rndSeed(),[0,1,2]);h.innerHTML='<div class="big">Check your understanding</div><div id="ck"></div>';
       ps.forEach((p,i)=>$('#ck',h).appendChild(problemCard(p,{title:`Question ${i+1}`}).el))}},
-    {name:'Practice',mount:h=>{h.innerHTML=`<div class="big">Practice</div><p><a class="btn" href="#/${cid}/l/${l.n}/practice">Start practice</a></p>${l.n<allLessons(cid).length?`<p><a href="#/${cid}/l/${l.n+1}">Next lesson →</a></p>`:''}`}},
+    {name:'Practice',mount:h=>{h.innerHTML=`<div class="big">Practice</div><p><a class="btn" href="#/${cid}/l/${l.n}/practice">Start practice (12 questions)</a></p>${l.n<allLessons(cid).length?`<p><a href="#/${cid}/l/${l.n+1}">Next topic: ${lessonN(cid,l.n+1).title} →</a></p>`:''}<p class="note">Quiz the class on Kahoot: <a href="${TOOLS[2].u}" target="_blank" rel="noopener">open the channel ↗</a></p>`}},
   ];
-  body.innerHTML=`<div class="deck" id="deck"><div class="deckbar"><span id="dn"></span><span class="sp"></span><div class="dots" id="dots"></div><button class="ghost" id="fs">Full screen</button></div><div class="stage" id="stage"></div><div class="decknav"><button class="btn alt" id="pv">Back</button><span id="num"></span><button class="btn" id="nt">Next</button></div></div>`;
-  DECK={i:0,items};
+  body.innerHTML=`<div class="deck" id="deck" style="--mc:${m.color}"><div class="deckbar"><span id="dn"></span><div class="dots" id="dots"></div><span class="sp"></span>${timerHTML()}<details class="dtools"><summary>Tools</summary><div>${toolLinks()}</div></details><button class="ghost" id="fs">Full screen</button></div><div class="stage" id="stage"></div><div class="decknav"><button class="btn alt" id="pv">Back</button><span id="num"></span><span class="note">Space = next step</span><button class="btn" id="nt">Next</button></div></div>`;
+  DECK={i:0,items,h:null};
   $('#pv').onclick=()=>go(DECK.i-1);$('#nt').onclick=()=>go(DECK.i+1);$('#fs').onclick=toggleFS;
-  go(0);
+  go(0);ltTick();
 }
 function go(i){
   if(!DECK)return;i=Math.max(0,Math.min(DECK.items.length-1,i));DECK.i=i;
-  const st=$('#stage');st.innerHTML='';st.scrollTop=0;const h=document.createElement('div');st.appendChild(h);DECK.items[i].mount(h);
+  const st=$('#stage');st.innerHTML='';st.scrollTop=0;const h=document.createElement('div');h.className='slideIn';st.appendChild(h);DECK.h=h;DECK.items[i].mount(h);
   $('#dn').textContent=DECK.items[i].name;$('#num').textContent=`${i+1} / ${DECK.items.length}`;
   $('#dots').innerHTML=DECK.items.map((s,k)=>`<button class="dot ${k===i?'on':k<i?'seen':''}" data-k="${k}" title="${s.name}"></button>`).join('');
   $$('#dots .dot').forEach(b=>b.onclick=()=>go(+b.dataset.k));
@@ -119,19 +178,20 @@ function go(i){
 }
 function toggleFS(){const d=$('#deck');if(!d)return;if(document.fullscreenElement)document.exitFullscreen();else (d.requestFullscreen||d.webkitRequestFullscreen||(()=>{})).call(d)}
 document.addEventListener('keydown',e=>{
-  if(!DECK||!$('#deck'))return;if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  if(!DECK||!$('#deck'))return;if(['INPUT','SELECT','TEXTAREA','BUTTON'].includes(e.target.tagName)&&e.key!=='Escape')return;
   if(e.key==='ArrowRight'||e.key==='PageDown')go(DECK.i+1);else if(e.key==='ArrowLeft'||e.key==='PageUp')go(DECK.i-1);else if(e.key==='f'||e.key==='F')toggleFS();
+  else if(e.key===' '&&DECK.h&&DECK.h.stepNext){e.preventDefault();DECK.h.stepNext()}
 });
 
 // ---------- exams ----------
 function examsPage(){
-  setNav('exams');app.className='';
-  const link=d=>{const b=ST.exams[d.id];return `<a class="examlink" href="#/exam/${d.id}"><b>${d.title.replace(/^.* (test|exam)$/,m=>m)}</b><small>${d.n} questions · ${d.min} min</small>${b?`<div class="best">Best ${b.best} / ${b.total}</div>`:''}</a>`};
-  app.innerHTML=`<h1>Exams</h1>${COURSE_IDS.map(cid=>{const ds=examDefs(cid);return `<h2>${course(cid).name}</h2><h3>Final and term exams</h3><div class="examgrid">${ds.filter(d=>d.kind!=='week').map(link).join('')}</div><h3 style="margin-top:1rem">Week tests</h3><div class="examgrid">${ds.filter(d=>d.kind==='week').map(link).join('')}</div>`}).join('')}`;
+  setNav('exams');
+  const link=d=>{const b=ST.exams[d.id];return `<a class="examlink" href="#/exam/${d.id}"><b>${d.title}</b><small>${d.n} questions · ${d.min} min</small>${b?`<div class="best">Best ${b.best} / ${b.total}</div>`:''}</a>`};
+  app.innerHTML=`<h1>Exams</h1>${COURSE_IDS.map(cid=>{const ds=examDefs(cid);return `<h2>${course(cid).name}</h2><h3>Final exam</h3><div class="examgrid">${ds.filter(d=>d.kind==='final').map(link).join('')}</div><h3 style="margin-top:1rem">Module tests</h3><div class="examgrid">${ds.filter(d=>d.kind==='module').map(link).join('')}</div>`}).join('')}`;
 }
 function examPage(id){
-  setNav('exams');app.className='';clearInterval(TIMER);
-  const cid=id.split('-')[0],def=examDefs(cid).find(d=>d.id===id);
+  setNav('exams');clearInterval(TIMER);
+  const cid=id.split('-')[0],def=COURSE_IDS.includes(cid)&&examDefs(cid).find(d=>d.id===id);
   if(!def){app.innerHTML='<h1>Not found</h1>';return}
   app.innerHTML=`${crumbs(['Home','#/'],['Exams','#/exams'],[def.title])}<h1>${def.title}</h1><p>${def.n} questions · ${def.min} minutes · ${def.sub}</p><button class="btn" id="start">Start</button>`;
   $('#start').onclick=()=>runExam(def);
@@ -161,7 +221,7 @@ function route(){
   if(p[0]==='exams')return examsPage();
   if(p[0]==='exam')return examPage(p[1]);
   if(COURSE_IDS.includes(p[0])){
-    if(p[1]==='l')return lessonPage(p[0],+p[2],p[3]==='practice'?'practice':'slides',p[4]);
+    if(p[1]==='l')return lessonPage(p[0],+p[2],['practice','videos'].includes(p[3])?p[3]:'slides',p[4]);
     return coursePage(p[0]);
   }
   home();

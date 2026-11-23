@@ -1,44 +1,50 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>ui test</title><link rel="stylesheet" href="css/style.css"></head><body>
-<header class="top"><a class="logo" href="#/">Maths</a><nav><a data-nav="y8"></a><a data-nav="y10"></a><a data-nav="exams"></a></nav><button id="themeBtn"></button></header><main id="app"></main><pre id="res"></pre>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ui test</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/app.css"></head><body>
+<header class="top"><a class="logo" href="#/">MathQuest</a><nav><a data-nav="y8"></a><a data-nav="y10"></a><a data-nav="exams"></a></nav><span id="hdrTimer"></span><details class="tools"><summary>Tools</summary><div id="toolsMenu"></div></details><button id="themeBtn"></button></header><main id="app"></main><pre id="res"></pre>
 <script>localStorage.clear();location.hash='#/y8/l/5/practice';window.confirm=()=>true;</script>
-<script src="data/y8.js"></script><script src="data/y10.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/skills.js"></script><script src="js/engine.js"></script><script src="js/ui.js"></script>
+<script src="data/y8.js"></script><script src="data/y10.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/g_y8.js"></script><script src="js/g_extra.js"></script><script src="js/engine.js"></script><script src="js/demos.js"></script><script src="js/timer.js"></script><script src="js/ui.js"></script>
 <script>
-const out=[];const log=s=>out.push(s);
-const fill=c=>{const p=c.p;if(p.mc){const r=c.el.querySelector(`input[value="${p.ans}"]`);r.checked=true}else{c.el.querySelector('input[type=text]').value=p.ansStr?p.ansStr.split(' ')[0]:String(p.ans)}};
-setTimeout(()=>{
-  try{
-    // practice: wrong answer then right answers
-    let cards=CARDS();log('practice cards '+cards.length);
-    const first=cards[0];if(!first.p.mc){first.el.querySelector('input[type=text]').value='987654';first.el.querySelector('.chk').click();log('wrong -> '+first.el.className)}
-    cards.forEach(c=>{fill(c);c.el.querySelector('.chk').click()});
-    log('all ok after fill: '+cards.every(c=>c.ok===true)+' ; header '+document.getElementById('cc').textContent+'/'+document.getElementById('ct').textContent);
-    log('progress saved: '+JSON.stringify(ST.done));
-    document.querySelector('#more').click();log('after more: '+CARDS().length);
-    document.querySelector('#newset').click();log('new set: '+CARDS().length+' ok count '+CARDS().filter(c=>c.ok).length);
-    // slides
-    location.hash='#/y8/l/5/slides';
-  }catch(e){log('ERR '+e.stack)}
-  setTimeout(()=>{
-    try{
-      const stage=()=>document.getElementById('stage').innerText.length;
-      let names=[];for(let i=0;i<8;i++){const n=document.getElementById('dn');if(!n)break;names.push(n.textContent);const b=document.getElementById('nt');if(b.disabled)break;b.click()}
-      log('slides: '+names.join(' | '));
-      location.hash='#/exam/y8-w1';
-    }catch(e){log('ERR '+e.stack)}
-    setTimeout(()=>{
-      try{
-        document.getElementById('start').click();
-        const cards=CARDS();log('exam questions '+cards.length);
-        cards.slice(0,9).forEach(fill);
-        document.getElementById('sub').click();
-        log('result: '+document.querySelector('.result').textContent);
-        log('best saved: '+JSON.stringify(ST.exams));
-        location.hash='#/exams';
-      }catch(e){log('ERR '+e.stack)}
-      setTimeout(()=>{log('exams page best badge: '+(document.querySelector('.best')||{}).textContent);
-        for(const h of ['#/','#/y8','#/y10','#/exams','#/y10/l/135/slides','#/y10/l/1/practice','#/exam/y10-final','#/exam/y8-t2']){location.hash=h;}
-        document.getElementById('res').textContent=out.join('\n');document.title='UITEST done';},300);
-    },300);
-  },300);
-},300);
+const out=[],bad=[];const log=s=>out.push(s),fail=s=>{bad.push(s);out.push('FAIL '+s)};
+const fill=c=>{const p=c.p;if(p.mc){c.el.querySelector(`input[value="${p.ans}"]`).checked=true}else{c.el.querySelector('input[type=text]').value=p.ansStr?p.ansStr.split(' ')[0].replace(/−/g,'-'):String(p.ans)}};
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+(async()=>{
+ try{
+  await wait(200);
+  let cards=CARDS();log('practice cards '+cards.length);
+  cards.forEach(c=>{fill(c);c.el.querySelector('.chk').click()});
+  if(!cards.every(c=>c.ok===true))fail('practice: not all correct after fill');
+  log('progress: '+JSON.stringify(ST.done));
+  // course pages
+  for(const cid of COURSE_IDS){location.hash='#/'+cid;await wait(80);const mods=document.querySelectorAll('section.module').length,cs=document.querySelectorAll('.tcard').length;log(`${cid}: ${mods} module sections, ${cs} topic cards`);if(cs!==allLessons(cid).length)fail(cid+' card count');
+    const s=document.querySelector('.search');s.value='prob';s.dispatchEvent(new Event('input'));log(`  search "prob": ${[...document.querySelectorAll('.tcard')].filter(c=>c.style.display!=='none').length} cards`)}
+  // every topic's slides: walk all slides, press every step
+  for(const cid of COURSE_IDS)for(const l of allLessons(cid)){
+    location.hash=`#/${cid}/l/${l.n}/slides`;await wait(20);
+    const names=[];for(let i=0;i<14;i++){names.push(document.getElementById('dn').textContent);if(DECK.h.stepNext){let k=0;while(DECK.h.stepNext()&&k<20)k++}
+      if(/undefined|NaN/.test(document.getElementById('stage').innerHTML))fail(`${cid} ${l.n} slide ${names[i]} has undefined/NaN`);const b=document.getElementById('nt');if(b.disabled)break;b.click()}
+    if(l.n===1||l.n===34)log(`${cid} topic ${l.n} slides: ${names.join(' | ')}`);
+    if(l.videos&&!names.includes('Video'))fail('video slide missing '+cid+l.n);
+  }
+  // example slide reveals steps and final answer
+  location.hash='#/y8/l/34/slides';await wait(30);while(document.getElementById('dn').textContent!=='Example 1')document.getElementById('nt').click();
+  const fig0=document.querySelector('.exfig').innerHTML;DECK.h.stepNext();DECK.h.stepNext();DECK.h.stepNext();
+  log('example: steps shown '+document.querySelectorAll('.steplist li').length+', figure changed: '+(document.querySelector('.exfig').innerHTML!==fig0));
+  while(DECK.h.stepNext());if(!document.querySelector('.steplist li.final'))fail('example final answer not shown');
+  // wheel
+  while(document.getElementById('dn').textContent!=='Random problem')document.getElementById('nt').click();
+  document.querySelector('.spinw').click();await wait(3400);log('wheel picked: '+document.querySelector('.wheelq .big').textContent+' with card '+!!document.querySelector('.wheelq .q'));
+  // videos tab
+  location.hash='#/y8/l/2/videos';await wait(30);log('videos tab iframes: '+document.querySelectorAll('.yt iframe').length+' src '+document.querySelector('.yt iframe').src);
+  // timer
+  document.querySelector('[data-lt=toggle]').click();await wait(300);LT.el=LT_TOTAL-LT_WARN+1;LT.t0=Date.now();await wait(1400);
+  log('timer at 5 min: warned='+LT.warned+' banner='+!!document.querySelector('.ltbanner.warn')+' class='+document.querySelector('.lt').className);
+  LT.el=LT_TOTAL+1;await wait(400);log('timer end: ended='+LT.ended+' text='+document.querySelector('.ltime').textContent);
+  document.querySelector('[data-lt=reset]').click();log('timer reset: '+document.querySelector('.ltime').textContent);
+  // exams
+  location.hash='#/exam/y8-m1';await wait(50);document.getElementById('start').click();cards=CARDS();log('exam questions '+cards.length);
+  cards.slice(0,9).forEach(fill);document.getElementById('sub').click();log('result: '+document.querySelector('.result').textContent);
+  location.hash='#/exams';await wait(50);log('exam links: '+document.querySelectorAll('.examlink').length+' best badge: '+(document.querySelector('.best')||{}).textContent);
+  for(const h of ['#/','#/y10','#/exam/y10-final','#/exam/y10-m3','#/y10/l/30/practice']){location.hash=h;await wait(40);if(/undefined|NaN/.test(app.innerHTML))fail('undefined on '+h)}
+ }catch(e){fail('ERR '+e.stack)}
+ document.getElementById('res').textContent=`UI ${bad.length} failures\n`+out.join('\n');document.title='UITEST done '+bad.length;
+})();
 </script></body></html>

@@ -1,4 +1,5 @@
-"""Builds data/y8.js, data/y10.js and img/<course>/NNN.jpg from the two textbooks.
+"""Builds data/book_y8.js, data/book_y10.js and img/<course>/NNN.jpg from the two textbooks.
+Not used by the site any more: the courses now come from the Edupage plans (tools/build_plans.py).
 Year 8: whole book, 27 weeks x 6 lessons.  Year 10: chapters 1-12, 14, 15 (~59% of the pages), 27 weeks x 5 lessons.
 Usage: python extract_books.py [--no-images]"""
 import re, sys, json, pathlib, io
@@ -229,7 +230,7 @@ if __name__ == "__main__":
     (SITE / "data").mkdir(exist_ok=True)
     for fn, cid in ((y8, "y8"), (y10, "y10")):
         data, book = fn()
-        (SITE / "data" / f"{cid}.js").write_text("window.COURSES=window.COURSES||{};window.COURSES['%s']=%s;\n" % (cid, json.dumps(data, ensure_ascii=False, separators=(",", ":"))), encoding="utf-8")
+        (SITE / "data" / f"book_{cid}.js").write_text("window.COURSES=window.COURSES||{};window.COURSES['%s']=%s;\n" % (cid, json.dumps(data, ensure_ascii=False, separators=(",", ":"))), encoding="utf-8")
         pages = [p for w in data["weeks"] for l in w["lessons"] for p in l["pages"]]
         print(cid, "weeks", len(data["weeks"]), "lessons", sum(len(w["lessons"]) for w in data["weeks"]), "pages used", len(set(pages)), flush=True)
         if not NO_IMG: render(book, cid, pages)

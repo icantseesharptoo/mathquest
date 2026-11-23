@@ -1,26 +1,41 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>test</title></head><body><pre id="out">running…</pre>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>test</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/app.css"></head><body><pre id="out">running…</pre><div id="scratch"></div>
 <script src="data/y8.js"></script><script src="data/y10.js"></script>
-<script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script>
-<script src="js/skills.js"></script><script src="js/engine.js"></script>
+<script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/g_y8.js"></script><script src="js/g_extra.js"></script>
+<script src="js/engine.js"></script><script src="js/demos.js"></script>
 <script>
-const bad=[];let n=0;
+const $=(s,e=document)=>e.querySelector(s),$$=(s,e=document)=>[...e.querySelectorAll(s)];
+const bad=[];let n=0;const BADTXT=/NaN|undefined|Infinity|\[object/;
 const names=new Set();
-for(const cid of COURSE_IDS)for(const sec of Object.keys(SKILLS[cid]))SKILLS[cid][sec].forEach(s=>names.add(s));
+for(const cid of COURSE_IDS)for(const l of allLessons(cid)){if(!l.skills.length)bad.push('no skills '+cid+' '+l.sec);l.skills.forEach(s=>names.add(s))}
 for(const s of names)if(typeof G[s]!=='function')bad.push('missing generator '+s);
-for(const cid of COURSE_IDS){
-  // every lesson has skills
-  for(const l of allLessons(cid))if(!sectionSkills(cid,l.sec).length)bad.push('no skills '+cid+' '+l.sec);
-}
-for(const s of names)for(let lv=0;lv<3;lv++)for(let i=0;i<150;i++){
+for(const s of names)if(typeof G[s]==='function')for(let lv=0;lv<3;lv++)for(let i=0;i<150;i++){
   n++;let p;try{p=makeProblem(s,mkR(i*7919+lv*31+s.length),lv)}catch(e){bad.push(s+' lv'+lv+' seed'+i+': '+e.message);continue}
-  const blob=(p.text||'')+(p.eq||'')+(p.svg||'')+p.steps.join('')+ansText(p)+(p.choices?p.choices.join(''):'');
-  if(/NaN|undefined|Infinity|\[object/.test(blob))bad.push(s+' lv'+lv+' bad text: '+blob.replace(/<[^>]+>/g,'').slice(0,90));
+  const blob=(p.text||'')+(p.eq||'')+(p.svg||'')+(p.frames||[]).join('')+p.steps.join('')+ansText(p)+(p.choices?p.choices.join(''):'');
+  if(BADTXT.test(blob))bad.push(s+' lv'+lv+' bad text: '+blob.replace(/<[^>]+>/g,'').slice(0,90));
+  if(p.frames&&p.frames.length!==p.steps.length)bad.push(s+' lv'+lv+' frames '+p.frames.length+' vs steps '+p.steps.length);
+  if(p.mc&&(new Set(p.choices).size!==p.choices.length||p.ans<0||p.ans>=p.choices.length))bad.push(s+' lv'+lv+' bad choices '+p.choices.join(' | '));
   const sub=p.mc?String(p.ans):(p.ansStr&&/^-?\d+\/\d+/.test(p.ansStr)?p.ansStr.split(' ')[0]:String(p.ans));
   if(!checkAnswer(p,sub))bad.push(s+' lv'+lv+' own answer rejected: '+sub);
+  if(!p.mc&&p.ansStr&&!/\//.test(p.ansStr)&&!checkAnswer(p,p.ansStr.replace(/−/g,'-')))bad.push(s+' lv'+lv+' shown answer rejected: '+p.ansStr);
 }
-// full sets build
-for(const cid of COURSE_IDS){let k=0;for(const l of allLessons(cid)){try{lessonProblems(cid,l,12,l.n)}catch(e){bad.push('lesson '+cid+' '+l.n+': '+e.message)}k++}
-  for(const d of examDefs(cid)){try{examProblems(cid,d.weeks,d.n,1)}catch(e){bad.push('exam '+d.id+': '+e.message)}}}
-document.getElementById('out').textContent='TEST '+n+' problems, '+bad.length+' bad\n'+bad.slice(0,60).join('\n');
+for(const cid of COURSE_IDS){
+  for(const l of allLessons(cid)){try{lessonProblems(cid,l,12,l.n)}catch(e){bad.push('lesson '+cid+' '+l.n+': '+e.message)}if(l.demo&&!DEMOS[l.demo])bad.push('unknown demo '+l.demo)}
+  for(const d of examDefs(cid)){try{const ps=examProblems(cid,d.weeks,d.n,1);if(ps.length!==d.n)bad.push('exam size '+d.id)}catch(e){bad.push('exam '+d.id+': '+e.message)}}
+}
+// every demo, every select option, all steps
+const host=$('#scratch');let nd=0;
+for(const [k,def] of Object.entries(DEMOS)){
+  const sels=def.controls.filter(c=>c.type==='select'),combos=[{}];
+  sels.forEach(c=>{const cur=combos.splice(0);cur.forEach(o=>c.opts.forEach(op=>combos.push({...o,[c.id]:op[0]})))});
+  for(const init of combos.slice(0,40)){
+    nd++;try{host.innerHTML='';const st=mountDemo(host,def,init);if(def.steps){$('[data-a=all]',host).click()}
+      if(BADTXT.test(host.innerHTML))bad.push('demo '+k+' '+JSON.stringify(init)+' bad text '+host.innerText.slice(0,80));
+      $$('input[type=range]',host).forEach(r=>{r.value=r.max;r.dispatchEvent(new Event('input'));r.value=r.min;r.dispatchEvent(new Event('input'))});
+      if(BADTXT.test(host.innerHTML))bad.push('demo '+k+' '+JSON.stringify(init)+' bad text at extremes');
+    }catch(e){bad.push('demo '+k+' '+JSON.stringify(init)+': '+e.message)}
+  }
+}
+const summary=COURSE_IDS.map(c=>`${c}: ${course(c).modules.length} modules, ${allLessons(c).length} topics, ${allLessons(c).filter(l=>demoFor(l)).length} with demos, ${allLessons(c).filter(l=>l.videos).length} with videos`).join('\n');
+document.getElementById('out').textContent='TEST '+n+' problems, '+nd+' demo states, '+bad.length+' bad\n'+summary+'\n'+bad.slice(0,80).join('\n');
 document.title='TEST '+n+' '+bad.length;
 </script></body></html>

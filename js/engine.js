@@ -1,15 +1,26 @@
-/* Problem sets, answer checking, exams, saved progress. */
+/* Courses (built from the Edupage plans), problem sets, answer checking, exams, saved progress. */
 const LEVELS=['easy','medium','hard'];
-const STORE_KEY='maths.v1';
+const STORE_KEY='maths.v2';
 let ST=(()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY))||{}}catch(e){return{}}})();
 ST.done=ST.done||{};ST.exams=ST.exams||{};ST.theme=ST.theme||'system';
 const saveState=()=>{try{localStorage.setItem(STORE_KEY,JSON.stringify(ST))}catch(e){}};
 
+// ---------- courses: plan chapters -> modules, plan rows -> topics (one card each) ----------
 const COURSE_IDS=['y8','y10'];
+const MOD_COLORS=['#2455d6','#7c3aed','#0d9488','#c2410c','#0891b2','#be185d','#15803d','#b45309','#4f46e5','#dc2626','#475569'];
+window.COURSES={};
+COURSE_IDS.forEach(cid=>{
+  const P=window.PLANS[cid];let n=0;
+  const modules=P.chapters.map((ch,i)=>({n:i+1,title:ch.title,goals:ch.goals,color:MOD_COLORS[i%MOD_COLORS.length],
+    lessons:ch.topics.map((t,j)=>Object.assign({},t,{n:++n,week:i+1,inweek:j+1,sec:`${i+1}.${j+1}`,part:1,obj:[]}))}));
+  const all=[...new Set(modules.flatMap(m=>m.lessons.flatMap(l=>l.skills)).filter(s=>s!=='REVIEW'))];
+  modules.forEach(m=>m.lessons.forEach(l=>{if(l.skills.includes('REVIEW')){l.review=true;l.skills=all}}));
+  window.COURSES[cid]={id:cid,name:P.name,source:P.source,playlist:P.playlist,modules,weeks:modules};
+});
 const course=id=>window.COURSES[id];
-const allLessons=id=>course(id).weeks.flatMap(w=>w.lessons);
+const allLessons=id=>course(id).modules.flatMap(m=>m.lessons);
 const lessonN=(id,n)=>allLessons(id)[n-1];
-const sectionSkills=(cid,sec)=>SKILLS[cid][sec]||[];
+const sectionSkills=(cid,sec)=>{const l=allLessons(cid).find(x=>x.sec===sec);return l?l.skills:[]};
 
 // typed hyphens before digits become real minus signs (never inside SVG markup)
 const fixMinus=s=>typeof s==='string'?s.replace(/(^|[\s(=×÷+,>])-(?=\d)/g,'$1−'):s;
@@ -33,34 +44,24 @@ function ansText(p){
   return `${p.label&&p.label!=='Answer ='?p.label+' ':''}${v}${p.unit||''}`.trim();
 }
 
-// problems for one lesson: its section's skills, emphasising the skill of this part of the section
+// problems for one topic: its skills in turn, easy → hard
 function lessonProblems(cid,lesson,n,seed,levels){
-  const r=mkR(seed),names=sectionSkills(cid,lesson.sec),out=[];
+  const r=mkR(seed),names=lesson.review?r.shuffle(lesson.skills):lesson.skills,out=[];
   const pat=levels||[0,0,0,0,1,1,1,1,1,2,2,2];
-  for(let i=0;i<n;i++){
-    const lv=pat[i%pat.length],name=names[(i+lesson.part-1)%names.length];
-    out.push(makeProblem(name,r,lv));
-  }
+  for(let i=0;i<n;i++)out.push(makeProblem(names[i%names.length],r,pat[i%pat.length]));
   return out;
 }
-function weekSections(cid,weeks){
-  const s=[];weeks.forEach(w=>course(cid).weeks[w-1].lessons.forEach(l=>{if(!s.includes(l.sec))s.push(l.sec)}));return s;
-}
-function examProblems(cid,weeks,n,seed){
-  const r=mkR(seed),secs=weekSections(cid,weeks),out=[];
-  const lvs=Array.from({length:n},(_,i)=>i<n*.3?0:i<n*.75?1:2);
-  for(let i=0;i<n;i++){
-    const sec=secs[(i*7+r.int(0,secs.length-1))%secs.length],names=sectionSkills(cid,sec);
-    out.push(makeProblem(pick(r,names),r,lvs[i]));
-    out[i].sec=sec;
-  }
+const moduleSkills=(cid,mods)=>[...new Set(mods.flatMap(m=>course(cid).modules[m-1].lessons.filter(l=>!l.review).flatMap(l=>l.skills)))];
+function examProblems(cid,mods,n,seed){
+  const r=mkR(seed),names=moduleSkills(cid,mods),out=[];
+  const lvs=Array.from({length:n},(_,i)=>i<n*.3?0:i<n*.75?1:2),order=r.shuffle(names);
+  for(let i=0;i<n;i++)out.push(makeProblem(order[i%order.length],r,lvs[i]));
   return out;
 }
 function examDefs(cid){
-  const nm=course(cid).name,defs=[];
-  course(cid).weeks.forEach(w=>defs.push({id:`${cid}-w${w.n}`,cid,kind:'week',title:`Week ${w.n} test`,weeks:[w.n],n:12,min:20,sub:w.title}));
-  [[1,9],[10,18],[19,27]].forEach(([a,b],i)=>defs.push({id:`${cid}-t${i+1}`,cid,kind:'term',title:`Term ${i+1} exam`,weeks:Array.from({length:b-a+1},(_,k)=>a+k),n:25,min:45,sub:`Weeks ${a}–${b}`}));
-  defs.push({id:`${cid}-final`,cid,kind:'final',title:`${nm} final exam`,weeks:Array.from({length:27},(_,k)=>k+1),n:40,min:90,sub:'Weeks 1–27'});
+  const c=course(cid),defs=[],real=c.modules.filter(m=>m.lessons.some(l=>!l.review));
+  real.forEach(m=>defs.push({id:`${cid}-m${m.n}`,cid,kind:'module',title:`${m.title} test`,weeks:[m.n],n:12,min:20,sub:`Module ${m.n}`}));
+  defs.push({id:`${cid}-final`,cid,kind:'final',title:`${c.name} final exam`,weeks:real.map(m=>m.n),n:40,min:90,sub:'All modules'});
   return defs;
 }
 const markLessonDone=(cid,n,score,total)=>{const k=`${cid}-${n}`,o=ST.done[k]||{best:0,total};o.best=Math.max(o.best,score);o.total=total;ST.done[k]=o;saveState()};

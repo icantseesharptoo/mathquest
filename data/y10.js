@@ -1,1 +1,596 @@
-window.COURSES=window.COURSES||{};window.COURSES['y10']={"id":"y10","name":"Year 10","perWeek":5,"weeks":[{"n":1,"title":"Reviewing number concepts","lessons":[{"sec":"1.1","unit":1,"unitTitle":"Reviewing number concepts","title":"Different types of numbers","part":1,"parts":1,"pages":[10,11],"obj":["identify and classify","find common factors and","write numbers as products","calculate squares, square","work with integers used in","revise the basic rules for"],"keys":["Natural number","Integer","Prime number","Symbol","Multiple","Factor","Composite numbers","Prime factor","Square","Square root"],"n":1,"week":1,"inweek":1},{"sec":"1.2","unit":1,"unitTitle":"Reviewing number concepts","title":"Multiples and factors","part":1,"parts":1,"pages":[12,13,14],"obj":[],"keys":[],"n":2,"week":1,"inweek":2},{"sec":"1.3","unit":1,"unitTitle":"Reviewing number concepts","title":"Prime numbers","part":1,"parts":1,"pages":[15,16,17,18],"obj":[],"keys":[],"n":3,"week":1,"inweek":3},{"sec":"1.4","unit":1,"unitTitle":"Reviewing number concepts","title":"Powers and roots","part":1,"parts":1,"pages":[19,20,21],"obj":[],"keys":[],"n":4,"week":1,"inweek":4},{"sec":"1.5","unit":1,"unitTitle":"Reviewing number concepts","title":"Working with directed numbers","part":1,"parts":1,"pages":[22,23],"obj":[],"keys":[],"n":5,"week":1,"inweek":5}]},{"n":2,"title":"Reviewing number concepts · Making sense of algebra","lessons":[{"sec":"1.6","unit":1,"unitTitle":"Reviewing number concepts","title":"Order of operations","part":1,"parts":1,"pages":[24,25,26],"obj":[],"keys":[],"n":6,"week":2,"inweek":1},{"sec":"1.7","unit":1,"unitTitle":"Reviewing number concepts","title":"Rounding numbers (part 1)","part":1,"parts":2,"pages":[27,28],"obj":[],"keys":[],"n":7,"week":2,"inweek":2},{"sec":"1.7","unit":1,"unitTitle":"Reviewing number concepts","title":"Rounding numbers (part 2)","part":2,"parts":2,"pages":[29,30,31],"obj":[],"keys":[],"n":8,"week":2,"inweek":3},{"sec":"2.1","unit":2,"unitTitle":"Making sense of algebra","title":"Using letters to represent unknown values","part":1,"parts":1,"pages":[32,33,34],"obj":["use letters to represent","write expressions to","substitute letters with","add and subtract like terms","multiply and divide to","expand expressions by"],"keys":["Algebra","Variable","Equation","Formula","Substitution","Expression","Term","Power","Index","Coefficient"],"n":9,"week":2,"inweek":4},{"sec":"2.2","unit":2,"unitTitle":"Making sense of algebra","title":"Substitution","part":1,"parts":1,"pages":[35,36,37],"obj":[],"keys":[],"n":10,"week":2,"inweek":5}]},{"n":3,"title":"Making sense of algebra","lessons":[{"sec":"2.3","unit":2,"unitTitle":"Making sense of algebra","title":"Simplifying expressions","part":1,"parts":1,"pages":[38,39,40,41],"obj":[],"keys":[],"n":11,"week":3,"inweek":1},{"sec":"2.4","unit":2,"unitTitle":"Making sense of algebra","title":"Working with brackets","part":1,"parts":1,"pages":[42,43],"obj":[],"keys":[],"n":12,"week":3,"inweek":2},{"sec":"2.5","unit":2,"unitTitle":"Making sense of algebra","title":"Indices (part 1)","part":1,"parts":4,"pages":[44,45],"obj":[],"keys":[],"n":13,"week":3,"inweek":3},{"sec":"2.5","unit":2,"unitTitle":"Making sense of algebra","title":"Indices (part 2)","part":2,"parts":4,"pages":[46,47,48],"obj":[],"keys":[],"n":14,"week":3,"inweek":4},{"sec":"2.5","unit":2,"unitTitle":"Making sense of algebra","title":"Indices (part 3)","part":3,"parts":4,"pages":[49,50,51],"obj":[],"keys":[],"n":15,"week":3,"inweek":5}]},{"n":4,"title":"Making sense of algebra · Lines, angles and shapes","lessons":[{"sec":"2.5","unit":2,"unitTitle":"Making sense of algebra","title":"Indices (part 4)","part":4,"parts":4,"pages":[52,53],"obj":[],"keys":[],"n":16,"week":4,"inweek":1},{"sec":"3.1","unit":3,"unitTitle":"Lines, angles and shapes","title":"Lines and angles (part 1)","part":1,"parts":4,"pages":[54,55],"obj":["use the correct terms to talk","classify, measure and","calculate unknown angles","talk about the properties","use instruments to construct","calculate unknown angles in"],"keys":["Line","Parallel","Angle","Perpendicular","Acute","Right","Obtuse","Reflex","Vertically opposite","Corresponding"],"n":17,"week":4,"inweek":2},{"sec":"3.1","unit":3,"unitTitle":"Lines, angles and shapes","title":"Lines and angles (part 2)","part":2,"parts":4,"pages":[56,57,58],"obj":["use the correct terms to talk","classify, measure and","calculate unknown angles","talk about the properties","use instruments to construct","calculate unknown angles in"],"keys":["Line","Parallel","Angle","Perpendicular","Acute","Right","Obtuse","Reflex","Vertically opposite","Corresponding"],"n":18,"week":4,"inweek":3},{"sec":"3.1","unit":3,"unitTitle":"Lines, angles and shapes","title":"Lines and angles (part 3)","part":3,"parts":4,"pages":[59,60,61],"obj":["use the correct terms to talk","classify, measure and","calculate unknown angles","talk about the properties","use instruments to construct","calculate unknown angles in"],"keys":["Line","Parallel","Angle","Perpendicular","Acute","Right","Obtuse","Reflex","Vertically opposite","Corresponding"],"n":19,"week":4,"inweek":4},{"sec":"3.1","unit":3,"unitTitle":"Lines, angles and shapes","title":"Lines and angles (part 4)","part":4,"parts":4,"pages":[62,63],"obj":["use the correct terms to talk","classify, measure and","calculate unknown angles","talk about the properties","use instruments to construct","calculate unknown angles in"],"keys":["Line","Parallel","Angle","Perpendicular","Acute","Right","Obtuse","Reflex","Vertically opposite","Corresponding"],"n":20,"week":4,"inweek":5}]},{"n":5,"title":"Lines, angles and shapes","lessons":[{"sec":"3.2","unit":3,"unitTitle":"Lines, angles and shapes","title":"Triangles","part":1,"parts":1,"pages":[64,65,66,67],"obj":[],"keys":[],"n":21,"week":5,"inweek":1},{"sec":"3.3","unit":3,"unitTitle":"Lines, angles and shapes","title":"Quadrilaterals","part":1,"parts":1,"pages":[68,69],"obj":[],"keys":[],"n":22,"week":5,"inweek":2},{"sec":"3.4","unit":3,"unitTitle":"Lines, angles and shapes","title":"Polygons","part":1,"parts":1,"pages":[70,71,72],"obj":[],"keys":[],"n":23,"week":5,"inweek":3},{"sec":"3.5","unit":3,"unitTitle":"Lines, angles and shapes","title":"Circles","part":1,"parts":1,"pages":[73],"obj":[],"keys":[],"n":24,"week":5,"inweek":4},{"sec":"3.6","unit":3,"unitTitle":"Lines, angles and shapes","title":"Construction (part 1)","part":1,"parts":3,"pages":[74,75,76],"obj":[],"keys":[],"n":25,"week":5,"inweek":5}]},{"n":6,"title":"Lines, angles and shapes · Collecting, organising and displaying data","lessons":[{"sec":"3.6","unit":3,"unitTitle":"Lines, angles and shapes","title":"Construction (part 2)","part":2,"parts":3,"pages":[77,78],"obj":[],"keys":[],"n":26,"week":6,"inweek":1},{"sec":"3.6","unit":3,"unitTitle":"Lines, angles and shapes","title":"Construction (part 3)","part":3,"parts":3,"pages":[79,80,81],"obj":[],"keys":[],"n":27,"week":6,"inweek":2},{"sec":"4.1","unit":4,"unitTitle":"Collecting, organising and displaying data","title":"Collecting and classifying data","part":1,"parts":1,"pages":[82,83,84],"obj":[],"keys":["The scale. The frequency axis should start at 0, it should not be exaggerated and it should be clearly labelled.","How it is drawn. Bars or sections of a pie chart that are 3-dimensional can make some parts look bigger than"],"n":28,"week":6,"inweek":3},{"sec":"4.2","unit":4,"unitTitle":"Collecting, organising and displaying data","title":"Organising data (part 1)","part":1,"parts":4,"pages":[85,86],"obj":[],"keys":[],"n":29,"week":6,"inweek":4},{"sec":"4.2","unit":4,"unitTitle":"Collecting, organising and displaying data","title":"Organising data (part 2)","part":2,"parts":4,"pages":[87,88,89],"obj":[],"keys":[],"n":30,"week":6,"inweek":5}]},{"n":7,"title":"Collecting, organising and displaying data","lessons":[{"sec":"4.2","unit":4,"unitTitle":"Collecting, organising and displaying data","title":"Organising data (part 3)","part":3,"parts":4,"pages":[90,91,92],"obj":[],"keys":[],"n":31,"week":7,"inweek":1},{"sec":"4.2","unit":4,"unitTitle":"Collecting, organising and displaying data","title":"Organising data (part 4)","part":4,"parts":4,"pages":[93,94],"obj":[],"keys":[],"n":32,"week":7,"inweek":2},{"sec":"4.3","unit":4,"unitTitle":"Collecting, organising and displaying data","title":"Using charts to display data (part 1)","part":1,"parts":6,"pages":[95,96,97],"obj":[],"keys":[],"n":33,"week":7,"inweek":3},{"sec":"4.3","unit":4,"unitTitle":"Collecting, organising and displaying data","title":"Using charts to display data (part 2)","part":2,"parts":6,"pages":[98,99],"obj":[],"keys":[],"n":34,"week":7,"inweek":4},{"sec":"4.3","unit":4,"unitTitle":"Collecting, organising and displaying data","title":"Using charts to display data (part 3)","part":3,"parts":6,"pages":[100,101,102],"obj":[],"keys":[],"n":35,"week":7,"inweek":5}]},{"n":8,"title":"Collecting, organising and displaying data · Fractions and standard form","lessons":[{"sec":"4.3","unit":4,"unitTitle":"Collecting, organising and displaying data","title":"Using charts to display data (part 4)","part":4,"parts":6,"pages":[103,104,105],"obj":[],"keys":[],"n":36,"week":8,"inweek":1},{"sec":"4.3","unit":4,"unitTitle":"Collecting, organising and displaying data","title":"Using charts to display data (part 5)","part":5,"parts":6,"pages":[106,107],"obj":[],"keys":[],"n":37,"week":8,"inweek":2},{"sec":"4.3","unit":4,"unitTitle":"Collecting, organising and displaying data","title":"Using charts to display data (part 6)","part":6,"parts":6,"pages":[108,109,110],"obj":[],"keys":[],"n":38,"week":8,"inweek":3},{"sec":"5.1","unit":5,"unitTitle":"Fractions and standard form","title":"Equivalent fractions","part":1,"parts":1,"pages":[111,112],"obj":[],"keys":[],"n":39,"week":8,"inweek":4},{"sec":"5.2","unit":5,"unitTitle":"Fractions and standard form","title":"Operations on fractions (part 1)","part":1,"parts":2,"pages":[113,114],"obj":[],"keys":[],"n":40,"week":8,"inweek":5}]},{"n":9,"title":"Fractions and standard form","lessons":[{"sec":"5.2","unit":5,"unitTitle":"Fractions and standard form","title":"Operations on fractions (part 2)","part":2,"parts":2,"pages":[115,116,117],"obj":[],"keys":[],"n":41,"week":9,"inweek":1},{"sec":"5.3","unit":5,"unitTitle":"Fractions and standard form","title":"Percentages (part 1)","part":1,"parts":2,"pages":[118,119],"obj":[],"keys":[],"n":42,"week":9,"inweek":2},{"sec":"5.3","unit":5,"unitTitle":"Fractions and standard form","title":"Percentages (part 2)","part":2,"parts":2,"pages":[120,121,122],"obj":[],"keys":[],"n":43,"week":9,"inweek":3},{"sec":"5.4","unit":5,"unitTitle":"Fractions and standard form","title":"Standard form","part":1,"parts":1,"pages":[123,124,125,126],"obj":[],"keys":[],"n":44,"week":9,"inweek":4},{"sec":"5.5","unit":5,"unitTitle":"Fractions and standard form","title":"Your calculator and standard form","part":1,"parts":1,"pages":[127],"obj":[],"keys":[],"n":45,"week":9,"inweek":5}]},{"n":10,"title":"Fractions and standard form · Equations and rearranging formulae","lessons":[{"sec":"5.6","unit":5,"unitTitle":"Fractions and standard form","title":"Estimation","part":1,"parts":1,"pages":[128,129,130,131],"obj":[],"keys":[],"n":46,"week":10,"inweek":1},{"sec":"6.1","unit":6,"unitTitle":"Equations and rearranging formulae","title":"Further expansions of brackets","part":1,"parts":1,"pages":[132,133],"obj":["expand brackets that","solve a linear equation","factorise an algebraic","rearrange a formula to"],"keys":["Expansion","Linear equation","Solution","Common factor","Factorisation","Variable","Subject"],"n":47,"week":10,"inweek":2},{"sec":"6.2","unit":6,"unitTitle":"Equations and rearranging formulae","title":"Solving linear equations","part":1,"parts":1,"pages":[134,135,136],"obj":[],"keys":[],"n":48,"week":10,"inweek":3},{"sec":"6.3","unit":6,"unitTitle":"Equations and rearranging formulae","title":"Factorising algebraic expressions","part":1,"parts":1,"pages":[137],"obj":[],"keys":[],"n":49,"week":10,"inweek":4},{"sec":"6.4","unit":6,"unitTitle":"Equations and rearranging formulae","title":"Rearrangement of a formula (part 1)","part":1,"parts":2,"pages":[138,139],"obj":[],"keys":[],"n":50,"week":10,"inweek":5}]},{"n":11,"title":"Equations and rearranging formulae · Perimeter, area and volume","lessons":[{"sec":"6.4","unit":6,"unitTitle":"Equations and rearranging formulae","title":"Rearrangement of a formula (part 2)","part":2,"parts":2,"pages":[140,141,142],"obj":[],"keys":[],"n":51,"week":11,"inweek":1},{"sec":"7.1","unit":7,"unitTitle":"Perimeter, area and volume","title":"Perimeter and area in two dimensions","part":1,"parts":1,"pages":[143,144,145],"obj":[],"keys":[],"n":52,"week":11,"inweek":2},{"sec":"7.2","unit":7,"unitTitle":"Perimeter, area and volume","title":"Three-dimensional objects (part 1)","part":1,"parts":5,"pages":[146,147,148],"obj":[],"keys":[],"n":53,"week":11,"inweek":3},{"sec":"7.2","unit":7,"unitTitle":"Perimeter, area and volume","title":"Three-dimensional objects (part 2)","part":2,"parts":5,"pages":[149,150],"obj":[],"keys":[],"n":54,"week":11,"inweek":4},{"sec":"7.2","unit":7,"unitTitle":"Perimeter, area and volume","title":"Three-dimensional objects (part 3)","part":3,"parts":5,"pages":[151,152,153],"obj":[],"keys":[],"n":55,"week":11,"inweek":5}]},{"n":12,"title":"Perimeter, area and volume","lessons":[{"sec":"7.2","unit":7,"unitTitle":"Perimeter, area and volume","title":"Three-dimensional objects (part 4)","part":4,"parts":5,"pages":[154,155],"obj":[],"keys":[],"n":56,"week":12,"inweek":1},{"sec":"7.2","unit":7,"unitTitle":"Perimeter, area and volume","title":"Three-dimensional objects (part 5)","part":5,"parts":5,"pages":[156,157,158],"obj":[],"keys":[],"n":57,"week":12,"inweek":2},{"sec":"7.3","unit":7,"unitTitle":"Perimeter, area and volume","title":"Surface areas and volumes of solids (part 1)","part":1,"parts":4,"pages":[159,160],"obj":[],"keys":[],"n":58,"week":12,"inweek":3},{"sec":"7.3","unit":7,"unitTitle":"Perimeter, area and volume","title":"Surface areas and volumes of solids (part 2)","part":2,"parts":4,"pages":[161,162,163],"obj":[],"keys":[],"n":59,"week":12,"inweek":4},{"sec":"7.3","unit":7,"unitTitle":"Perimeter, area and volume","title":"Surface areas and volumes of solids (part 3)","part":3,"parts":4,"pages":[164,165,166],"obj":[],"keys":[],"n":60,"week":12,"inweek":5}]},{"n":13,"title":"Perimeter, area and volume · Introduction to probability","lessons":[{"sec":"7.3","unit":7,"unitTitle":"Perimeter, area and volume","title":"Surface areas and volumes of solids (part 4)","part":4,"parts":4,"pages":[167,168],"obj":[],"keys":[],"n":61,"week":13,"inweek":1},{"sec":"8.1","unit":8,"unitTitle":"Introduction to probability","title":"Basic probability","part":1,"parts":1,"pages":[169,170],"obj":["express probabilities","calculate probabilities","use possibility diagrams to","identify when events are","identify when events are"],"keys":["Event","Probability","Probability scale","Trial","Experimental probability","Outcome","Theoretical probability","Favourable outcomes","Bias","Possibility diagram"],"n":62,"week":13,"inweek":2},{"sec":"8.2","unit":8,"unitTitle":"Introduction to probability","title":"Theoretical probability","part":1,"parts":1,"pages":[171,172],"obj":[],"keys":[],"n":63,"week":13,"inweek":3},{"sec":"8.3","unit":8,"unitTitle":"Introduction to probability","title":"The probability that an event does not happen","part":1,"parts":1,"pages":[173],"obj":[],"keys":[],"n":64,"week":13,"inweek":4},{"sec":"8.4","unit":8,"unitTitle":"Introduction to probability","title":"Possibility diagrams","part":1,"parts":1,"pages":[174,175],"obj":[],"keys":[],"n":65,"week":13,"inweek":5}]},{"n":14,"title":"Introduction to probability · Sequences and sets","lessons":[{"sec":"8.5","unit":8,"unitTitle":"Introduction to probability","title":"Combining independent and mutually exclusive events (part 1)","part":1,"parts":2,"pages":[176,177,178],"obj":[],"keys":[],"n":66,"week":14,"inweek":1},{"sec":"8.5","unit":8,"unitTitle":"Introduction to probability","title":"Combining independent and mutually exclusive events (part 2)","part":2,"parts":2,"pages":[179,180,181],"obj":[],"keys":[],"n":67,"week":14,"inweek":2},{"sec":"9.1","unit":9,"unitTitle":"Sequences and sets","title":"Sequences (part 1)","part":1,"parts":3,"pages":[182,183,184],"obj":["n","describe the rule for","find the n","use the n","generate and describe","list the elements of a set"],"keys":["Sequence","Term","Term-to-term rule","Rational number","Terminating decimals","Recurring decimals","Set","Element","Empty set","Universal set"],"n":68,"week":14,"inweek":3},{"sec":"9.1","unit":9,"unitTitle":"Sequences and sets","title":"Sequences (part 2)","part":2,"parts":3,"pages":[185,186,187],"obj":["n","describe the rule for","find the n","use the n","generate and describe","list the elements of a set"],"keys":["Sequence","Term","Term-to-term rule","Rational number","Terminating decimals","Recurring decimals","Set","Element","Empty set","Universal set"],"n":69,"week":14,"inweek":4},{"sec":"9.1","unit":9,"unitTitle":"Sequences and sets","title":"Sequences (part 3)","part":3,"parts":3,"pages":[188,189,190],"obj":["n","describe the rule for","find the n","use the n","generate and describe","list the elements of a set"],"keys":["Sequence","Term","Term-to-term rule","Rational number","Terminating decimals","Recurring decimals","Set","Element","Empty set","Universal set"],"n":70,"week":14,"inweek":5}]},{"n":15,"title":"Sequences and sets","lessons":[{"sec":"9.2","unit":9,"unitTitle":"Sequences and sets","title":"Rational and irrational numbers","part":1,"parts":1,"pages":[191,192,193],"obj":[],"keys":[],"n":71,"week":15,"inweek":1},{"sec":"9.3","unit":9,"unitTitle":"Sequences and sets","title":"Sets (part 1)","part":1,"parts":5,"pages":[194,195,196],"obj":[],"keys":[],"n":72,"week":15,"inweek":2},{"sec":"9.3","unit":9,"unitTitle":"Sequences and sets","title":"Sets (part 2)","part":2,"parts":5,"pages":[197,198,199],"obj":[],"keys":[],"n":73,"week":15,"inweek":3},{"sec":"9.3","unit":9,"unitTitle":"Sequences and sets","title":"Sets (part 3)","part":3,"parts":5,"pages":[200,201],"obj":[],"keys":[],"n":74,"week":15,"inweek":4},{"sec":"9.3","unit":9,"unitTitle":"Sequences and sets","title":"Sets (part 4)","part":4,"parts":5,"pages":[202,203,204],"obj":[],"keys":[],"n":75,"week":15,"inweek":5}]},{"n":16,"title":"Sequences and sets · Straight lines and quadratic equations","lessons":[{"sec":"9.3","unit":9,"unitTitle":"Sequences and sets","title":"Sets (part 5)","part":5,"parts":5,"pages":[205,206,207],"obj":[],"keys":[],"n":76,"week":16,"inweek":1},{"sec":"10.1","unit":10,"unitTitle":"Straight lines and quadratic equations","title":"Straight lines (part 1)","part":1,"parts":6,"pages":[208,209,210],"obj":["m is the gradient (or steepness) of the graph","c is the point where the graph crosses the y-axis (the y-intercept)"],"keys":[],"n":77,"week":16,"inweek":2},{"sec":"10.1","unit":10,"unitTitle":"Straight lines and quadratic equations","title":"Straight lines (part 2)","part":2,"parts":6,"pages":[211,212,213],"obj":["m is the gradient (or steepness) of the graph","c is the point where the graph crosses the y-axis (the y-intercept)"],"keys":[],"n":78,"week":16,"inweek":3},{"sec":"10.1","unit":10,"unitTitle":"Straight lines and quadratic equations","title":"Straight lines (part 3)","part":3,"parts":6,"pages":[214,215],"obj":["m is the gradient (or steepness) of the graph","c is the point where the graph crosses the y-axis (the y-intercept)"],"keys":[],"n":79,"week":16,"inweek":4},{"sec":"10.1","unit":10,"unitTitle":"Straight lines and quadratic equations","title":"Straight lines (part 4)","part":4,"parts":6,"pages":[216,217,218],"obj":["m is the gradient (or steepness) of the graph","c is the point where the graph crosses the y-axis (the y-intercept)"],"keys":[],"n":80,"week":16,"inweek":5}]},{"n":17,"title":"Straight lines and quadratic equations","lessons":[{"sec":"10.1","unit":10,"unitTitle":"Straight lines and quadratic equations","title":"Straight lines (part 5)","part":5,"parts":6,"pages":[219,220,221],"obj":["m is the gradient (or steepness) of the graph","c is the point where the graph crosses the y-axis (the y-intercept)"],"keys":[],"n":81,"week":17,"inweek":1},{"sec":"10.1","unit":10,"unitTitle":"Straight lines and quadratic equations","title":"Straight lines (part 6)","part":6,"parts":6,"pages":[222,223,224],"obj":["m is the gradient (or steepness) of the graph","c is the point where the graph crosses the y-axis (the y-intercept)"],"keys":[],"n":82,"week":17,"inweek":2},{"sec":"10.2","unit":10,"unitTitle":"Straight lines and quadratic equations","title":"Quadratic (and other) expressions (part 1)","part":1,"parts":4,"pages":[225,226],"obj":[],"keys":[],"n":83,"week":17,"inweek":3},{"sec":"10.2","unit":10,"unitTitle":"Straight lines and quadratic equations","title":"Quadratic (and other) expressions (part 2)","part":2,"parts":4,"pages":[227,228,229],"obj":[],"keys":[],"n":84,"week":17,"inweek":4},{"sec":"10.2","unit":10,"unitTitle":"Straight lines and quadratic equations","title":"Quadratic (and other) expressions (part 3)","part":3,"parts":4,"pages":[230,231,232],"obj":[],"keys":[],"n":85,"week":17,"inweek":5}]},{"n":18,"title":"Straight lines and quadratic equations · Pythagoras' theorem and similar shapes","lessons":[{"sec":"10.2","unit":10,"unitTitle":"Straight lines and quadratic equations","title":"Quadratic (and other) expressions (part 4)","part":4,"parts":4,"pages":[233,234],"obj":[],"keys":[],"n":86,"week":18,"inweek":1},{"sec":"11.1","unit":11,"unitTitle":"Pythagoras' theorem and similar shapes","title":"Pythagoras' theorem (part 1)","part":1,"parts":2,"pages":[235,236],"obj":["use Pythagoras’ theorem","learn how to use","decide whether or not","use properties of similar","find unknown lengths in","use the relationship"],"keys":["Right angle","Hypotenuse","Similar","Corresponding sides","Corresponding angles","Scale factor of lengths","Scale factor of volumes","Scale factor of areas","Congruent","Included side"],"n":87,"week":18,"inweek":2},{"sec":"11.1","unit":11,"unitTitle":"Pythagoras' theorem and similar shapes","title":"Pythagoras' theorem (part 2)","part":2,"parts":2,"pages":[237,238,239],"obj":["use Pythagoras’ theorem","learn how to use","decide whether or not","use properties of similar","find unknown lengths in","use the relationship"],"keys":["Right angle","Hypotenuse","Similar","Corresponding sides","Corresponding angles","Scale factor of lengths","Scale factor of volumes","Scale factor of areas","Congruent","Included side"],"n":88,"week":18,"inweek":3},{"sec":"11.2","unit":11,"unitTitle":"Pythagoras' theorem and similar shapes","title":"Understanding similar triangles (part 1)","part":1,"parts":2,"pages":[240,241],"obj":[],"keys":[],"n":89,"week":18,"inweek":4},{"sec":"11.2","unit":11,"unitTitle":"Pythagoras' theorem and similar shapes","title":"Understanding similar triangles (part 2)","part":2,"parts":2,"pages":[242,243,244],"obj":[],"keys":[],"n":90,"week":18,"inweek":5}]},{"n":19,"title":"Pythagoras' theorem and similar shapes","lessons":[{"sec":"11.3","unit":11,"unitTitle":"Pythagoras' theorem and similar shapes","title":"Understanding similar shapes (part 1)","part":1,"parts":3,"pages":[245,246,247],"obj":[],"keys":[],"n":91,"week":19,"inweek":1},{"sec":"11.3","unit":11,"unitTitle":"Pythagoras' theorem and similar shapes","title":"Understanding similar shapes (part 2)","part":2,"parts":3,"pages":[248,249],"obj":[],"keys":[],"n":92,"week":19,"inweek":2},{"sec":"11.3","unit":11,"unitTitle":"Pythagoras' theorem and similar shapes","title":"Understanding similar shapes (part 3)","part":3,"parts":3,"pages":[250,251,252],"obj":[],"keys":[],"n":93,"week":19,"inweek":3},{"sec":"11.4","unit":11,"unitTitle":"Pythagoras' theorem and similar shapes","title":"Understanding congruence (part 1)","part":1,"parts":3,"pages":[253,254,255],"obj":[],"keys":[],"n":94,"week":19,"inweek":4},{"sec":"11.4","unit":11,"unitTitle":"Pythagoras' theorem and similar shapes","title":"Understanding congruence (part 2)","part":2,"parts":3,"pages":[256,257,258],"obj":[],"keys":[],"n":95,"week":19,"inweek":5}]},{"n":20,"title":"Pythagoras' theorem and similar shapes · Averages and measures of spread","lessons":[{"sec":"11.4","unit":11,"unitTitle":"Pythagoras' theorem and similar shapes","title":"Understanding congruence (part 3)","part":3,"parts":3,"pages":[259,260,261],"obj":[],"keys":[],"n":96,"week":20,"inweek":1},{"sec":"12.1","unit":12,"unitTitle":"Averages and measures of spread","title":"Different types of average","part":1,"parts":1,"pages":[262,263,264,265],"obj":["calculate the mean, median","calculate and interpret the","interpret the meaning of","construct and use frequency","identify the class that","calculate and work with"],"keys":["Average","Mode","Mean","Spread","Median","Range","Discrete","Continuous","Grouped data","Estimated mean"],"n":97,"week":20,"inweek":2},{"sec":"12.2","unit":12,"unitTitle":"Averages and measures of spread","title":"Making comparisons using averages and ranges","part":1,"parts":1,"pages":[266],"obj":[],"keys":[],"n":98,"week":20,"inweek":3},{"sec":"12.3","unit":12,"unitTitle":"Averages and measures of spread","title":"Calculating averages and ranges for frequency data","part":1,"parts":1,"pages":[267,268,269,270],"obj":[],"keys":[],"n":99,"week":20,"inweek":4},{"sec":"12.4","unit":12,"unitTitle":"Averages and measures of spread","title":"Calculating averages and ranges for grouped continuous data","part":1,"parts":1,"pages":[271,272,273],"obj":[],"keys":[],"n":100,"week":20,"inweek":5}]},{"n":21,"title":"Averages and measures of spread","lessons":[{"sec":"12.5","unit":12,"unitTitle":"Averages and measures of spread","title":"Percentiles and quartiles","part":1,"parts":1,"pages":[274,275,276,277],"obj":[],"keys":[],"n":101,"week":21,"inweek":1},{"sec":"12.6","unit":12,"unitTitle":"Averages and measures of spread","title":"Box-and-whisker plots (part 1)","part":1,"parts":4,"pages":[278,279,280],"obj":[],"keys":[],"n":102,"week":21,"inweek":2},{"sec":"12.6","unit":12,"unitTitle":"Averages and measures of spread","title":"Box-and-whisker plots (part 2)","part":2,"parts":4,"pages":[281,282,283],"obj":[],"keys":[],"n":103,"week":21,"inweek":3},{"sec":"12.6","unit":12,"unitTitle":"Averages and measures of spread","title":"Box-and-whisker plots (part 3)","part":3,"parts":4,"pages":[284,285,286],"obj":[],"keys":[],"n":104,"week":21,"inweek":4},{"sec":"12.6","unit":12,"unitTitle":"Averages and measures of spread","title":"Box-and-whisker plots (part 4)","part":4,"parts":4,"pages":[287,288,289],"obj":[],"keys":[],"n":105,"week":21,"inweek":5}]},{"n":22,"title":"Further solving of equations and inequalities","lessons":[{"sec":"14.1","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Simultaneous linear equations (part 1)","part":1,"parts":3,"pages":[311,312,313],"obj":[],"keys":[],"n":106,"week":22,"inweek":1},{"sec":"14.1","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Simultaneous linear equations (part 2)","part":2,"parts":3,"pages":[314,315],"obj":[],"keys":[],"n":107,"week":22,"inweek":2},{"sec":"14.1","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Simultaneous linear equations (part 3)","part":3,"parts":3,"pages":[316,317,318],"obj":[],"keys":[],"n":108,"week":22,"inweek":3},{"sec":"14.2","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Linear inequalities","part":1,"parts":1,"pages":[319,320,321,322],"obj":[],"keys":[],"n":109,"week":22,"inweek":4},{"sec":"14.3","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Regions in a plane (part 1)","part":1,"parts":2,"pages":[323,324],"obj":[],"keys":[],"n":110,"week":22,"inweek":5}]},{"n":23,"title":"Further solving of equations and inequalities","lessons":[{"sec":"14.3","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Regions in a plane (part 2)","part":2,"parts":2,"pages":[325,326,327],"obj":[],"keys":[],"n":111,"week":23,"inweek":1},{"sec":"14.4","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Linear programming","part":1,"parts":1,"pages":[328,329],"obj":[],"keys":[],"n":112,"week":23,"inweek":2},{"sec":"14.5","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Completing the square","part":1,"parts":1,"pages":[330],"obj":[],"keys":[],"n":113,"week":23,"inweek":3},{"sec":"14.6","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Quadratic formula","part":1,"parts":1,"pages":[331,332],"obj":[],"keys":[],"n":114,"week":23,"inweek":4},{"sec":"14.7","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Factorising quadratics where the coefficient of x2 is not 1","part":1,"parts":1,"pages":[333,334],"obj":[],"keys":[],"n":115,"week":23,"inweek":5}]},{"n":24,"title":"Further solving of equations and inequalities · Scale drawings, bearings and trigonometry","lessons":[{"sec":"14.8","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Algebraic fractions (part 1)","part":1,"parts":3,"pages":[335,336,337],"obj":[],"keys":[],"n":116,"week":24,"inweek":1},{"sec":"14.8","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Algebraic fractions (part 2)","part":2,"parts":3,"pages":[338,339,340],"obj":[],"keys":[],"n":117,"week":24,"inweek":2},{"sec":"14.8","unit":14,"unitTitle":"Further solving of equations and inequalities","title":"Algebraic fractions (part 3)","part":3,"parts":3,"pages":[341,342,343],"obj":[],"keys":[],"n":118,"week":24,"inweek":3},{"sec":"15.1","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Scale drawings","part":1,"parts":1,"pages":[344,345,346,347],"obj":["make scale drawings","interpret scale drawings","calculate bearings","calculate sine, cosine and","use sine, cosine and tangent","solve trigonometric"],"keys":["Scale drawing","Bearing","Hypotenuse","Adjacent","Opposite","Tangent ratio","Inverse function","Sine ratio","Cosine ratio","Sine rule"],"n":119,"week":24,"inweek":4},{"sec":"15.2","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Bearings","part":1,"parts":1,"pages":[348],"obj":[],"keys":[],"n":120,"week":24,"inweek":5}]},{"n":25,"title":"Scale drawings, bearings and trigonometry","lessons":[{"sec":"15.3","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Understanding the tangent, cosine and sine ratios (part 1)","part":1,"parts":5,"pages":[349,350,351],"obj":[],"keys":[],"n":121,"week":25,"inweek":1},{"sec":"15.3","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Understanding the tangent, cosine and sine ratios (part 2)","part":2,"parts":5,"pages":[352,353,354],"obj":[],"keys":[],"n":122,"week":25,"inweek":2},{"sec":"15.3","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Understanding the tangent, cosine and sine ratios (part 3)","part":3,"parts":5,"pages":[355,356,357],"obj":[],"keys":[],"n":123,"week":25,"inweek":3},{"sec":"15.3","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Understanding the tangent, cosine and sine ratios (part 4)","part":4,"parts":5,"pages":[358,359,360],"obj":[],"keys":[],"n":124,"week":25,"inweek":4},{"sec":"15.3","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Understanding the tangent, cosine and sine ratios (part 5)","part":5,"parts":5,"pages":[361,362,363],"obj":[],"keys":[],"n":125,"week":25,"inweek":5}]},{"n":26,"title":"Scale drawings, bearings and trigonometry","lessons":[{"sec":"15.4","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Solving problems using trigonometry (part 1)","part":1,"parts":2,"pages":[364,365],"obj":[],"keys":[],"n":126,"week":26,"inweek":1},{"sec":"15.4","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Solving problems using trigonometry (part 2)","part":2,"parts":2,"pages":[366,367,368],"obj":[],"keys":[],"n":127,"week":26,"inweek":2},{"sec":"15.5","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Sines, cosines and tangents of angles more than 90°","part":1,"parts":1,"pages":[369,370,371,372],"obj":[],"keys":[],"n":128,"week":26,"inweek":3},{"sec":"15.6","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"The sine and cosine rules (part 1)","part":1,"parts":3,"pages":[373,374,375],"obj":[],"keys":[],"n":129,"week":26,"inweek":4},{"sec":"15.6","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"The sine and cosine rules (part 2)","part":2,"parts":3,"pages":[376,377],"obj":[],"keys":[],"n":130,"week":26,"inweek":5}]},{"n":27,"title":"Scale drawings, bearings and trigonometry","lessons":[{"sec":"15.6","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"The sine and cosine rules (part 3)","part":3,"parts":3,"pages":[378,379,380],"obj":[],"keys":[],"n":131,"week":27,"inweek":1},{"sec":"15.7","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Area of a triangle","part":1,"parts":1,"pages":[381,382,383],"obj":[],"keys":[],"n":132,"week":27,"inweek":2},{"sec":"15.8","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Trigonometry in three dimensions (part 1)","part":1,"parts":3,"pages":[384,385,386],"obj":[],"keys":[],"n":133,"week":27,"inweek":3},{"sec":"15.8","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Trigonometry in three dimensions (part 2)","part":2,"parts":3,"pages":[387,388],"obj":[],"keys":[],"n":134,"week":27,"inweek":4},{"sec":"15.8","unit":15,"unitTitle":"Scale drawings, bearings and trigonometry","title":"Trigonometry in three dimensions (part 3)","part":3,"parts":3,"pages":[389,390,391],"obj":[],"keys":[],"n":135,"week":27,"inweek":5}]}],"units":[{"n":1,"title":"Reviewing number concepts"},{"n":2,"title":"Making sense of algebra"},{"n":3,"title":"Lines, angles and shapes"},{"n":4,"title":"Collecting, organising and displaying data"},{"n":5,"title":"Fractions and standard form"},{"n":6,"title":"Equations and rearranging formulae"},{"n":7,"title":"Perimeter, area and volume"},{"n":8,"title":"Introduction to probability"},{"n":9,"title":"Sequences and sets"},{"n":10,"title":"Straight lines and quadratic equations"},{"n":11,"title":"Pythagoras' theorem and similar shapes"},{"n":12,"title":"Averages and measures of spread"},{"n":14,"title":"Further solving of equations and inequalities"},{"n":15,"title":"Scale drawings, bearings and trigonometry"}]};
+window.PLANS=window.PLANS||{};window.PLANS['y10']={
+"id": "y10",
+"name": "Year 10",
+"source": "y10_plan_edupage.xls",
+"playlist": null,
+"chapters": [
+{
+"title": "Number",
+"goals": [
+"Identify and use natural numbers, integers (positive, negative and zero), prime numbers, square and cube numbers, common factors and common multiples, rational and irrational numbers (e.g. π, 2 ), real numbers, reciprocals.",
+"Order quantities by magnitude and demonstrate familiarity with the symbols =, /=, >,< >=, <=",
+"Use the four rules for calculations with whole numbers, decimals and fractions (including mixed numbers and improper fractions), including correct ordering of operations and use of brackets.",
+"Make estimates of numbers, quantities and lengths, give approximations to specified numbers of significant figures and decimal places and round off answers to reasonable accuracy in the context of a given problem.",
+"Demonstrate an understanding of ratio and proportion. Calculate average speed. Use common measures of rate.",
+"Understand the meaning of indices (fractional,negative and zero) and use the rules of indices.",
+"Calculate a given percentage of a quantity. Express one quantity as a percentage of another. Calculate percentage increase or decrease.",
+"Calculate times in terms of the 24-hour and 12-hour clock. Read clocks, dials and timetables.",
+"Calculate using money and convert from one currency to another.",
+"Use given data to solve problems on personal and household finance involving earnings, simple interest and compound interest.",
+"Give appropriate upper and lower bounds for data given to a specified accuracy."
+],
+"topics": [
+{
+"title": "Types of numbers",
+"plan": "Types",
+"lessons": "1–30",
+"nLessons": 30,
+"skills": [
+"numberTypesMC",
+"squareCube"
+]
+},
+{
+"title": "Factors and prime factors",
+"plan": "Factors and Prime factors",
+"lessons": "31",
+"nLessons": 1,
+"skills": [
+"primeFactors",
+"hcfLcm",
+"factorCount"
+]
+},
+{
+"title": "Standard form",
+"plan": "Standard form",
+"lessons": "32",
+"nLessons": 1,
+"skills": [
+"stdForm",
+"stdOrdinary",
+"stdMul"
+]
+},
+{
+"title": "Roots and powers",
+"plan": "Roots and powers",
+"lessons": "33",
+"nLessons": 1,
+"skills": [
+"squareCube",
+"indices",
+"zeroNegIndex"
+]
+},
+{
+"title": "Order of operations",
+"plan": "Order of operations",
+"lessons": "34",
+"nLessons": 1,
+"skills": [
+"bidmas"
+]
+},
+{
+"title": "Upper and lower bounds",
+"plan": "Bounds",
+"lessons": "35",
+"nLessons": 1,
+"skills": [
+"y10_bounds"
+]
+},
+{
+"title": "Ratio and rate",
+"plan": "Ratio and rate",
+"lessons": "36",
+"nLessons": 1,
+"skills": [
+"ratioShare",
+"proportion",
+"speedDist",
+"y8_bestBuy"
+],
+"demo": "ratio"
+},
+{
+"title": "Percentages",
+"plan": "Percentage",
+"lessons": "37",
+"nLessons": 1,
+"skills": [
+"percOf",
+"percChange",
+"percentageChange",
+"reversePerc"
+],
+"demo": "percent"
+},
+{
+"title": "Time and timetables",
+"plan": "Time",
+"lessons": "38",
+"nLessons": 1,
+"skills": [
+"y10_time"
+]
+},
+{
+"title": "Simple and compound interest",
+"plan": "Compound interest",
+"lessons": "39",
+"nLessons": 1,
+"skills": [
+"compound",
+"simpleInterest"
+],
+"demo": "percent"
+}
+]
+},
+{
+"title": "Algebra",
+"goals": [
+"Use letters to express generalised numbers and express basic arithmetic processes algebraically. Substitute numbers for words and letters in formulae. Rearrange simple formulae. Construct simple expressions and set up simple equations.",
+"Derive and solve simple linear equations in one unknown.",
+"simplify and manipulate algebraic expressions (including those involving surds and algebraic fractions)",
+"where appropriate, interpret simple expressions as functions with inputs and outputs; interpret the reverse process as the ‘inverse function’; interpret the succession of two functions as a ‘composite function’.",
+"work with coordinates in all four quadrants",
+"plot graphs of equations that correspond to straight-line graphs in the coordinate plane; use the form y = mx + c to identify parallel and perpendicular lines; find the equation of the line through two given points, or through one point with a given point",
+"identify and interpret gradients and intercepts of linear functions graphically andalgebraically",
+"identify and interpret roots, intercepts, turning points of quadratic functions graphically; deduce roots algebraically and turning points by completing the square",
+"Rearrange simple formulae.",
+"Use brackets and extract common factors.",
+"Derive and solve simple linear equations in two unknowns.",
+"Substitute numbers for words and letters in formulae."
+],
+"topics": [
+{
+"title": "Substitution",
+"plan": "Substitution",
+"lessons": "40–59",
+"nLessons": 20,
+"skills": [
+"substitute"
+]
+},
+{
+"title": "Solving equations",
+"plan": "Equation solution",
+"lessons": "60",
+"nLessons": 1,
+"skills": [
+"linear",
+"linearFrac"
+]
+},
+{
+"title": "Simultaneous equations",
+"plan": "Simultaneou",
+"lessons": "61",
+"nLessons": 1,
+"skills": [
+"simultaneous",
+"y10_intersect"
+]
+},
+{
+"title": "Word problems: setting up a model",
+"plan": "Word sum and set up of model",
+"lessons": "62",
+"nLessons": 1,
+"skills": [
+"y8_wordEq",
+"buildExpr"
+]
+},
+{
+"title": "Expressions",
+"plan": "Expressions",
+"lessons": "63",
+"nLessons": 1,
+"skills": [
+"simplifyExpr",
+"buildExpr"
+]
+},
+{
+"title": "Rules of indices",
+"plan": "Indeices rules",
+"lessons": "64",
+"nLessons": 1,
+"skills": [
+"indices",
+"zeroNegIndex",
+"indexSolve"
+]
+},
+{
+"title": "Expanding brackets",
+"plan": "Expand bracket",
+"lessons": "65",
+"nLessons": 1,
+"skills": [
+"expand"
+]
+},
+{
+"title": "Factorising",
+"plan": "Basic factors",
+"lessons": "66",
+"nLessons": 1,
+"skills": [
+"factorise",
+"quadFactor"
+]
+},
+{
+"title": "Linear patterns (sequences)",
+"plan": "Linear patterns",
+"lessons": "67",
+"nLessons": 1,
+"skills": [
+"seqNth",
+"seqFindNth",
+"seqUse"
+],
+"demo": "seq"
+},
+{
+"title": "y = mx + c: setting up and drawing graphs",
+"plan": "Y = MX+C set up ; draw graphs",
+"lessons": "68",
+"nLessons": 1,
+"skills": [
+"y8_lineTable",
+"y8_lineGradInt",
+"lineY"
+],
+"demo": "line"
+},
+{
+"title": "Interpreting straight-line features",
+"plan": "Interpret straight line features",
+"lessons": "69",
+"nLessons": 1,
+"skills": [
+"gradient",
+"lineIntercept",
+"lineParallel",
+"y8_sketchMC"
+],
+"demo": "sketch"
+}
+]
+},
+{
+"title": "Graphs",
+"goals": [
+"identify and interpret gradients and intercepts of linear functions graphically andalgebraically",
+"simple cubic functions, the reciprocal function y =1 x with x ≠ 0, exponential functions = x y k for positive values of k, and the trigonometric functions (with arguments in degrees) y x = sin , y x = cos and y x = tan for angles o any size",
+"plot and interpret graphs (including reciprocal graphs and exponential graphs) and graphs of non-standard functions in real contexts, to find approximate solutions to problems such as simple kinematic problems involving distance, speed and acceleration",
+"Interpret and use graphs in practical situations including travel graphs and conversion graphs."
+],
+"topics": [
+{
+"title": "Straight-line graphs",
+"plan": "straight line",
+"lessons": "70–94",
+"nLessons": 25,
+"skills": [
+"y8_lineGradInt",
+"y8_coverUp",
+"gradient",
+"lineParallel"
+],
+"demo": "line"
+},
+{
+"title": "Equation from a picture of the graph",
+"plan": "Equation from picture",
+"lessons": "95",
+"nLessons": 1,
+"skills": [
+"y8_sketchMC",
+"y8_gradFromGraph"
+],
+"demo": "sketch"
+},
+{
+"title": "Curved graphs",
+"plan": "curved graph",
+"lessons": "96",
+"nLessons": 1,
+"skills": [
+"y10_curve"
+],
+"demo": "curve"
+},
+{
+"title": "Parabolas and hyperbolas",
+"plan": "Parabola Hyperbola",
+"lessons": "97",
+"nLessons": 1,
+"skills": [
+"y10_curveMC",
+"y10_curve"
+],
+"demo": "curve"
+},
+{
+"title": "Intersections of graphs",
+"plan": "Intersections",
+"lessons": "98",
+"nLessons": 1,
+"skills": [
+"y10_intersect",
+"simultaneous"
+],
+"demo": "curve"
+},
+{
+"title": "Using intersections to solve equations and find roots",
+"plan": "Interret intersection to solve equation and find roots",
+"lessons": "99",
+"nLessons": 1,
+"skills": [
+"y10_roots",
+"y10_intersect"
+],
+"demo": "curve"
+}
+]
+},
+{
+"title": "Coordinate geometry",
+"goals": [
+"identify and interpret roots, intercepts, turning points of quadratic functions graphically; deduce roots algebraically and turning points by completing the square",
+"plot and interpret graphs (including reciprocal graphs and exponential graphs) and graphs of non-standard functions in real contexts, to find approximate solutions to problems such as simple kinematic problems involving distance, speed and acceleration",
+"Use function notation e.g. f: x ⟼ 3x – 5, to describe simple functions. Find inverse functions f –1(x). Form composite functions as defined by gf(x) = g(f(x)).",
+"Estimate gradients of curves by drawing tangents."
+],
+"topics": [
+{
+"title": "Coordinate geometry of straight lines",
+"plan": "Relate to straight line",
+"lessons": "100–114",
+"nLessons": 15,
+"skills": [
+"midpoint",
+"lineLength",
+"lineY"
+],
+"demo": "line"
+},
+{
+"title": "Gradient and the gradient–intercept method",
+"plan": "Gradient / use gradient intercept metho",
+"lessons": "115",
+"nLessons": 1,
+"skills": [
+"gradient",
+"y8_lineGradInt",
+"lineParallel"
+],
+"demo": "line"
+},
+{
+"title": "Intercepts",
+"plan": "Intercept",
+"lessons": "116",
+"nLessons": 1,
+"skills": [
+"lineIntercept",
+"y8_coverUp"
+],
+"demo": "line"
+},
+{
+"title": "Intersections of lines",
+"plan": "Intersections",
+"lessons": "117",
+"nLessons": 1,
+"skills": [
+"y10_intersect",
+"simultaneous"
+],
+"demo": "sketch"
+}
+]
+},
+{
+"title": "Trigonometry",
+"goals": [
+"Recognise, sketch and interpret graphs of simple trigonometric functions. Graph and know the properties of trigonometric functions. Solve simple trigonometric equations for values between 0° and 360°.",
+"Solve problems using the sine and cosine rules for any triangle and the formula area of triangle = 12 ab sin C."
+],
+"topics": [
+{
+"title": "Pythagoras' theorem: finding sides",
+"plan": "Pythagoras and finding sides",
+"lessons": "118–122",
+"nLessons": 5,
+"skills": [
+"pythag"
+]
+},
+{
+"title": "Real-world Pythagoras (distances and bearings)",
+"plan": "Real world pythagoras eg distance and bearings",
+"lessons": "123–127",
+"nLessons": 5,
+"skills": [
+"pythag",
+"lineLength",
+"bearing"
+],
+"demo": "bearing"
+},
+{
+"title": "The three trigonometric ratios",
+"plan": "3 basic trig ratios",
+"lessons": "128–132",
+"nLessons": 5,
+"skills": [
+"trigSide",
+"trigAngle"
+]
+},
+{
+"title": "Finding missing sides and angles",
+"plan": "Find missing sides and angles",
+"lessons": "133–137",
+"nLessons": 5,
+"skills": [
+"trigSide",
+"trigAngle"
+]
+},
+{
+"title": "Bearings and geometry",
+"plan": "Bearings - geometry link",
+"lessons": "138–142",
+"nLessons": 5,
+"skills": [
+"y8_bearing",
+"bearing"
+],
+"demo": "bearing"
+},
+{
+"title": "Trigonometry and areas (sine and cosine rules)",
+"plan": "Trig and areas",
+"lessons": "143–147",
+"nLessons": 5,
+"skills": [
+"areaTrig",
+"sineRule",
+"cosineRule"
+]
+}
+]
+},
+{
+"title": "Measurement",
+"goals": [
+"Use standard units of measure and related concepts (length, area, volume/capacity, mass, time, money, etc.)",
+"know and apply formulae to calculate: area of triangles, parallelograms, trapezia; volume of cuboids and other right prisms (including cylinders)",
+"know the formulae: circumference of a circle = 2πr = πd, area of a circle = πr 2; calculate: perimeters of 2D shapes, including circles; areas of circles and composite shapes; surface area and volume of spheres, pyramids, cones and composite shapes; surface area and volume of spheres, pyramids, cones and composite solids.",
+"calculate arc lengths, angles and areas of sectors of circles"
+],
+"topics": [
+{
+"title": "Units and conversions",
+"plan": "Units and conversions",
+"lessons": "148",
+"nLessons": 1,
+"skills": [
+"y10_units",
+"milesKm",
+"hectares"
+]
+},
+{
+"title": "Areas and perimeters",
+"plan": "Areas and Perimeters",
+"lessons": "149",
+"nLessons": 1,
+"skills": [
+"area2d",
+"lShape"
+]
+},
+{
+"title": "2D shapes and compound shapes",
+"plan": "2D shapes eg re3ctangle / compound shape",
+"lessons": "150",
+"nLessons": 1,
+"skills": [
+"lShape",
+"area2d"
+]
+},
+{
+"title": "Circles, arcs and sectors",
+"plan": "Circle areas and perimeters and parts of circle ; the formula for SA and P",
+"lessons": "151",
+"nLessons": 1,
+"skills": [
+"circleCalc",
+"y10_sector"
+]
+},
+{
+"title": "3D shapes: surface area, volume and unknown dimensions",
+"plan": "Basic 3 d shapes - sa and volume ; use of correct formula ; find unknown dimension",
+"lessons": "152",
+"nLessons": 1,
+"skills": [
+"prismVolume",
+"surfaceArea",
+"y8_cuboid"
+],
+"demo": "solid"
+}
+]
+},
+{
+"title": "3D shapes: volumes and areas",
+"goals": [
+"Use standard units of measure and related concepts (length, area, volume/capacity, mass, time, money, etc.)"
+],
+"topics": [
+{
+"title": "Volume and surface area of solids",
+"plan": "Link to measurement",
+"lessons": "153–162",
+"nLessons": 10,
+"skills": [
+"prismVolume",
+"surfaceArea",
+"solids"
+],
+"demo": "solid"
+},
+{
+"title": "Choosing the correct formula",
+"plan": "Correct formulae",
+"lessons": "163",
+"nLessons": 1,
+"skills": [
+"solids",
+"y8_prism"
+],
+"demo": "solid"
+},
+{
+"title": "Real-world problems and compound solids",
+"plan": "Real world interpretions eg compound shapes",
+"lessons": "164",
+"nLessons": 1,
+"skills": [
+"y8_volReal",
+"solids"
+],
+"demo": "solid"
+}
+]
+},
+{
+"title": "Review for final exams",
+"goals": [],
+"topics": [
+{
+"title": "Past paper practice (mixed review)",
+"plan": "Practice past paper questions each day",
+"lessons": "165–174",
+"nLessons": 10,
+"skills": [
+"REVIEW"
+]
+}
+]
+}
+]
+};

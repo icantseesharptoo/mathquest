@@ -3,17 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Maths</title>
+<title>MathQuest</title>
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/app.css">
 </head>
 <body>
 <header class="top">
-  <a class="logo" href="#/">Maths</a>
+  <a class="logo" href="#/">MathQuest</a>
   <nav>
     <a href="#/y8" data-nav="y8">Year 8</a>
     <a href="#/y10" data-nav="y10">Year 10</a>
     <a href="#/exams" data-nav="exams">Exams</a>
   </nav>
+  <span id="hdrTimer"></span>
+  <details class="tools"><summary>Tools</summary><div id="toolsMenu"></div></details>
   <button id="themeBtn" class="ghost" title="Theme"></button>
 </header>
 <main id="app"></main>
@@ -24,8 +27,11 @@
 <script src="js/g_algebra.js"></script>
 <script src="js/g_geometry.js"></script>
 <script src="js/g_data.js"></script>
-<script src="js/skills.js"></script>
+<script src="js/g_y8.js"></script>
+<script src="js/g_extra.js"></script>
 <script src="js/engine.js"></script>
+<script src="js/demos.js"></script>
+<script src="js/timer.js"></script>
 <script src="js/ui.js"></script>
 </body>
 </html>

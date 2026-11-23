@@ -1,1 +1,1074 @@
-window.COURSES=window.COURSES||{};window.COURSES['y8']={"id":"y8","name":"Year 8","perWeek":6,"weeks":[{"n":1,"title":"Integers","lessons":[{"sec":"1.1","unit":1,"unitTitle":"Integers","title":"Factors, multiples and primes (part 1)","part":1,"parts":2,"pages":[11,12],"obj":["write a positive integer as a product of prime factors","use prime factors to find a highest common factor (HCF) and a lowest common multiple (LCM)"],"keys":["factor tree","highest common factor (HCF)","index","integer","lowest common multiple (LCM)","prime factor"],"n":1,"week":1,"inweek":1},{"sec":"1.1","unit":1,"unitTitle":"Integers","title":"Factors, multiples and primes (part 2)","part":2,"parts":2,"pages":[13,14],"obj":["write a positive integer as a product of prime factors","use prime factors to find a highest common factor (HCF) and a lowest common multiple (LCM)"],"keys":["factor tree","highest common factor (HCF)","index","integer","lowest common multiple (LCM)","prime factor"],"n":2,"week":1,"inweek":2},{"sec":"1.2","unit":1,"unitTitle":"Integers","title":"Multiplying and dividing integers (part 1)","part":1,"parts":2,"pages":[15,16],"obj":["multiply and divide integers, in particular when both are negative","understand that brackets, indices and operations follow a particular order"],"keys":["brackets","conjecture","inverse","investigate"],"n":3,"week":1,"inweek":3},{"sec":"1.2","unit":1,"unitTitle":"Integers","title":"Multiplying and dividing integers (part 2)","part":2,"parts":2,"pages":[17,18,19],"obj":["multiply and divide integers, in particular when both are negative","understand that brackets, indices and operations follow a particular order"],"keys":["brackets","conjecture","inverse","investigate"],"n":4,"week":1,"inweek":4},{"sec":"1.3","unit":1,"unitTitle":"Integers","title":"Square roots and cube roots (part 1)","part":1,"parts":2,"pages":[20,21],"obj":["find the squares of positive and negative integers and their corresponding square roots","find the cubes of positive and negative integers and their corresponding cube roots","learn to recognise natural numbers, integers and rational numbers"],"keys":["cube root","natural numbers","rational numbers","square root"],"n":5,"week":1,"inweek":5},{"sec":"1.3","unit":1,"unitTitle":"Integers","title":"Square roots and cube roots (part 2)","part":2,"parts":2,"pages":[22,23],"obj":["find the squares of positive and negative integers and their corresponding square roots","find the cubes of positive and negative integers and their corresponding cube roots","learn to recognise natural numbers, integers and rational numbers"],"keys":["cube root","natural numbers","rational numbers","square root"],"n":6,"week":1,"inweek":6}]},{"n":2,"title":"Integers · Expressions, formulae and equations","lessons":[{"sec":"1.4","unit":1,"unitTitle":"Integers","title":"Indices (part 1)","part":1,"parts":3,"pages":[24,25],"obj":["use positive and zero indices to represent numbers and in multiplication and division"],"keys":["generalise","power"],"n":7,"week":2,"inweek":1},{"sec":"1.4","unit":1,"unitTitle":"Integers","title":"Indices (part 2)","part":2,"parts":3,"pages":[26,27],"obj":["use positive and zero indices to represent numbers and in multiplication and division"],"keys":["generalise","power"],"n":8,"week":2,"inweek":2},{"sec":"1.4","unit":1,"unitTitle":"Integers","title":"Indices (part 3)","part":3,"parts":3,"pages":[28,29],"obj":["use positive and zero indices to represent numbers and in multiplication and division"],"keys":["generalise","power"],"n":9,"week":2,"inweek":3},{"sec":"2.1","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Constructing expressions (part 1)","part":1,"parts":3,"pages":[30,31],"obj":["use letters to represent numbers","use the correct order of operations in algebraic expressions","use words or letters to represent a situation"],"keys":["coefficient","constant","equivalent","expression","linear expression","term","unknown","variable"],"n":10,"week":2,"inweek":4},{"sec":"2.1","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Constructing expressions (part 2)","part":2,"parts":3,"pages":[32,33,34],"obj":["use letters to represent numbers","use the correct order of operations in algebraic expressions","use words or letters to represent a situation"],"keys":["coefficient","constant","equivalent","expression","linear expression","term","unknown","variable"],"n":11,"week":2,"inweek":5},{"sec":"2.1","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Constructing expressions (part 3)","part":3,"parts":3,"pages":[35,36],"obj":["use letters to represent numbers","use the correct order of operations in algebraic expressions","use words or letters to represent a situation"],"keys":["coefficient","constant","equivalent","expression","linear expression","term","unknown","variable"],"n":12,"week":2,"inweek":6}]},{"n":3,"title":"Expressions, formulae and equations","lessons":[{"sec":"2.2","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Using expressions and formulae (part 1)","part":1,"parts":3,"pages":[37,38],"obj":["use the correct order of operations in algebraic expressions","represent a situation either in words or as a formula","change the subject of a formula"],"keys":["changing the subject","derive","formula","formulae","inverse operation","solve","subject of a formula","substitute"],"n":13,"week":3,"inweek":1},{"sec":"2.2","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Using expressions and formulae (part 2)","part":2,"parts":3,"pages":[39,40],"obj":["use the correct order of operations in algebraic expressions","represent a situation either in words or as a formula","change the subject of a formula"],"keys":["changing the subject","derive","formula","formulae","inverse operation","solve","subject of a formula","substitute"],"n":14,"week":3,"inweek":2},{"sec":"2.2","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Using expressions and formulae (part 3)","part":3,"parts":3,"pages":[41,42],"obj":["use the correct order of operations in algebraic expressions","represent a situation either in words or as a formula","change the subject of a formula"],"keys":["changing the subject","derive","formula","formulae","inverse operation","solve","subject of a formula","substitute"],"n":15,"week":3,"inweek":3},{"sec":"2.3","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Expanding brackets (part 1)","part":1,"parts":2,"pages":[43,44],"obj":["expand brackets"],"keys":["expand brackets"],"n":16,"week":3,"inweek":4},{"sec":"2.3","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Expanding brackets (part 2)","part":2,"parts":2,"pages":[45,46],"obj":["expand brackets"],"keys":["expand brackets"],"n":17,"week":3,"inweek":5},{"sec":"2.4","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Factorising (part 1)","part":1,"parts":2,"pages":[47,48],"obj":["use the HCF to factorise an expression. To expand a term with brackets, you multiply each term inside the brackets by the term outside the brackets"],"keys":["factorisations","factorise","highest common factor (HCF)"],"n":18,"week":3,"inweek":6}]},{"n":4,"title":"Expressions, formulae and equations","lessons":[{"sec":"2.4","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Factorising (part 2)","part":2,"parts":2,"pages":[49,50],"obj":["use the HCF to factorise an expression. To expand a term with brackets, you multiply each term inside the brackets by the term outside the brackets"],"keys":["factorisations","factorise","highest common factor (HCF)"],"n":19,"week":4,"inweek":1},{"sec":"2.5","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Constructing and solving equations (part 1)","part":1,"parts":3,"pages":[51,52],"obj":["write and solve equations. Key word construct Worked example 2.5 a Write if each of the following is a formula, an expression or an equation. i 4c+3e ii P=8h+b iii 9k−2=16 b The diagram shows a rectangle. Work out the values of x and y. Answer a i expression 4c+3e involves two variables but does not have an equals sign. ii formula P=8h+b is a rule showing the relationship between three quantities, P, h and b. iii equation 9k−2=16 contains an unknown number, k, it has an equals sign, and it can be solved to find the value of k. 3(x + 3) cm 24cm 5y − 4cm 3y + 8 cm"],"keys":[],"n":20,"week":4,"inweek":2},{"sec":"2.5","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Constructing and solving equations (part 2)","part":2,"parts":3,"pages":[53,54],"obj":["write and solve equations. Key word construct Worked example 2.5 a Write if each of the following is a formula, an expression or an equation. i 4c+3e ii P=8h+b iii 9k−2=16 b The diagram shows a rectangle. Work out the values of x and y. Answer a i expression 4c+3e involves two variables but does not have an equals sign. ii formula P=8h+b is a rule showing the relationship between three quantities, P, h and b. iii equation 9k−2=16 contains an unknown number, k, it has an equals sign, and it can be solved to find the value of k. 3(x + 3) cm 24cm 5y − 4cm 3y + 8 cm"],"keys":[],"n":21,"week":4,"inweek":3},{"sec":"2.5","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Constructing and solving equations (part 3)","part":3,"parts":3,"pages":[55,56],"obj":["write and solve equations. Key word construct Worked example 2.5 a Write if each of the following is a formula, an expression or an equation. i 4c+3e ii P=8h+b iii 9k−2=16 b The diagram shows a rectangle. Work out the values of x and y. Answer a i expression 4c+3e involves two variables but does not have an equals sign. ii formula P=8h+b is a rule showing the relationship between three quantities, P, h and b. iii equation 9k−2=16 contains an unknown number, k, it has an equals sign, and it can be solved to find the value of k. 3(x + 3) cm 24cm 5y − 4cm 3y + 8 cm"],"keys":[],"n":22,"week":4,"inweek":4},{"sec":"2.6","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Inequalities (part 1)","part":1,"parts":5,"pages":[57,58],"obj":["use letters and inequalities to represent open and closed intervals. Tip Remember that you use an open circle ( ) for the < and > inequalities and a closed circle ( ) for the ⩽ and ⩾ inequalities"],"keys":["closed interval","inequality","integer"],"n":23,"week":4,"inweek":5},{"sec":"2.6","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Inequalities (part 2)","part":2,"parts":5,"pages":[59,60],"obj":["use letters and inequalities to represent open and closed intervals. Tip Remember that you use an open circle ( ) for the < and > inequalities and a closed circle ( ) for the ⩽ and ⩾ inequalities"],"keys":["closed interval","inequality","integer"],"n":24,"week":4,"inweek":6}]},{"n":5,"title":"Expressions, formulae and equations · Place value and rounding","lessons":[{"sec":"2.6","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Inequalities (part 3)","part":3,"parts":5,"pages":[61,62,63],"obj":["use letters and inequalities to represent open and closed intervals. Tip Remember that you use an open circle ( ) for the < and > inequalities and a closed circle ( ) for the ⩽ and ⩾ inequalities"],"keys":["closed interval","inequality","integer"],"n":25,"week":5,"inweek":1},{"sec":"2.6","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Inequalities (part 4)","part":4,"parts":5,"pages":[64,65],"obj":["use letters and inequalities to represent open and closed intervals. Tip Remember that you use an open circle ( ) for the < and > inequalities and a closed circle ( ) for the ⩽ and ⩾ inequalities"],"keys":["closed interval","inequality","integer"],"n":26,"week":5,"inweek":2},{"sec":"2.6","unit":2,"unitTitle":"Expressions, formulae and equations","title":"Inequalities (part 5)","part":5,"parts":5,"pages":[66,67],"obj":["use letters and inequalities to represent open and closed intervals. Tip Remember that you use an open circle ( ) for the < and > inequalities and a closed circle ( ) for the ⩽ and ⩾ inequalities"],"keys":["closed interval","inequality","integer"],"n":27,"week":5,"inweek":3},{"sec":"3.1","unit":3,"unitTitle":"Place value and rounding","title":"Multiplying and dividing by 0.1 and 0.01 (part 1)","part":1,"parts":2,"pages":[68,69],"obj":["multiply numbers by 0.1 and 0.01","divide numbers by 0.1 and 0.01"],"keys":["decimal number","equivalent calculations","inverse operation"],"n":28,"week":5,"inweek":4},{"sec":"3.1","unit":3,"unitTitle":"Place value and rounding","title":"Multiplying and dividing by 0.1 and 0.01 (part 2)","part":2,"parts":2,"pages":[70,71,72],"obj":["multiply numbers by 0.1 and 0.01","divide numbers by 0.1 and 0.01"],"keys":["decimal number","equivalent calculations","inverse operation"],"n":29,"week":5,"inweek":5},{"sec":"3.2","unit":3,"unitTitle":"Place value and rounding","title":"Rounding (part 1)","part":1,"parts":4,"pages":[73,74],"obj":["round numbers to a given number of significant figures"],"keys":["decimal places"],"n":30,"week":5,"inweek":6}]},{"n":6,"title":"Place value and rounding · Decimals","lessons":[{"sec":"3.2","unit":3,"unitTitle":"Place value and rounding","title":"Rounding (part 2)","part":2,"parts":4,"pages":[75,76],"obj":["round numbers to a given number of significant figures"],"keys":["decimal places"],"n":31,"week":6,"inweek":1},{"sec":"3.2","unit":3,"unitTitle":"Place value and rounding","title":"Rounding (part 3)","part":3,"parts":4,"pages":[77,78,79],"obj":["round numbers to a given number of significant figures"],"keys":["decimal places"],"n":32,"week":6,"inweek":2},{"sec":"3.2","unit":3,"unitTitle":"Place value and rounding","title":"Rounding (part 4)","part":4,"parts":4,"pages":[80,81],"obj":["round numbers to a given number of significant figures"],"keys":["decimal places"],"n":33,"week":6,"inweek":3},{"sec":"4.1","unit":4,"unitTitle":"Decimals","title":"Ordering decimals (part 1)","part":1,"parts":2,"pages":[82,83],"obj":["compare and order decimals"],"keys":["compare","decimal number","order","term-to-term rule"],"n":34,"week":6,"inweek":4},{"sec":"4.1","unit":4,"unitTitle":"Decimals","title":"Ordering decimals (part 2)","part":2,"parts":2,"pages":[84,85,86],"obj":["compare and order decimals"],"keys":["compare","decimal number","order","term-to-term rule"],"n":35,"week":6,"inweek":5},{"sec":"4.2","unit":4,"unitTitle":"Decimals","title":"Multiplying decimals (part 1)","part":1,"parts":3,"pages":[87,88],"obj":["multiply decimals by whole numbers and decimals"],"keys":["estimation","mentally","place value","written method"],"n":36,"week":6,"inweek":6}]},{"n":7,"title":"Decimals","lessons":[{"sec":"4.2","unit":4,"unitTitle":"Decimals","title":"Multiplying decimals (part 2)","part":2,"parts":3,"pages":[89,90],"obj":["multiply decimals by whole numbers and decimals"],"keys":["estimation","mentally","place value","written method"],"n":37,"week":7,"inweek":1},{"sec":"4.2","unit":4,"unitTitle":"Decimals","title":"Multiplying decimals (part 3)","part":3,"parts":3,"pages":[91,92],"obj":["multiply decimals by whole numbers and decimals"],"keys":["estimation","mentally","place value","written method"],"n":38,"week":7,"inweek":2},{"sec":"4.3","unit":4,"unitTitle":"Decimals","title":"Dividing by decimals (part 1)","part":1,"parts":2,"pages":[93,94],"obj":["divide decimals by numbers with one decimal place"],"keys":["equivalent calculation","reverse calculation","short division"],"n":39,"week":7,"inweek":3},{"sec":"4.3","unit":4,"unitTitle":"Decimals","title":"Dividing by decimals (part 2)","part":2,"parts":2,"pages":[95,96,97],"obj":["divide decimals by numbers with one decimal place"],"keys":["equivalent calculation","reverse calculation","short division"],"n":40,"week":7,"inweek":4},{"sec":"4.4","unit":4,"unitTitle":"Decimals","title":"Making decimal calculations easier (part 1)","part":1,"parts":3,"pages":[98,99,100],"obj":["simplify calculations containing decimals. Key word factor"],"keys":[],"n":41,"week":7,"inweek":5},{"sec":"4.4","unit":4,"unitTitle":"Decimals","title":"Making decimal calculations easier (part 2)","part":2,"parts":3,"pages":[101,102],"obj":["simplify calculations containing decimals. Key word factor"],"keys":[],"n":42,"week":7,"inweek":6}]},{"n":8,"title":"Decimals · Angles and constructions","lessons":[{"sec":"4.4","unit":4,"unitTitle":"Decimals","title":"Making decimal calculations easier (part 3)","part":3,"parts":3,"pages":[103,104,105],"obj":["simplify calculations containing decimals. Key word factor"],"keys":[],"n":43,"week":8,"inweek":1},{"sec":"5.1","unit":5,"unitTitle":"Angles and constructions","title":"Parallel lines (part 1)","part":1,"parts":2,"pages":[106,107],"obj":["use geometric vocabulary for equal angles formed when lines intersect. The sum of the angles in a triangle is 180°. Can you remember the first time you were shown this? You may have measured the angles and added them. You may have cut a triangle out of paper and folded it. This does not prove that the sum of the angles of any triangle is 180°. It only shows that it is true for the triangles you have drawn and that it is a reasonable conclusion. A proof is a logical argument in which a reason is given for each step. Over 2000 years ago the Greek mathematician Euclid wrote a book called The Elements. He used logical arguments to prove many facts in geometry and arithmetic. His book was the most successful textbook ever written. It is still in print today. Euclid started by defining basic things such as a point and a straight line. He also made a set of statements which he thought everyone could agree with. These were called axioms. An example of one of his axioms is: Things that are equal to the same thing are equal to one another. From this simple starting point, he proved many complicated results. In this unit you will look at several proofs"],"keys":["alternate angles","corresponding angles","geometric transversal","vertically opposite angles","a b","c d"],"n":44,"week":8,"inweek":2},{"sec":"5.1","unit":5,"unitTitle":"Angles and constructions","title":"Parallel lines (part 2)","part":2,"parts":2,"pages":[108,109,110],"obj":["use geometric vocabulary for equal angles formed when lines intersect. The sum of the angles in a triangle is 180°. Can you remember the first time you were shown this? You may have measured the angles and added them. You may have cut a triangle out of paper and folded it. This does not prove that the sum of the angles of any triangle is 180°. It only shows that it is true for the triangles you have drawn and that it is a reasonable conclusion. A proof is a logical argument in which a reason is given for each step. Over 2000 years ago the Greek mathematician Euclid wrote a book called The Elements. He used logical arguments to prove many facts in geometry and arithmetic. His book was the most successful textbook ever written. It is still in print today. Euclid started by defining basic things such as a point and a straight line. He also made a set of statements which he thought everyone could agree with. These were called axioms. An example of one of his axioms is: Things that are equal to the same thing are equal to one another. From this simple starting point, he proved many complicated results. In this unit you will look at several proofs"],"keys":["alternate angles","corresponding angles","geometric transversal","vertically opposite angles","a b","c d"],"n":45,"week":8,"inweek":3},{"sec":"5.2","unit":5,"unitTitle":"Angles and constructions","title":"The exterior angle of a triangle (part 1)","part":1,"parts":2,"pages":[111,112],"obj":["learn to identify the exterior angle of a triangle","use the fact that the exterior angle of a triangle is equal to the sum of the two interior opposite angles. Here is a triangle ABC. The side BC has been extended to X. Angle ACX is called the exterior angle of the triangle at C. The angles marked at A and B are the angles opposite C. We know that a+b+c=180°, the sum of the angles in a triangle. So a+b=180°−c Also d+c=180°, the sum of the angles on a straight line. So d=180°−c Compare these two results and you can see that d=a+b This shows that: The exterior angle of a triangle=the sum of the two interior opposite angles. This is true for any triangle"],"keys":[],"n":46,"week":8,"inweek":4},{"sec":"5.2","unit":5,"unitTitle":"Angles and constructions","title":"The exterior angle of a triangle (part 2)","part":2,"parts":2,"pages":[113,114],"obj":["learn to identify the exterior angle of a triangle","use the fact that the exterior angle of a triangle is equal to the sum of the two interior opposite angles. Here is a triangle ABC. The side BC has been extended to X. Angle ACX is called the exterior angle of the triangle at C. The angles marked at A and B are the angles opposite C. We know that a+b+c=180°, the sum of the angles in a triangle. So a+b=180°−c Also d+c=180°, the sum of the angles on a straight line. So d=180°−c Compare these two results and you can see that d=a+b This shows that: The exterior angle of a triangle=the sum of the two interior opposite angles. This is true for any triangle"],"keys":[],"n":47,"week":8,"inweek":5},{"sec":"5.3","unit":5,"unitTitle":"Angles and constructions","title":"Constructions (part 1)","part":1,"parts":6,"pages":[115,116],"obj":["construct triangles","learn how to draw the perpendicular bisector of a line","learn how to draw the bisector of an angle"],"keys":["arc","bisector","construct (geometry) hypotenuse"],"n":48,"week":8,"inweek":6}]},{"n":9,"title":"Angles and constructions · Collecting data","lessons":[{"sec":"5.3","unit":5,"unitTitle":"Angles and constructions","title":"Constructions (part 2)","part":2,"parts":6,"pages":[117,118],"obj":["construct triangles","learn how to draw the perpendicular bisector of a line","learn how to draw the bisector of an angle"],"keys":["arc","bisector","construct (geometry) hypotenuse"],"n":49,"week":9,"inweek":1},{"sec":"5.3","unit":5,"unitTitle":"Angles and constructions","title":"Constructions (part 3)","part":3,"parts":6,"pages":[119,120],"obj":["construct triangles","learn how to draw the perpendicular bisector of a line","learn how to draw the bisector of an angle"],"keys":["arc","bisector","construct (geometry) hypotenuse"],"n":50,"week":9,"inweek":2},{"sec":"5.3","unit":5,"unitTitle":"Angles and constructions","title":"Constructions (part 4)","part":4,"parts":6,"pages":[121,122,123],"obj":["construct triangles","learn how to draw the perpendicular bisector of a line","learn how to draw the bisector of an angle"],"keys":["arc","bisector","construct (geometry) hypotenuse"],"n":51,"week":9,"inweek":3},{"sec":"5.3","unit":5,"unitTitle":"Angles and constructions","title":"Constructions (part 5)","part":5,"parts":6,"pages":[124,125],"obj":["construct triangles","learn how to draw the perpendicular bisector of a line","learn how to draw the bisector of an angle"],"keys":["arc","bisector","construct (geometry) hypotenuse"],"n":52,"week":9,"inweek":4},{"sec":"5.3","unit":5,"unitTitle":"Angles and constructions","title":"Constructions (part 6)","part":6,"parts":6,"pages":[126,127],"obj":["construct triangles","learn how to draw the perpendicular bisector of a line","learn how to draw the bisector of an angle"],"keys":["arc","bisector","construct (geometry) hypotenuse"],"n":53,"week":9,"inweek":5},{"sec":"6.1","unit":6,"unitTitle":"Collecting data","title":"Data collection (part 1)","part":1,"parts":2,"pages":[128,129],"obj":["select a method to collect data to answer a number of linked questions","consider the different types of data","consider different sampling methods"],"keys":[],"n":54,"week":9,"inweek":6}]},{"n":10,"title":"Collecting data · Fractions","lessons":[{"sec":"6.1","unit":6,"unitTitle":"Collecting data","title":"Data collection (part 2)","part":2,"parts":2,"pages":[130,131],"obj":["select a method to collect data to answer a number of linked questions","consider the different types of data","consider different sampling methods"],"keys":[],"n":55,"week":10,"inweek":1},{"sec":"6.2","unit":6,"unitTitle":"Collecting data","title":"Sampling (part 1)","part":1,"parts":3,"pages":[132,133],"obj":["understand the advantages of different sampling methods. The word ‘population’ usually refers to the people living in a town or country. In a statistical investigation, however, it means the people you are interested in. If you are investigating your class, the population means the people in your class. If you are investigating your school, the population is all the learners in your school. Often you cannot question the whole population. In this case, you need to choose a sample. There are different ways to choose a sample. In any investigation you need to decide on the best way to choose your sample. Sometimes, your investigation is not about people. For example, you might be investigating the traffic going past your school. If you collect data about some of the vehicles you are still taking a sample. In this case, the population is all the vehicles passing your school"],"keys":[],"n":56,"week":10,"inweek":2},{"sec":"6.2","unit":6,"unitTitle":"Collecting data","title":"Sampling (part 2)","part":2,"parts":3,"pages":[134,135],"obj":["understand the advantages of different sampling methods. The word ‘population’ usually refers to the people living in a town or country. In a statistical investigation, however, it means the people you are interested in. If you are investigating your class, the population means the people in your class. If you are investigating your school, the population is all the learners in your school. Often you cannot question the whole population. In this case, you need to choose a sample. There are different ways to choose a sample. In any investigation you need to decide on the best way to choose your sample. Sometimes, your investigation is not about people. For example, you might be investigating the traffic going past your school. If you collect data about some of the vehicles you are still taking a sample. In this case, the population is all the vehicles passing your school"],"keys":[],"n":57,"week":10,"inweek":3},{"sec":"6.2","unit":6,"unitTitle":"Collecting data","title":"Sampling (part 3)","part":3,"parts":3,"pages":[136,137],"obj":["understand the advantages of different sampling methods. The word ‘population’ usually refers to the people living in a town or country. In a statistical investigation, however, it means the people you are interested in. If you are investigating your class, the population means the people in your class. If you are investigating your school, the population is all the learners in your school. Often you cannot question the whole population. In this case, you need to choose a sample. There are different ways to choose a sample. In any investigation you need to decide on the best way to choose your sample. Sometimes, your investigation is not about people. For example, you might be investigating the traffic going past your school. If you collect data about some of the vehicles you are still taking a sample. In this case, the population is all the vehicles passing your school"],"keys":[],"n":58,"week":10,"inweek":4},{"sec":"7.1","unit":7,"unitTitle":"Fractions","title":"Fractions and recurring decimals (part 1)","part":1,"parts":3,"pages":[138,139],"obj":["recognise fractions that are equivalent to recurring decimals"],"keys":["equivalent decimal","improper fraction","mixed number","recurring decimal","terminating decimal","unit fraction"],"n":59,"week":10,"inweek":5},{"sec":"7.1","unit":7,"unitTitle":"Fractions","title":"Fractions and recurring decimals (part 2)","part":2,"parts":3,"pages":[140,141],"obj":["recognise fractions that are equivalent to recurring decimals"],"keys":["equivalent decimal","improper fraction","mixed number","recurring decimal","terminating decimal","unit fraction"],"n":60,"week":10,"inweek":6}]},{"n":11,"title":"Fractions","lessons":[{"sec":"7.1","unit":7,"unitTitle":"Fractions","title":"Fractions and recurring decimals (part 3)","part":3,"parts":3,"pages":[142,143],"obj":["recognise fractions that are equivalent to recurring decimals"],"keys":["equivalent decimal","improper fraction","mixed number","recurring decimal","terminating decimal","unit fraction"],"n":61,"week":11,"inweek":1},{"sec":"7.2","unit":7,"unitTitle":"Fractions","title":"Ordering fractions (part 1)","part":1,"parts":3,"pages":[144,145],"obj":["compare and order positive and negative fractions"],"keys":["advantages","disadvantages","improve"],"n":62,"week":11,"inweek":2},{"sec":"7.2","unit":7,"unitTitle":"Fractions","title":"Ordering fractions (part 2)","part":2,"parts":3,"pages":[146,147],"obj":["compare and order positive and negative fractions"],"keys":["advantages","disadvantages","improve"],"n":63,"week":11,"inweek":3},{"sec":"7.2","unit":7,"unitTitle":"Fractions","title":"Ordering fractions (part 3)","part":3,"parts":3,"pages":[148,149],"obj":["compare and order positive and negative fractions"],"keys":["advantages","disadvantages","improve"],"n":64,"week":11,"inweek":4},{"sec":"7.3","unit":7,"unitTitle":"Fractions","title":"Subtracting mixed numbers (part 1)","part":1,"parts":2,"pages":[150,151],"obj":["subtract mixed numbers. Worked example 7.3 Work out a 3 1 1 5 4 5 − b 62 1 3 4 9 − Answer a 31 5 16 5 = and 14 5 9 5 = Change both the mixed numbers into improper fractions. 16 5 9 5 7 5 −= Subtract the fractions. They already have a common denominator of 5. 7 5 2 5 = 1 The answer is an improper fraction so change it back to a mixed number. b 6 1 3 19 3 = and 2 4 9 22 9 = Change both the mixed numbers into improper fractions. 19 3 22 9 57 9 22 9 35 9 −=−= Subtract the fractions, using the lowest common denominator of 9. 35 9 8 9 = 3 The answer is an improper fraction so change it back to a mixed number"],"keys":[],"n":65,"week":11,"inweek":5},{"sec":"7.3","unit":7,"unitTitle":"Fractions","title":"Subtracting mixed numbers (part 2)","part":2,"parts":2,"pages":[152,153],"obj":["subtract mixed numbers. Worked example 7.3 Work out a 3 1 1 5 4 5 − b 62 1 3 4 9 − Answer a 31 5 16 5 = and 14 5 9 5 = Change both the mixed numbers into improper fractions. 16 5 9 5 7 5 −= Subtract the fractions. They already have a common denominator of 5. 7 5 2 5 = 1 The answer is an improper fraction so change it back to a mixed number. b 6 1 3 19 3 = and 2 4 9 22 9 = Change both the mixed numbers into improper fractions. 19 3 22 9 57 9 22 9 35 9 −=−= Subtract the fractions, using the lowest common denominator of 9. 35 9 8 9 = 3 The answer is an improper fraction so change it back to a mixed number"],"keys":[],"n":66,"week":11,"inweek":6}]},{"n":12,"title":"Fractions","lessons":[{"sec":"7.4","unit":7,"unitTitle":"Fractions","title":"Multiplying an integer by a mixed number (part 1)","part":1,"parts":2,"pages":[154,155],"obj":["multiply an integer by a mixed number"],"keys":["mean","partitioning","simplified"],"n":67,"week":12,"inweek":1},{"sec":"7.4","unit":7,"unitTitle":"Fractions","title":"Multiplying an integer by a mixed number (part 2)","part":2,"parts":2,"pages":[156,157,158],"obj":["multiply an integer by a mixed number"],"keys":["mean","partitioning","simplified"],"n":68,"week":12,"inweek":2},{"sec":"7.5","unit":7,"unitTitle":"Fractions","title":"Dividing an integer by a fraction (part 1)","part":1,"parts":3,"pages":[159,160],"obj":["divide an integer by a proper fraction"],"keys":["reciprocal","upside down"],"n":69,"week":12,"inweek":3},{"sec":"7.5","unit":7,"unitTitle":"Fractions","title":"Dividing an integer by a fraction (part 2)","part":2,"parts":3,"pages":[161,162],"obj":["divide an integer by a proper fraction"],"keys":["reciprocal","upside down"],"n":70,"week":12,"inweek":4},{"sec":"7.5","unit":7,"unitTitle":"Fractions","title":"Dividing an integer by a fraction (part 3)","part":3,"parts":3,"pages":[163,164],"obj":["divide an integer by a proper fraction"],"keys":["reciprocal","upside down"],"n":71,"week":12,"inweek":5},{"sec":"7.6","unit":7,"unitTitle":"Fractions","title":"Making fraction calculations easier (part 1)","part":1,"parts":4,"pages":[165,166],"obj":["simplify calculations containing fractions"],"keys":[],"n":72,"week":12,"inweek":6}]},{"n":13,"title":"Fractions · Shapes and symmetry","lessons":[{"sec":"7.6","unit":7,"unitTitle":"Fractions","title":"Making fraction calculations easier (part 2)","part":2,"parts":4,"pages":[167,168],"obj":["simplify calculations containing fractions"],"keys":[],"n":73,"week":13,"inweek":1},{"sec":"7.6","unit":7,"unitTitle":"Fractions","title":"Making fraction calculations easier (part 3)","part":3,"parts":4,"pages":[169,170,171],"obj":["simplify calculations containing fractions"],"keys":[],"n":74,"week":13,"inweek":2},{"sec":"7.6","unit":7,"unitTitle":"Fractions","title":"Making fraction calculations easier (part 4)","part":4,"parts":4,"pages":[172,173],"obj":["simplify calculations containing fractions"],"keys":[],"n":75,"week":13,"inweek":3},{"sec":"8.1","unit":8,"unitTitle":"Shapes and symmetry","title":"Quadrilaterals and polygons (part 1)","part":1,"parts":3,"pages":[174,175],"obj":["identify the symmetry of regular polygons","identify and describe the hierarchy of quadrilaterals"],"keys":["hierarchy","lines of symmetry","quadrilateral","regular polygon","rotational symmetry"],"n":76,"week":13,"inweek":4},{"sec":"8.1","unit":8,"unitTitle":"Shapes and symmetry","title":"Quadrilaterals and polygons (part 2)","part":2,"parts":3,"pages":[176,177,178],"obj":["identify the symmetry of regular polygons","identify and describe the hierarchy of quadrilaterals"],"keys":["hierarchy","lines of symmetry","quadrilateral","regular polygon","rotational symmetry"],"n":77,"week":13,"inweek":5},{"sec":"8.1","unit":8,"unitTitle":"Shapes and symmetry","title":"Quadrilaterals and polygons (part 3)","part":3,"parts":3,"pages":[179,180],"obj":["identify the symmetry of regular polygons","identify and describe the hierarchy of quadrilaterals"],"keys":["hierarchy","lines of symmetry","quadrilateral","regular polygon","rotational symmetry"],"n":78,"week":13,"inweek":6}]},{"n":14,"title":"Shapes and symmetry","lessons":[{"sec":"8.2","unit":8,"unitTitle":"Shapes and symmetry","title":"The circumference of a circle (part 1)","part":1,"parts":2,"pages":[181,182],"obj":["know and use the formula for the circumference of a circle"],"keys":["accurate","approximate value","circumference","diameter","pi (π)","radius","semicircle"],"n":79,"week":14,"inweek":1},{"sec":"8.2","unit":8,"unitTitle":"Shapes and symmetry","title":"The circumference of a circle (part 2)","part":2,"parts":2,"pages":[183,184,185],"obj":["know and use the formula for the circumference of a circle"],"keys":["accurate","approximate value","circumference","diameter","pi (π)","radius","semicircle"],"n":80,"week":14,"inweek":2},{"sec":"8.3","unit":8,"unitTitle":"Shapes and symmetry","title":"3D shapes (part 1)","part":1,"parts":6,"pages":[186,187],"obj":["find the connection between the number of vertices, faces, and edges of 3D shapes","draw front, side, and top views of 3D shapes to scale. You already know how to describe a 3D shape using the number of faces, vertices and edges. You also know how to draw the top view, front view and side view of a 3D shape. The top view is the view from above the shape. It is sometimes called the plan view. The front view is the view from the front of the shape. It is sometimes called the front elevation. The side view is the view from the side of the shape. It is sometimes called the side elevation. You also need to be able to draw the top view, front view, and side view of a 3D shape to scale"],"keys":["front view, front elevation","side view, side elevation","top view, plan view"],"n":81,"week":14,"inweek":3},{"sec":"8.3","unit":8,"unitTitle":"Shapes and symmetry","title":"3D shapes (part 2)","part":2,"parts":6,"pages":[188,189,190],"obj":["find the connection between the number of vertices, faces, and edges of 3D shapes","draw front, side, and top views of 3D shapes to scale. You already know how to describe a 3D shape using the number of faces, vertices and edges. You also know how to draw the top view, front view and side view of a 3D shape. The top view is the view from above the shape. It is sometimes called the plan view. The front view is the view from the front of the shape. It is sometimes called the front elevation. The side view is the view from the side of the shape. It is sometimes called the side elevation. You also need to be able to draw the top view, front view, and side view of a 3D shape to scale"],"keys":["front view, front elevation","side view, side elevation","top view, plan view"],"n":82,"week":14,"inweek":4},{"sec":"8.3","unit":8,"unitTitle":"Shapes and symmetry","title":"3D shapes (part 3)","part":3,"parts":6,"pages":[191,192],"obj":["find the connection between the number of vertices, faces, and edges of 3D shapes","draw front, side, and top views of 3D shapes to scale. You already know how to describe a 3D shape using the number of faces, vertices and edges. You also know how to draw the top view, front view and side view of a 3D shape. The top view is the view from above the shape. It is sometimes called the plan view. The front view is the view from the front of the shape. It is sometimes called the front elevation. The side view is the view from the side of the shape. It is sometimes called the side elevation. You also need to be able to draw the top view, front view, and side view of a 3D shape to scale"],"keys":["front view, front elevation","side view, side elevation","top view, plan view"],"n":83,"week":14,"inweek":5},{"sec":"8.3","unit":8,"unitTitle":"Shapes and symmetry","title":"3D shapes (part 4)","part":4,"parts":6,"pages":[193,194],"obj":["find the connection between the number of vertices, faces, and edges of 3D shapes","draw front, side, and top views of 3D shapes to scale. You already know how to describe a 3D shape using the number of faces, vertices and edges. You also know how to draw the top view, front view and side view of a 3D shape. The top view is the view from above the shape. It is sometimes called the plan view. The front view is the view from the front of the shape. It is sometimes called the front elevation. The side view is the view from the side of the shape. It is sometimes called the side elevation. You also need to be able to draw the top view, front view, and side view of a 3D shape to scale"],"keys":["front view, front elevation","side view, side elevation","top view, plan view"],"n":84,"week":14,"inweek":6}]},{"n":15,"title":"Shapes and symmetry · Sequences and functions","lessons":[{"sec":"8.3","unit":8,"unitTitle":"Shapes and symmetry","title":"3D shapes (part 5)","part":5,"parts":6,"pages":[195,196,197],"obj":["find the connection between the number of vertices, faces, and edges of 3D shapes","draw front, side, and top views of 3D shapes to scale. You already know how to describe a 3D shape using the number of faces, vertices and edges. You also know how to draw the top view, front view and side view of a 3D shape. The top view is the view from above the shape. It is sometimes called the plan view. The front view is the view from the front of the shape. It is sometimes called the front elevation. The side view is the view from the side of the shape. It is sometimes called the side elevation. You also need to be able to draw the top view, front view, and side view of a 3D shape to scale"],"keys":["front view, front elevation","side view, side elevation","top view, plan view"],"n":85,"week":15,"inweek":1},{"sec":"8.3","unit":8,"unitTitle":"Shapes and symmetry","title":"3D shapes (part 6)","part":6,"parts":6,"pages":[198,199],"obj":["find the connection between the number of vertices, faces, and edges of 3D shapes","draw front, side, and top views of 3D shapes to scale. You already know how to describe a 3D shape using the number of faces, vertices and edges. You also know how to draw the top view, front view and side view of a 3D shape. The top view is the view from above the shape. It is sometimes called the plan view. The front view is the view from the front of the shape. It is sometimes called the front elevation. The side view is the view from the side of the shape. It is sometimes called the side elevation. You also need to be able to draw the top view, front view, and side view of a 3D shape to scale"],"keys":["front view, front elevation","side view, side elevation","top view, plan view"],"n":86,"week":15,"inweek":2},{"sec":"9.1","unit":9,"unitTitle":"Sequences and functions","title":"Generating sequences (part 1)","part":1,"parts":2,"pages":[200,201],"obj":["use a term-to-term rule to make a sequence of numbers"],"keys":[],"n":87,"week":15,"inweek":3},{"sec":"9.1","unit":9,"unitTitle":"Sequences and functions","title":"Generating sequences (part 2)","part":2,"parts":2,"pages":[202,203,204],"obj":["use a term-to-term rule to make a sequence of numbers"],"keys":[],"n":88,"week":15,"inweek":4},{"sec":"9.2","unit":9,"unitTitle":"Sequences and functions","title":"Finding rules for sequences (part 1)","part":1,"parts":2,"pages":[205,206],"obj":["make a sequence of numbers from patterns"],"keys":["position number","position-to-term rule","sequence of patterns","11 dots"],"n":89,"week":15,"inweek":5},{"sec":"9.2","unit":9,"unitTitle":"Sequences and functions","title":"Finding rules for sequences (part 2)","part":2,"parts":2,"pages":[207,208,209],"obj":["make a sequence of numbers from patterns"],"keys":["position number","position-to-term rule","sequence of patterns","11 dots"],"n":90,"week":15,"inweek":6}]},{"n":16,"title":"Sequences and functions","lessons":[{"sec":"9.3","unit":9,"unitTitle":"Sequences and functions","title":"Using the nth term (part 1)","part":1,"parts":3,"pages":[210,211],"obj":["use algebra to describe the nth term of a sequence. Key word nth term"],"keys":[],"n":91,"week":16,"inweek":1},{"sec":"9.3","unit":9,"unitTitle":"Sequences and functions","title":"Using the nth term (part 2)","part":2,"parts":3,"pages":[212,213],"obj":["use algebra to describe the nth term of a sequence. Key word nth term"],"keys":[],"n":92,"week":16,"inweek":2},{"sec":"9.3","unit":9,"unitTitle":"Sequences and functions","title":"Using the nth term (part 3)","part":3,"parts":3,"pages":[214,215],"obj":["use algebra to describe the nth term of a sequence. Key word nth term"],"keys":[],"n":93,"week":16,"inweek":3},{"sec":"9.4","unit":9,"unitTitle":"Sequences and functions","title":"Representing simple functions (part 1)","part":1,"parts":4,"pages":[216,217],"obj":["work out input and output numbers from function machines"],"keys":["algebraically","function","function machine","input","inverse function","map","mapping diagram one-step function","output","two-step function"],"n":94,"week":16,"inweek":4},{"sec":"9.4","unit":9,"unitTitle":"Sequences and functions","title":"Representing simple functions (part 2)","part":2,"parts":4,"pages":[218,219],"obj":["work out input and output numbers from function machines"],"keys":["algebraically","function","function machine","input","inverse function","map","mapping diagram one-step function","output","two-step function"],"n":95,"week":16,"inweek":5},{"sec":"9.4","unit":9,"unitTitle":"Sequences and functions","title":"Representing simple functions (part 3)","part":3,"parts":4,"pages":[220,221,222],"obj":["work out input and output numbers from function machines"],"keys":["algebraically","function","function machine","input","inverse function","map","mapping diagram one-step function","output","two-step function"],"n":96,"week":16,"inweek":6}]},{"n":17,"title":"Sequences and functions · Percentages","lessons":[{"sec":"9.4","unit":9,"unitTitle":"Sequences and functions","title":"Representing simple functions (part 4)","part":4,"parts":4,"pages":[223,224],"obj":["work out input and output numbers from function machines"],"keys":["algebraically","function","function machine","input","inverse function","map","mapping diagram one-step function","output","two-step function"],"n":97,"week":17,"inweek":1},{"sec":"10.1","unit":10,"unitTitle":"Percentages","title":"Percentage increases and decreases (part 1)","part":1,"parts":2,"pages":[225,226],"obj":["learn to calculate percentage increases and decreases","learn to write a change in value as a percentage"],"keys":["absolute change","percentage decrease","percentage increase"],"n":98,"week":17,"inweek":2},{"sec":"10.1","unit":10,"unitTitle":"Percentages","title":"Percentage increases and decreases (part 2)","part":2,"parts":2,"pages":[227,228,229],"obj":["learn to calculate percentage increases and decreases","learn to write a change in value as a percentage"],"keys":["absolute change","percentage decrease","percentage increase"],"n":99,"week":17,"inweek":3},{"sec":"10.2","unit":10,"unitTitle":"Percentages","title":"Using a multiplier (part 1)","part":1,"parts":3,"pages":[230,231],"obj":["learn to use a multiplier to calculate a percentage increase or decrease. Key word multiplier"],"keys":[],"n":100,"week":17,"inweek":4},{"sec":"10.2","unit":10,"unitTitle":"Percentages","title":"Using a multiplier (part 2)","part":2,"parts":3,"pages":[232,233],"obj":["learn to use a multiplier to calculate a percentage increase or decrease. Key word multiplier"],"keys":[],"n":101,"week":17,"inweek":5},{"sec":"10.2","unit":10,"unitTitle":"Percentages","title":"Using a multiplier (part 3)","part":3,"parts":3,"pages":[234,235],"obj":["learn to use a multiplier to calculate a percentage increase or decrease. Key word multiplier"],"keys":[],"n":102,"week":17,"inweek":6}]},{"n":18,"title":"Graphs","lessons":[{"sec":"11.1","unit":11,"unitTitle":"Graphs","title":"Functions (part 1)","part":1,"parts":2,"pages":[236,237],"obj":["represent situations in words and using functions"],"keys":[],"n":103,"week":18,"inweek":1},{"sec":"11.1","unit":11,"unitTitle":"Graphs","title":"Functions (part 2)","part":2,"parts":2,"pages":[238,239],"obj":["represent situations in words and using functions"],"keys":[],"n":104,"week":18,"inweek":2},{"sec":"11.2","unit":11,"unitTitle":"Graphs","title":"Plotting graphs (part 1)","part":1,"parts":2,"pages":[240,241,242],"obj":["construct a table of values for a function","use the table to plot a graph. Key word plot y 4 3 2 1 0 –1 –1–2–3 54321 –2 –3 –4 5 6 7 8 x –5 –6 y = 2x − 1 Summary checklist I understand how a situation can be represented in words or as a function"],"keys":[],"n":105,"week":18,"inweek":3},{"sec":"11.2","unit":11,"unitTitle":"Graphs","title":"Plotting graphs (part 2)","part":2,"parts":2,"pages":[243,244,245],"obj":["construct a table of values for a function","use the table to plot a graph. Key word plot y 4 3 2 1 0 –1 –1–2–3 54321 –2 –3 –4 5 6 7 8 x –5 –6 y = 2x − 1 Summary checklist I understand how a situation can be represented in words or as a function"],"keys":[],"n":106,"week":18,"inweek":4},{"sec":"11.3","unit":11,"unitTitle":"Graphs","title":"Gradient and intercept (part 1)","part":1,"parts":2,"pages":[246,247],"obj":["learn to interpret the values of m and c for a function of the form y=mx+c"],"keys":["coefficient","equation of a line","gradient","linear function","x-intercept","y-intercept"],"n":107,"week":18,"inweek":5},{"sec":"11.3","unit":11,"unitTitle":"Graphs","title":"Gradient and intercept (part 2)","part":2,"parts":2,"pages":[248,249,250],"obj":["learn to interpret the values of m and c for a function of the form y=mx+c"],"keys":["coefficient","equation of a line","gradient","linear function","x-intercept","y-intercept"],"n":108,"week":18,"inweek":6}]},{"n":19,"title":"Graphs · Ratio and proportion","lessons":[{"sec":"11.4","unit":11,"unitTitle":"Graphs","title":"Interpreting graphs (part 1)","part":1,"parts":3,"pages":[251,252],"obj":["read and interpret graphs with several components","understand why graphs have specific shapes"],"keys":[],"n":109,"week":19,"inweek":1},{"sec":"11.4","unit":11,"unitTitle":"Graphs","title":"Interpreting graphs (part 2)","part":2,"parts":3,"pages":[253,254,255],"obj":["read and interpret graphs with several components","understand why graphs have specific shapes"],"keys":[],"n":110,"week":19,"inweek":2},{"sec":"11.4","unit":11,"unitTitle":"Graphs","title":"Interpreting graphs (part 3)","part":3,"parts":3,"pages":[256,257],"obj":["read and interpret graphs with several components","understand why graphs have specific shapes"],"keys":[],"n":111,"week":19,"inweek":3},{"sec":"12.1","unit":12,"unitTitle":"Ratio and proportion","title":"Simplifying ratios (part 1)","part":1,"parts":2,"pages":[258,259],"obj":["simplify and compare ratios"],"keys":["adapt","common factor","highest common factor","ratio","simplify"],"n":112,"week":19,"inweek":4},{"sec":"12.1","unit":12,"unitTitle":"Ratio and proportion","title":"Simplifying ratios (part 2)","part":2,"parts":2,"pages":[260,261,262],"obj":["simplify and compare ratios"],"keys":["adapt","common factor","highest common factor","ratio","simplify"],"n":113,"week":19,"inweek":5},{"sec":"12.2","unit":12,"unitTitle":"Ratio and proportion","title":"Sharing in a ratio (part 1)","part":1,"parts":2,"pages":[263,264],"obj":["divide an amount into two or more parts in a given ratio"],"keys":["profit","share"],"n":114,"week":19,"inweek":6}]},{"n":20,"title":"Ratio and proportion · Probability","lessons":[{"sec":"12.2","unit":12,"unitTitle":"Ratio and proportion","title":"Sharing in a ratio (part 2)","part":2,"parts":2,"pages":[265,266,267],"obj":["divide an amount into two or more parts in a given ratio"],"keys":["profit","share"],"n":115,"week":20,"inweek":1},{"sec":"12.3","unit":12,"unitTitle":"Ratio and proportion","title":"Ratio and direct proportion (part 1)","part":1,"parts":3,"pages":[268,269,270],"obj":["use the relationship between ratio and direct proportion"],"keys":["comparison","justify","proportion","shades"],"n":116,"week":20,"inweek":2},{"sec":"12.3","unit":12,"unitTitle":"Ratio and proportion","title":"Ratio and direct proportion (part 2)","part":2,"parts":3,"pages":[271,272],"obj":["use the relationship between ratio and direct proportion"],"keys":["comparison","justify","proportion","shades"],"n":117,"week":20,"inweek":3},{"sec":"12.3","unit":12,"unitTitle":"Ratio and proportion","title":"Ratio and direct proportion (part 3)","part":3,"parts":3,"pages":[273,274,275],"obj":["use the relationship between ratio and direct proportion"],"keys":["comparison","justify","proportion","shades"],"n":118,"week":20,"inweek":4},{"sec":"13.1","unit":13,"unitTitle":"Probability","title":"Calculating probabilities (part 1)","part":1,"parts":2,"pages":[276,277,278],"obj":["find the probability of complementary events","use lists and diagrams to show equally likely outcomes","use lists and diagrams of outcomes to calculate probabilities. This is a spinner. The probability that it points to red is 0.2. The probability that it points to blue is 0.15. We can write those probabilities as P(red)=0.2 and P(blue)=0.15 The sum of the probabilities for all six colours is 1. This means the probability the spinner does not point to red, P(not red)=1−0.2=0.8 The probability the spinner does not point to blue, P(not blue)=1−0.15=0.85 Getting blue and not getting blue are complementary events. One of them must happen and they cannot both happen. If A is an event and A′ is the complementary event, then P(A′ )=1−P(A) Key word complementary event Red Blue"],"keys":[],"n":119,"week":20,"inweek":5},{"sec":"13.1","unit":13,"unitTitle":"Probability","title":"Calculating probabilities (part 2)","part":2,"parts":2,"pages":[279,280,281],"obj":["find the probability of complementary events","use lists and diagrams to show equally likely outcomes","use lists and diagrams of outcomes to calculate probabilities. This is a spinner. The probability that it points to red is 0.2. The probability that it points to blue is 0.15. We can write those probabilities as P(red)=0.2 and P(blue)=0.15 The sum of the probabilities for all six colours is 1. This means the probability the spinner does not point to red, P(not red)=1−0.2=0.8 The probability the spinner does not point to blue, P(not blue)=1−0.15=0.85 Getting blue and not getting blue are complementary events. One of them must happen and they cannot both happen. If A is an event and A′ is the complementary event, then P(A′ )=1−P(A) Key word complementary event Red Blue"],"keys":[],"n":120,"week":20,"inweek":6}]},{"n":21,"title":"Probability · Position and transformation","lessons":[{"sec":"13.2","unit":13,"unitTitle":"Probability","title":"Experimental and theoretical probabilities (part 1)","part":1,"parts":4,"pages":[282,283],"obj":["calculate experimental probabilities and compare them to theoretical probabilities"],"keys":["experimental probability","theoretical probability"],"n":121,"week":21,"inweek":1},{"sec":"13.2","unit":13,"unitTitle":"Probability","title":"Experimental and theoretical probabilities (part 2)","part":2,"parts":4,"pages":[284,285,286],"obj":["calculate experimental probabilities and compare them to theoretical probabilities"],"keys":["experimental probability","theoretical probability"],"n":122,"week":21,"inweek":2},{"sec":"13.2","unit":13,"unitTitle":"Probability","title":"Experimental and theoretical probabilities (part 3)","part":3,"parts":4,"pages":[287,288,289],"obj":["calculate experimental probabilities and compare them to theoretical probabilities"],"keys":["experimental probability","theoretical probability"],"n":123,"week":21,"inweek":3},{"sec":"13.2","unit":13,"unitTitle":"Probability","title":"Experimental and theoretical probabilities (part 4)","part":4,"parts":4,"pages":[290,291],"obj":["calculate experimental probabilities and compare them to theoretical probabilities"],"keys":["experimental probability","theoretical probability"],"n":124,"week":21,"inweek":4},{"sec":"14.1","unit":14,"unitTitle":"Position and transformation","title":"Bearings (part 1)","part":1,"parts":2,"pages":[292,293,294],"obj":["use bearings as a measure of direction"],"keys":[],"n":125,"week":21,"inweek":5},{"sec":"14.1","unit":14,"unitTitle":"Position and transformation","title":"Bearings (part 2)","part":2,"parts":2,"pages":[295,296,297],"obj":["use bearings as a measure of direction"],"keys":[],"n":126,"week":21,"inweek":6}]},{"n":22,"title":"Position and transformation","lessons":[{"sec":"14.2","unit":14,"unitTitle":"Position and transformation","title":"The midpoint of a line segment (part 1)","part":1,"parts":2,"pages":[298,299,300],"obj":["work out the coordinates of the midpoint of a line segment"],"keys":["line segment","midpoint","x","y"],"n":127,"week":22,"inweek":1},{"sec":"14.2","unit":14,"unitTitle":"Position and transformation","title":"The midpoint of a line segment (part 2)","part":2,"parts":2,"pages":[301,302,303],"obj":["work out the coordinates of the midpoint of a line segment"],"keys":["line segment","midpoint","x","y"],"n":128,"week":22,"inweek":2},{"sec":"14.3","unit":14,"unitTitle":"Position and transformation","title":"Translating 2D shapes (part 1)","part":1,"parts":2,"pages":[304,305,306],"obj":["translate shapes on a coordinate grid using vectors"],"keys":["column vector","congruent","image","object","translate"],"n":129,"week":22,"inweek":3},{"sec":"14.3","unit":14,"unitTitle":"Position and transformation","title":"Translating 2D shapes (part 2)","part":2,"parts":2,"pages":[307,308,309],"obj":["translate shapes on a coordinate grid using vectors"],"keys":["column vector","congruent","image","object","translate"],"n":130,"week":22,"inweek":4},{"sec":"14.4","unit":14,"unitTitle":"Position and transformation","title":"Reflecting shapes (part 1)","part":1,"parts":3,"pages":[310,311],"obj":["reflect shapes on a coordinate grid given the equation of the mirror line","identify a reflection and its mirror line"],"keys":["mirror line","reflect"],"n":131,"week":22,"inweek":5},{"sec":"14.4","unit":14,"unitTitle":"Position and transformation","title":"Reflecting shapes (part 2)","part":2,"parts":3,"pages":[312,313,314],"obj":["reflect shapes on a coordinate grid given the equation of the mirror line","identify a reflection and its mirror line"],"keys":["mirror line","reflect"],"n":132,"week":22,"inweek":6}]},{"n":23,"title":"Position and transformation","lessons":[{"sec":"14.4","unit":14,"unitTitle":"Position and transformation","title":"Reflecting shapes (part 3)","part":3,"parts":3,"pages":[315,316],"obj":["reflect shapes on a coordinate grid given the equation of the mirror line","identify a reflection and its mirror line"],"keys":["mirror line","reflect"],"n":133,"week":23,"inweek":1},{"sec":"14.5","unit":14,"unitTitle":"Position and transformation","title":"Rotating shapes (part 1)","part":1,"parts":3,"pages":[317,318],"obj":["rotate shapes on a coordinate grid and describe a rotation"],"keys":["anticlockwise","centre of rotation"],"n":134,"week":23,"inweek":2},{"sec":"14.5","unit":14,"unitTitle":"Position and transformation","title":"Rotating shapes (part 2)","part":2,"parts":3,"pages":[319,320,321],"obj":["rotate shapes on a coordinate grid and describe a rotation"],"keys":["anticlockwise","centre of rotation"],"n":135,"week":23,"inweek":3},{"sec":"14.5","unit":14,"unitTitle":"Position and transformation","title":"Rotating shapes (part 3)","part":3,"parts":3,"pages":[322,323],"obj":["rotate shapes on a coordinate grid and describe a rotation"],"keys":["anticlockwise","centre of rotation"],"n":136,"week":23,"inweek":4},{"sec":"14.6","unit":14,"unitTitle":"Position and transformation","title":"Enlarging shapes (part 1)","part":1,"parts":3,"pages":[324,325,326],"obj":["enlarge shapes using a positive whole number scale factor from a centre of enlargement"],"keys":["centre of enlargement","enlargement"],"n":137,"week":23,"inweek":5},{"sec":"14.6","unit":14,"unitTitle":"Position and transformation","title":"Enlarging shapes (part 2)","part":2,"parts":3,"pages":[327,328],"obj":["enlarge shapes using a positive whole number scale factor from a centre of enlargement"],"keys":["centre of enlargement","enlargement"],"n":138,"week":23,"inweek":6}]},{"n":24,"title":"Position and transformation · Distance, area and volume","lessons":[{"sec":"14.6","unit":14,"unitTitle":"Position and transformation","title":"Enlarging shapes (part 3)","part":3,"parts":3,"pages":[329,330,331],"obj":["enlarge shapes using a positive whole number scale factor from a centre of enlargement"],"keys":["centre of enlargement","enlargement"],"n":139,"week":24,"inweek":1},{"sec":"15.1","unit":15,"unitTitle":"Distance, area and volume","title":"Converting between miles and kilometres (part 1)","part":1,"parts":2,"pages":[332,333],"obj":["convert between miles and kilometres"],"keys":["kilometre","mile"],"n":140,"week":24,"inweek":2},{"sec":"15.1","unit":15,"unitTitle":"Distance, area and volume","title":"Converting between miles and kilometres (part 2)","part":2,"parts":2,"pages":[334,335],"obj":["convert between miles and kilometres"],"keys":["kilometre","mile"],"n":141,"week":24,"inweek":3},{"sec":"15.2","unit":15,"unitTitle":"Distance, area and volume","title":"The area of a parallelogram and a trapezium (part 1)","part":1,"parts":2,"pages":[336,337],"obj":["derive and use the formulae for the area of a parallelogram and a trapezium. Key word trapezia"],"keys":[],"n":142,"week":24,"inweek":4},{"sec":"15.2","unit":15,"unitTitle":"Distance, area and volume","title":"The area of a parallelogram and a trapezium (part 2)","part":2,"parts":2,"pages":[338,339,340],"obj":["derive and use the formulae for the area of a parallelogram and a trapezium. Key word trapezia"],"keys":[],"n":143,"week":24,"inweek":5},{"sec":"15.3","unit":15,"unitTitle":"Distance, area and volume","title":"Calculating the volume of triangular prisms (part 1)","part":1,"parts":2,"pages":[341,342],"obj":["derive and use the formula for the volume of a triangular prism"],"keys":["cross-section","prism"],"n":144,"week":24,"inweek":6}]},{"n":25,"title":"Distance, area and volume · Interpreting and discussing results","lessons":[{"sec":"15.3","unit":15,"unitTitle":"Distance, area and volume","title":"Calculating the volume of triangular prisms (part 2)","part":2,"parts":2,"pages":[343,344,345],"obj":["derive and use the formula for the volume of a triangular prism"],"keys":["cross-section","prism"],"n":145,"week":25,"inweek":1},{"sec":"15.4","unit":15,"unitTitle":"Distance, area and volume","title":"Calculating the surface area of triangular prisms and pyramids (part 1)","part":1,"parts":4,"pages":[346,347],"obj":["calculate the surface area of triangular prisms and pyramids. You already know how to draw the net of a cube or cuboid to help you work out the surface area of the shape. You can use the same method to help you work out the surface area of triangular prisms and pyramids"],"keys":["net","surface area"],"n":146,"week":25,"inweek":2},{"sec":"15.4","unit":15,"unitTitle":"Distance, area and volume","title":"Calculating the surface area of triangular prisms and pyramids (part 2)","part":2,"parts":4,"pages":[348,349],"obj":["calculate the surface area of triangular prisms and pyramids. You already know how to draw the net of a cube or cuboid to help you work out the surface area of the shape. You can use the same method to help you work out the surface area of triangular prisms and pyramids"],"keys":["net","surface area"],"n":147,"week":25,"inweek":3},{"sec":"15.4","unit":15,"unitTitle":"Distance, area and volume","title":"Calculating the surface area of triangular prisms and pyramids (part 3)","part":3,"parts":4,"pages":[350,351,352],"obj":["calculate the surface area of triangular prisms and pyramids. You already know how to draw the net of a cube or cuboid to help you work out the surface area of the shape. You can use the same method to help you work out the surface area of triangular prisms and pyramids"],"keys":["net","surface area"],"n":148,"week":25,"inweek":4},{"sec":"15.4","unit":15,"unitTitle":"Distance, area and volume","title":"Calculating the surface area of triangular prisms and pyramids (part 4)","part":4,"parts":4,"pages":[353,354],"obj":["calculate the surface area of triangular prisms and pyramids. You already know how to draw the net of a cube or cuboid to help you work out the surface area of the shape. You can use the same method to help you work out the surface area of triangular prisms and pyramids"],"keys":["net","surface area"],"n":149,"week":25,"inweek":5},{"sec":"16.1","unit":16,"unitTitle":"Interpreting and discussing results","title":"Interpreting and drawing frequency diagrams (part 1)","part":1,"parts":2,"pages":[355,356,357],"obj":["draw and interpret frequency diagrams for discrete and continuous data"],"keys":["class interval","classes","continuous data","discrete data","frequency diagram","grouped data"],"n":150,"week":25,"inweek":6}]},{"n":26,"title":"Interpreting and discussing results","lessons":[{"sec":"16.1","unit":16,"unitTitle":"Interpreting and discussing results","title":"Interpreting and drawing frequency diagrams (part 2)","part":2,"parts":2,"pages":[358,359,360],"obj":["draw and interpret frequency diagrams for discrete and continuous data"],"keys":["class interval","classes","continuous data","discrete data","frequency diagram","grouped data"],"n":151,"week":26,"inweek":1},{"sec":"16.2","unit":16,"unitTitle":"Interpreting and discussing results","title":"Time series graphs (part 1)","part":1,"parts":2,"pages":[361,362],"obj":["draw and interpret time series graphs"],"keys":["time series graph","trend"],"n":152,"week":26,"inweek":2},{"sec":"16.2","unit":16,"unitTitle":"Interpreting and discussing results","title":"Time series graphs (part 2)","part":2,"parts":2,"pages":[363,364,365],"obj":["draw and interpret time series graphs"],"keys":["time series graph","trend"],"n":153,"week":26,"inweek":3},{"sec":"16.3","unit":16,"unitTitle":"Interpreting and discussing results","title":"Stem-and-leaf diagrams (part 1)","part":1,"parts":2,"pages":[366,367],"obj":["draw and interpret stem-and-leaf diagrams"],"keys":["mean","median","mode","range","stem-and-leaf diagram"],"n":154,"week":26,"inweek":4},{"sec":"16.3","unit":16,"unitTitle":"Interpreting and discussing results","title":"Stem-and-leaf diagrams (part 2)","part":2,"parts":2,"pages":[368,369],"obj":["draw and interpret stem-and-leaf diagrams"],"keys":["mean","median","mode","range","stem-and-leaf diagram"],"n":155,"week":26,"inweek":5},{"sec":"16.4","unit":16,"unitTitle":"Interpreting and discussing results","title":"Pie charts (part 1)","part":1,"parts":2,"pages":[370,371,372],"obj":["compare pie charts"],"keys":["categorical data","pie chart","proportions","sector"],"n":156,"week":26,"inweek":6}]},{"n":27,"title":"Interpreting and discussing results","lessons":[{"sec":"16.4","unit":16,"unitTitle":"Interpreting and discussing results","title":"Pie charts (part 2)","part":2,"parts":2,"pages":[373,374,375],"obj":["compare pie charts"],"keys":["categorical data","pie chart","proportions","sector"],"n":157,"week":27,"inweek":1},{"sec":"16.5","unit":16,"unitTitle":"Interpreting and discussing results","title":"Representing data (part 1)","part":1,"parts":2,"pages":[376,377],"obj":["choose how to represent data. Key word justify What type of diagram / graph / chart?"],"keys":[],"n":158,"week":27,"inweek":2},{"sec":"16.5","unit":16,"unitTitle":"Interpreting and discussing results","title":"Representing data (part 2)","part":2,"parts":2,"pages":[378,379,380],"obj":["choose how to represent data. Key word justify What type of diagram / graph / chart?"],"keys":[],"n":159,"week":27,"inweek":3},{"sec":"16.6","unit":16,"unitTitle":"Interpreting and discussing results","title":"Using statistics (part 1)","part":1,"parts":3,"pages":[381,382],"obj":["use mode, median, mean and range to compare sets of data"],"keys":["mean","median","mode","range"],"n":160,"week":27,"inweek":4},{"sec":"16.6","unit":16,"unitTitle":"Interpreting and discussing results","title":"Using statistics (part 2)","part":2,"parts":3,"pages":[383,384,385],"obj":["use mode, median, mean and range to compare sets of data"],"keys":["mean","median","mode","range"],"n":161,"week":27,"inweek":5},{"sec":"16.6","unit":16,"unitTitle":"Interpreting and discussing results","title":"Using statistics (part 3)","part":3,"parts":3,"pages":[386,387],"obj":["use mode, median, mean and range to compare sets of data"],"keys":["mean","median","mode","range"],"n":162,"week":27,"inweek":6}]}],"units":[{"n":1,"title":"Integers"},{"n":2,"title":"Expressions, formulae and equations"},{"n":3,"title":"Place value and rounding"},{"n":4,"title":"Decimals"},{"n":5,"title":"Angles and constructions"},{"n":6,"title":"Collecting data"},{"n":7,"title":"Fractions"},{"n":8,"title":"Shapes and symmetry"},{"n":9,"title":"Sequences and functions"},{"n":10,"title":"Percentages"},{"n":11,"title":"Graphs"},{"n":12,"title":"Ratio and proportion"},{"n":13,"title":"Probability"},{"n":14,"title":"Position and transformation"},{"n":15,"title":"Distance, area and volume"},{"n":16,"title":"Interpreting and discussing results"}]};
+window.PLANS=window.PLANS||{};window.PLANS['y8']={
+"id": "y8",
+"name": "Year 8",
+"source": "y8_plan_edupage.xls",
+"playlist": "PLYl6YfuS48dsFXbJCmnv4WyVzcA6ACokX",
+"chapters": [
+{
+"title": "Number basics",
+"goals": [
+"Integers, powers and roots",
+"8Ni.01 Understand that brackets, indices (square and cube roots) and operations follow an order",
+"8Ni.02 Estimate, multiply and divide integers, recognising generalisations.",
+"8Ni.03 Understand factors, multiples, prime factors, highest common factors and lowest common multiples",
+"8Ni.04 Understand the hierarchy of natural numbers, integers and rational numbers.",
+"8Ni.05 Use positive and zero indices, and the index laws for multiplication and division.",
+"8Ni.06 Recognise squares of negative and positive numbers, and corresponding square roots.",
+"8Ni.07 Recognise positive and negative cube numbers, and the corresponding cube roots.",
+"Place value, ordering and rounding",
+"8Np.01 Use knowledge of place value to multiply and divide integers and decimals by 0.1 and 0.01.",
+"8Np.02 Round numbers to a given number of significant figures."
+],
+"topics": [
+{
+"title": "Types of numbers",
+"plan": "TYPES OF NUMBERS",
+"lessons": "1–2",
+"nLessons": 2,
+"skills": [
+"numberTypesMC",
+"squareCube"
+]
+},
+{
+"title": "Factors and prime factors",
+"plan": "FACTORS AND PRIME FACTORS",
+"lessons": "3–4",
+"nLessons": 2,
+"skills": [
+"primeFactors",
+"hcfLcm",
+"factorCount",
+"isPrime"
+],
+"videos": [
+[
+"TuCN6Xk2nL8",
+"Ex 1.1 Factor trees & prime factors",
+1
+]
+]
+},
+{
+"title": "Powers",
+"plan": "POWERS",
+"lessons": "5–6",
+"nLessons": 2,
+"skills": [
+"indices",
+"indexSolve",
+"squareCube"
+],
+"videos": [
+[
+"oF-3rkl0nF4",
+"Ex 1.4 Indices (powers)",
+6
+]
+]
+},
+{
+"title": "Square roots and cube roots",
+"plan": "TYPES OF ROOTS",
+"lessons": "7–8",
+"nLessons": 2,
+"skills": [
+"squareCube",
+"indices"
+],
+"videos": [
+[
+"UFyCEfsIVwA",
+"Ex 1.3 Squares & cubes (Q1–6)",
+3
+],
+[
+"iEL7NUTP2rU",
+"Ex 1.3 Squares & cubes (Q7–11)",
+4
+],
+[
+"bLW3N7CeRbQ",
+"Ex 1.3 Squares & cubes (Q12–14)",
+5
+]
+]
+},
+{
+"title": "Order of operations",
+"plan": "ORDER OF OPERATIONS",
+"lessons": "9–10",
+"nLessons": 2,
+"skills": [
+"bidmas",
+"intOps"
+],
+"videos": [
+[
+"ccLp1LR02Ng",
+"Ex 1.2 Multiplying negative integers",
+2
+]
+]
+},
+{
+"title": "Fraction skills",
+"plan": "FRACTIONS SKILLS",
+"lessons": "11–12",
+"nLessons": 2,
+"skills": [
+"compareFrac",
+"addFrac",
+"subMixed",
+"mulIntMixed",
+"divIntFrac"
+],
+"videos": [
+[
+"lNU0rKPGvvc",
+"Ex 7.1 Comparing fractions",
+36
+],
+[
+"AXZC7GSM3dw",
+"Ex 7.2 Ordering fractions",
+37
+],
+[
+"VslqEiz2-TQ",
+"Ex 7.3 Multiplying fractions",
+38
+]
+]
+},
+{
+"title": "Rounding",
+"plan": "ROUNDING",
+"lessons": "13",
+"nLessons": 1,
+"skills": [
+"rounding",
+"estimate"
+],
+"videos": [
+[
+"TzJbTsjd6wE",
+"Ex 3.2 Rounding & significant figures (Q1–4)",
+17
+]
+]
+},
+{
+"title": "Powers of 10 (× and ÷ by 0.1 and 0.01)",
+"plan": "POWERS OF 10",
+"lessons": "14–15",
+"nLessons": 2,
+"skills": [
+"pow10"
+],
+"videos": [
+[
+"h3xYRnAXM3M",
+"Ex 3.1 Multiplying & dividing by 0.1 and 0.01",
+16
+]
+]
+},
+{
+"title": "Significant figures",
+"plan": "SIGNIFICANT FIGURES",
+"lessons": "16–17",
+"nLessons": 2,
+"skills": [
+"y8_sigfig",
+"estimate"
+],
+"videos": [
+[
+"dbreQKBPsvI",
+"Ex 3.2 Significant figures (Q8–11)",
+18
+],
+[
+"j_ZBNKBMut4",
+"Ex 3.2 Significant figures (Q12–14)",
+19
+]
+]
+}
+]
+},
+{
+"title": "Algebra basics",
+"goals": [
+"8Ae.01 Understand that letters have different meanings in expressions, formulae and equations.",
+"8Ae.02 Understand that the laws of arithmetic and order of operations apply to algebraic terms and expressions (four operations, squares and cubes).",
+"8Ae.03 Understand how to manipulate algebraic expressions including:",
+"– applying the distributive law with a single term (squares and cubes)",
+"– identifying the highest common factor to factorise.",
+"8Ae.04 Understand that a situation can be represented either in words or as an algebraic expression, and move between the two representations (linear with integer or fractional coefficients).",
+"8Ae.05 Understand that a situation can be represented either in words or as a formula (mixed operations), and manipulate using knowledge of inverse operations to change the subject of a formula.",
+"8Ae.06 Understand that a situation can be represented either in words or as an equation.",
+"Move between the two representations and solve the equation (integer or fractional coefficients, unknown on either or both sides).",
+"8Ae.07 Understand that letters can represent open and closed intervals (two terms)."
+],
+"topics": [
+{
+"title": "Algebra terminology",
+"plan": "TERMINOLOGY",
+"lessons": "18–19",
+"nLessons": 2,
+"skills": [
+"y8_algTerms"
+],
+"videos": [
+[
+"xOAkg0WFQlo",
+"Ex 2.2 Expressions, formulae & equations",
+9
+]
+]
+},
+{
+"title": "Algebra basic rules",
+"plan": "ALGEBRA BASIC RULES",
+"lessons": "20–24",
+"nLessons": 5,
+"skills": [
+"simplifyExpr",
+"y8_algRules"
+],
+"videos": [
+[
+"GFqEG1JsSBg",
+"Ex 2.1 Algebraic expressions (Q4–8)",
+7
+]
+]
+},
+{
+"title": "Expressions and expanding brackets",
+"plan": "EXPRESSIONS",
+"lessons": "25–27",
+"nLessons": 3,
+"skills": [
+"buildExpr",
+"expand",
+"simplifyExpr"
+],
+"videos": [
+[
+"YnR0R1NMEUA",
+"Ex 2.1 Algebraic expressions (Q9–15)",
+8
+],
+[
+"rb3SFBrGQ6k",
+"Ex 2.3 Expanding brackets",
+10
+]
+]
+},
+{
+"title": "Substitution",
+"plan": "SUBSTITUTIONS",
+"lessons": "28–29",
+"nLessons": 2,
+"skills": [
+"substitute"
+]
+},
+{
+"title": "Forming expressions from words",
+"plan": "FORM AND MAKE EXPRESSIONS IN TERMS OF A VARIABLE",
+"lessons": "30–32",
+"nLessons": 3,
+"skills": [
+"y8_wordExpr",
+"buildExpr"
+]
+},
+{
+"title": "Formulae and changing the subject",
+"plan": "FORMULAE",
+"lessons": "33–34",
+"nLessons": 2,
+"skills": [
+"rearrange",
+"substitute"
+],
+"videos": [
+[
+"3KU1RP7jcT8",
+"Ex 2.5 Linear equations & formulae (Q1–5)",
+13
+]
+]
+},
+{
+"title": "Factorising linear expressions",
+"plan": "FACTORISE LINEAR EXPRESSION",
+"lessons": "35–36",
+"nLessons": 2,
+"skills": [
+"factorise"
+],
+"videos": [
+[
+"En_2FSNZIjU",
+"Ex 2.4 Factorising (Q1–7)",
+11
+],
+[
+"93tYgrc4foo",
+"Ex 2.4 Factorising (Q8–13)",
+12
+]
+]
+},
+{
+"title": "Solving equations and forming them from word problems",
+"plan": "EQUATION SOLUTIONFORM AND SOLVE EQUATION FROM WORD PROBLEM",
+"lessons": "37–41",
+"nLessons": 5,
+"skills": [
+"linear",
+"linearFrac",
+"y8_wordEq"
+],
+"videos": [
+[
+"c64n6of9O1c",
+"Ex 2.5 Linear equations & formulae (Q7–9)",
+14
+]
+]
+},
+{
+"title": "Inequalities",
+"plan": "INEQUALITY",
+"lessons": "42–43",
+"nLessons": 2,
+"skills": [
+"inequality"
+],
+"videos": [
+[
+"FChyZ2iMDdw",
+"Ex 2.6 Inequalities",
+15
+]
+]
+}
+]
+},
+{
+"title": "Sequences",
+"goals": [
+"8As.01 Understand term-to-term rules, and generate sequences from numerical and spatial patterns (including fractions).",
+"8As.02 Understand and describe nth term rules algebraically (in the form n ± a, a × n, or an ± b, where a and b are positive or negative integers or fractions).",
+"8As.03 Understand that a function is a relationship where each input has a single output.",
+"Generate outputs from a given function and identify inputs from a given output by considering inverse operations (including fractions)."
+],
+"topics": [
+{
+"title": "Types of sequences",
+"plan": "TYPES",
+"lessons": "44–45",
+"nLessons": 2,
+"skills": [
+"y8_seqArith",
+"y8_seqTerm",
+"seqNext"
+],
+"demo": "seq"
+},
+{
+"title": "The nth term",
+"plan": "n th TERM",
+"lessons": "46–47",
+"nLessons": 2,
+"skills": [
+"y8_nthMC",
+"seqFindNth",
+"y8_nthPattern"
+],
+"demo": "seq"
+},
+{
+"title": "Finding the value of n",
+"plan": "FIND VALUE OF n",
+"lessons": "48–49",
+"nLessons": 2,
+"skills": [
+"seqUse",
+"y8_nthPattern"
+],
+"demo": "seq"
+},
+{
+"title": "Finding a specific term",
+"plan": "FIND SPECIFIC TERM",
+"lessons": "50–51",
+"nLessons": 2,
+"skills": [
+"seqNth",
+"seqUse"
+],
+"demo": "seq"
+}
+]
+},
+{
+"title": "Geometry",
+"goals": [
+"8Gg.01 Identify and describe the hierarchy of quadrilaterals.",
+"8Gg.02 Understand π as the ratio between a circumference and a diameter. Know and use the formula for the circumference of a circle.",
+"8Gg.03 Know that distances can be measured in miles or kilometres, and that a kilometre is approximately 5 8 of a mile or a mile is 1.6 kilometres.",
+"8Gg.04 Use knowledge of rectangles, squares and triangles to derive the formulae for the area of parallelograms and trapezia. Use the formulae to calculate the area of parallelograms and trapezia.",
+"8Gg.10 Derive and use the fact that the exterior angle of a triangle is equal to the sum of the two interior opposite angles.",
+"8Gg.11 Recognise and describe the properties of angles on parallel and intersecting lines, using geometric vocabulary such as alternate, corresponding and vertically opposite.",
+"8Gg.12 Construct triangles, midpoint and perpendicular bisector of a line segment, and the bisector of an angle",
+"8Gp.01 Understand and use bearings as a measure of direction.",
+"8Gp.02 Use knowledge of coordinates to find the midpoint of a line segment.",
+"8Gp.03 Translate points and 2D shapes using vectors, recognising that the image is congruent to the object after a translation.",
+"8Gp.04 Reflect 2D shapes and points in a given mirror line on or parallel to the x- or y-axis, or y = ± x on coordinate grids. Identify a reflection and its mirror line.",
+"8Gp.05 Understand that the centre of rotation, direction of rotation and angle are needed to identify and perform rotations.",
+"8Gp.06 Enlarge 2D shapes, from a centre of enlargement (outside or on the shape) with a positive integer scale factor. Identify an enlargement and scale factor"
+],
+"topics": [
+{
+"title": "Angle facts review: triangles and exterior angles",
+"plan": "REVIEW BASIC RELATIONSHIPS",
+"lessons": "53–55",
+"nLessons": 3,
+"skills": [
+"anglesBasic",
+"anglesVO",
+"y8_triAlg",
+"exterior"
+],
+"demo": "triangle",
+"videos": [
+[
+"UnMY2ypDDgs",
+"Ex 5.2 Exterior angle of a triangle (Q1–4)",
+27
+],
+[
+"QOxbk4sNqyE",
+"Ex 5.2 Exterior angle of a triangle (Q5–8)",
+28
+],
+[
+"4ATIsHztxMw",
+"Ex 5.2 Exterior angle of a triangle (Q9–14)",
+29
+]
+]
+},
+{
+"title": "Parallel lines",
+"plan": "PARALLEL LINES",
+"lessons": "56–58",
+"nLessons": 3,
+"skills": [
+"y8_parallel",
+"y8_parallelPair"
+],
+"demo": "parallel",
+"videos": [
+[
+"BSdPIgklpls",
+"Ex 5.1 Parallel lines (Q1–4)",
+24
+],
+[
+"sYlF4Wiz_aU",
+"Ex 5.1 Parallel lines (Q5–9)",
+25
+],
+[
+"9yMiAn3mnAg",
+"Ex 5.1 Parallel lines (Q10–13)",
+26
+]
+]
+},
+{
+"title": "Quadrilaterals and their properties",
+"plan": "QUADRILATERALS AND PROPERTIES",
+"lessons": "59–61",
+"nLessons": 3,
+"skills": [
+"y8_quadProps",
+"quadAngle"
+],
+"demo": "polygon",
+"videos": [
+[
+"BBkqa1LKI7k",
+"Ex 8.1 Special quadrilaterals",
+40
+],
+[
+"j1nPhMHwnUg",
+"Ex 8.1 Line & rotational symmetry",
+39
+]
+]
+},
+{
+"title": "Polygons: exterior and interior angles",
+"plan": "POLYGONS EXT INTERIOR ANGLES",
+"lessons": "62–65",
+"nLessons": 4,
+"skills": [
+"y8_polyAngles",
+"polygon"
+],
+"demo": "polygon"
+},
+{
+"title": "Bearings",
+"plan": "BEARINGS",
+"lessons": "66–68",
+"nLessons": 3,
+"skills": [
+"y8_bearing"
+],
+"demo": "bearing"
+},
+{
+"title": "Transformations",
+"plan": "TRANSFORMATIONS",
+"lessons": "69–71",
+"nLessons": 3,
+"skills": [
+"y8_transform",
+"translate",
+"reflect",
+"rotate",
+"enlarge",
+"midpoint"
+],
+"demo": "transform",
+"videos": [
+[
+"EEp67vGomKs",
+"Ex 14.3 Translating 2D shapes",
+57
+],
+[
+"KqncAmSb9XE",
+"Ex 14.4 Reflecting & rotating shapes",
+58
+],
+[
+"Gw1T-ClVwZ8",
+"Ex 14.5 Rotating shapes",
+59
+],
+[
+"C3hqdKe2xYQ",
+"Ex 14.6 Enlargement",
+60
+],
+[
+"yUwG-UMrRhc",
+"Ex 14.2 Midpoint of a line segment (Q1–6)",
+55
+],
+[
+"eyRrimlxnGs",
+"Ex 14.2 Midpoint of a line segment (Q8–14)",
+56
+]
+]
+},
+{
+"title": "Simple constructions",
+"plan": "SIMPLE CONSTRUCTIONS",
+"lessons": "72–73",
+"nLessons": 2,
+"skills": [
+"constructMC"
+],
+"videos": [
+[
+"WrLrd3RH0-Y",
+"Ex 5.3 Constructions (Q1–4)",
+30
+],
+[
+"S-NNNBkbJ2o",
+"Ex 5.3 Constructions (Q5–8)",
+31
+],
+[
+"FPTBCVHCmhE",
+"Ex 5.3 Constructions (Q9–12)",
+32
+]
+]
+}
+]
+},
+{
+"title": "3D shapes",
+"goals": [
+"8Gg.05 Understand and use Euler’s formula to connect number of vertices, faces and edges of 3D shapes.",
+"8Gg.06 Use knowledge of area and volume to derive the formula for the volume of a triangular prism. Use the formula to calculate the volume of triangular prisms.",
+"8Gg.07 Represent front, side and top view of 3D shapes to scale.",
+"8Gg.08 Use knowledge of area, and properties of cubes, cuboids, triangular prisms and pyramids to calculate their surface area.",
+"8Gg.09 Understand that the number of sides of a regular polygon is equal to the number of"
+],
+"topics": [
+{
+"title": "3D vocabulary, nets and types of prisms",
+"plan": "VOCABULARY AND TYPES OF PRISMS",
+"lessons": "74–76",
+"nLessons": 3,
+"skills": [
+"y8_netMC",
+"shapes3d"
+],
+"demo": "net",
+"videos": [
+[
+"wVB3IPcFA70",
+"Ex 8.3 Faces, edges & vertices",
+43
+]
+]
+},
+{
+"title": "Volume of cuboids, prisms and cylinders",
+"plan": "VOLUME SET UPS FOR CONVENTIONAL SHAPES",
+"lessons": "77–80",
+"nLessons": 4,
+"skills": [
+"y8_cuboid",
+"y8_prism"
+],
+"demo": "solid"
+},
+{
+"title": "Surface area",
+"plan": "SA SET UP FOR CONVENTIONAL SHAPES",
+"lessons": "81–84",
+"nLessons": 4,
+"skills": [
+"y8_netSA",
+"surfaceArea",
+"y8_cuboid"
+],
+"demo": "net"
+},
+{
+"title": "Real-world problems (pipes, tanks, pyramids)",
+"plan": "REAL WORLD TYPES eg pipe , pyramid",
+"lessons": "85–88",
+"nLessons": 4,
+"skills": [
+"y8_volReal",
+"y8_prism",
+"solids"
+],
+"demo": "solid",
+"videos": [
+[
+"1MyFgDp7OgU",
+"Ex 8.2 Perimeter of a semicircle",
+41
+],
+[
+"pmkl_VgFkzY",
+"Ex 8.2 Perimeter of a quarter circle",
+42
+]
+]
+}
+]
+},
+{
+"title": "Linear graphs",
+"goals": [
+"8As.04 Understand that a situation can be represented either in words or as a linear function in two variables (of the form y = mx + c), and move between the two representations.",
+"8As.05 Use knowledge of coordinate pairs to construct tables of values and plot the graphs of linear functions, where y is given explicitly in terms of x (y = mx + c).",
+"8As.06 Recognise that equations of the form y = mx + c correspond to straight-line graphs, where m is the gradient and c is the y-intercept (integer values of m).",
+"8As.07 Read and interpret graphs with more than one component."
+],
+"topics": [
+{
+"title": "Drawing straight-line graphs: 3 methods",
+"plan": "3 METHODS FOR DRAWING",
+"lessons": "89–94",
+"nLessons": 6,
+"skills": [
+"y8_lineTable",
+"y8_lineGradInt",
+"y8_coverUp"
+],
+"demo": "line"
+},
+{
+"title": "Recognising a graph from its picture",
+"plan": "RECOGNISE GRAPH FROM PICTURE",
+"lessons": "95–98",
+"nLessons": 4,
+"skills": [
+"y8_sketchMC",
+"y8_gradFromGraph",
+"lineIntercept"
+],
+"demo": "sketch"
+},
+{
+"title": "Real-world graphs (e.g. filling a bottle)",
+"plan": "REAL WORLD APPLICATIONS - EG FILL BOTTLE",
+"lessons": "99–102",
+"nLessons": 4,
+"skills": [
+"y8_realLine",
+"y8_fillBottle",
+"y8_conversion"
+],
+"demo": "real"
+}
+]
+},
+{
+"title": "Percentages",
+"goals": [],
+"topics": [
+{
+"title": "Percentage change",
+"plan": "PERCENTAGE CHANGE",
+"lessons": "103–104",
+"nLessons": 2,
+"skills": [
+"percChange",
+"percentageChange"
+],
+"demo": "percent",
+"videos": [
+[
+"4tJ8CgOKcHc",
+"Ex 10.1 Percentage increase & decrease (Q1–7)",
+44
+],
+[
+"aKOre6NHRDA",
+"Ex 10.1 Percentage increase & decrease (Q8–15)",
+45
+]
+]
+},
+{
+"title": "Percentage applications",
+"plan": "APPLICATIONS",
+"lessons": "105–110",
+"nLessons": 6,
+"skills": [
+"percOf",
+"percOfAnother",
+"reversePerc",
+"simpleInterest"
+],
+"demo": "percent"
+},
+{
+"title": "Multipliers and compound change",
+"plan": "COMPOUND MULTIPLIERS",
+"lessons": "111–112",
+"nLessons": 2,
+"skills": [
+"multiplier",
+"compound"
+],
+"demo": "percent",
+"videos": [
+[
+"ac6IW8xTxkI",
+"Ex 10.2 Using a multiplier",
+46
+]
+]
+}
+]
+},
+{
+"title": "Ratio and proportion",
+"goals": [],
+"topics": [
+{
+"title": "Ratio basics: simplifying",
+"plan": "BASICS - SIMPLIFYING",
+"lessons": "113–114",
+"nLessons": 2,
+"skills": [
+"y8_ratioSimp",
+"y8_ratioOneN"
+],
+"demo": "ratio",
+"videos": [
+[
+"REZXqzsMOIg",
+"Ex 12.1 Simplifying ratios (Q1–5)",
+47
+],
+[
+"lKQhy5wyzUY",
+"Ex 12.1 Simplifying ratios (Q6–9)",
+48
+]
+]
+},
+{
+"title": "Ratio applications: sharing and scaling",
+"plan": "APPLICATIONS",
+"lessons": "115–118",
+"nLessons": 4,
+"skills": [
+"y8_ratioShare",
+"y8_scale",
+"ratioDiff"
+],
+"demo": "ratio",
+"videos": [
+[
+"j9oT1IMFMY0",
+"Ex 12.2 Sharing in a ratio (Q1–7)",
+49
+],
+[
+"JYbNCzGPVGY",
+"Ex 12.2 Sharing in a ratio (Q8–13)",
+50
+]
+]
+},
+{
+"title": "Rates and the unitary method",
+"plan": "RATES ; UNIT METHOD",
+"lessons": "119–121",
+"nLessons": 3,
+"skills": [
+"proportion",
+"y8_bestBuy",
+"speedDist"
+],
+"demo": "ratio",
+"videos": [
+[
+"cVpR5OZXekc",
+"Ex 12.3 Ratio & proportion",
+51
+]
+]
+}
+]
+},
+{
+"title": "Statistics",
+"goals": [
+"8Ss.01 Select, trial and justify data collection and sampling methods to investigate predictions for a set of related statistical questions, considering what data to collect (categorical, discrete and continuous data).",
+"8Ss.02 Understand the advantages and disadvantages of different sampling methods.",
+"8Ss.03 Record, organise and represent categorical, discrete and continuous data. Choose and explain which representation to use in a given situation:",
+"– Venn and Carroll diagrams",
+"– tally charts, frequency tables and two-way tables",
+"– dual and compound bar charts",
+"– pie charts",
+"– frequency diagrams for continuous data",
+"– line graphs and time series graphs",
+"– scatter graphs",
+"– stem-and-leaf diagrams",
+"– infographics.",
+"8Ss.04 Use knowledge of mode, median, mean and range to compare two distributions, considering the interrelationship between centrality and spread.",
+"8Ss.05 Interpret data, identifying patterns, trends and relationships, within and between data sets, to answer statistical questions. Discuss conclusions, considering the sources of variation, including sampling, and check predictions."
+],
+"topics": [
+{
+"title": "Collecting data and sampling",
+"plan": "COLLECT DATA",
+"lessons": "122–124",
+"nLessons": 3,
+"skills": [
+"collectMC",
+"sampling"
+],
+"videos": [
+[
+"UV-OnfWtAP4",
+"Ex 6.1 Collecting data (Q1–4)",
+33
+],
+[
+"TDAMHZnLSw4",
+"Ex 6.1 Collecting data (Q5–6)",
+34
+],
+[
+"dp3aIF6Cy2E",
+"Ex 6.2 Sampling",
+35
+]
+]
+},
+{
+"title": "Mean, median, mode and range",
+"plan": "MEAN MEDIAN MODE RANGE AND CALCULATIONS",
+"lessons": "125",
+"nLessons": 1,
+"skills": [
+"y8_avg",
+"missingMean"
+],
+"demo": "stats"
+},
+{
+"title": "Organising data: frequency tables",
+"plan": "ORGANISE AND  DISPLAY ; SUMMARISE",
+"lessons": "126–129",
+"nLessons": 4,
+"skills": [
+"y8_freqTable",
+"freqMean"
+],
+"demo": "freq",
+"videos": [
+[
+"iWkik7G-o60",
+"Ex 16.1 Frequency tables & diagrams",
+61
+]
+]
+},
+{
+"title": "Displaying data: pie, bar, stem-and-leaf, histogram, time series",
+"plan": "WAYS TO DISPLAY pi bar stem leaf ; histogram ; comparative ; time sequence",
+"lessons": "130–135",
+"nLessons": 6,
+"skills": [
+"y8_histRead",
+"pie",
+"stemLeaf",
+"timeSeries",
+"barRead"
+],
+"demo": "charts",
+"videos": [
+[
+"AVaQd6D4XlU",
+"Ex 16.2 Time series graphs",
+62
+]
+]
+},
+{
+"title": "Interpreting and comparing two sets of data",
+"plan": "INTEPRET AND COMPARE 2 SETS OF DATA",
+"lessons": "136–139",
+"nLessons": 4,
+"skills": [
+"y8_compare",
+"y8_avg"
+],
+"demo": "stats"
+}
+]
+},
+{
+"title": "Probability",
+"goals": [
+"8Sp.01 Understand that complementary events are two events that have a total probability of 1.",
+"8Sp.02 Understand that tables, diagrams and lists can be used to identify all mutually exclusive outcomes of combined events (independent events only).",
+"8Sp.03 Understand how to find the theoretical probabilities of equally likely combined events.",
+"8Sp.04 Design and conduct chance experiments or simulations, using small and large"
+],
+"topics": [
+{
+"title": "Probability basics: finding P(event)",
+"plan": "BASICS  ; FINDING p FOR EVENT",
+"lessons": "140–141",
+"nLessons": 2,
+"skills": [
+"y8_probVocab",
+"probBag",
+"probNot"
+],
+"demo": "spinner",
+"videos": [
+[
+"tTDCkLRELnY",
+"Ex 13.1 Complementary events (Q1–6)",
+52
+],
+[
+"PledmIMDvUI",
+"Ex 13.1 Complementary events (Q7–9)",
+53
+]
+]
+},
+{
+"title": "Relative frequency",
+"plan": "TABLE OF DATA  - RELATIVE FREQUENCY",
+"lessons": "142–144",
+"nLessons": 3,
+"skills": [
+"y8_relFreq",
+"probExp",
+"probExpected"
+],
+"demo": "spinner",
+"videos": [
+[
+"xgjOuN5vHEc",
+"Ex 13.2 Theoretical & experimental probability",
+54
+]
+]
+},
+{
+"title": "Sample space diagrams and two-way tables",
+"plan": "DIAGRAMS TO SHOW SAMPLE SPACES",
+"lessons": "145–148",
+"nLessons": 4,
+"skills": [
+"y8_sampleSpace",
+"y8_twoWay",
+"probDice"
+],
+"demo": "sample"
+},
+{
+"title": "Tree diagrams for compound events",
+"plan": "SIMPLE TREE DIGRAM TO SHOW OUTCOMES OF COMPOUND EVENTS.",
+"lessons": "149–151",
+"nLessons": 3,
+"skills": [
+"y8_tree"
+],
+"demo": "tree"
+}
+]
+},
+{
+"title": "Review for end-of-year exams",
+"goals": [],
+"topics": [
+{
+"title": "Progression test practice (mixed review)",
+"plan": "Progression test past papers from Cambridge support site",
+"lessons": "152–161",
+"nLessons": 10,
+"skills": [
+"REVIEW"
+]
+}
+]
+}
+]
+};
