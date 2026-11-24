@@ -80,7 +80,7 @@ function lessonPage(cid,n,tab,slide){
   if(!l){app.innerHTML='<h1>Not found</h1>';return}
   CUR={cid,l};refreshTools();const m=c.modules[l.week-1];
   app.innerHTML=`${crumbs(['Home','#/'],[c.name,`#/${cid}`],[`Module ${l.week}: ${m.title}`])}<h1>${l.title}</h1>
-    <div class="tabs"><a href="#/${cid}/l/${n}/slides" class="${tab==='slides'?'on':''}">Slides</a><a href="#/${cid}/l/${n}/practice" class="${tab==='practice'?'on':''}">Practice</a>${l.videos?`<a href="#/${cid}/l/${n}/videos" class="${tab==='videos'?'on':''}">Videos (${l.videos.length})</a>`:''}<span class="sp"></span>
+    <div class="tabs"><a href="#/${cid}/l/${n}/slides" class="${tab==='slides'?'on':''}">Slides</a><a href="#/${cid}/l/${n}/practice" class="${tab==='practice'?'on':''}">Practice</a>${l.videos||extrasFor(cid,l)?`<a href="#/${cid}/l/${n}/videos" class="${tab==='videos'?'on':''}">Videos${l.videos?` (${l.videos.length})`:''}</a>`:''}<span class="sp"></span>
     ${n>1?`<a href="#/${cid}/l/${n-1}/${tab}" class="pn">← Previous topic</a>`:''}${n<allLessons(cid).length?`<a href="#/${cid}/l/${n+1}/${tab}" class="pn">Next topic →</a>`:''}</div><div id="tabBody"></div>`;
   if(tab==='practice')practice(cid,l);else if(tab==='videos')videosTab(cid,l);else{slides(cid,l);if(slide)go(+slide)}
   window.scrollTo(0,0);
@@ -89,14 +89,22 @@ function lessonPage(cid,n,tab,slide){
 // ---------- videos ----------
 const fileNote=()=>location.protocol==='file:'?`<p class="note">YouTube does not play videos inside a page opened straight from a file. Use “Open on YouTube”, or open the site through a web address (for example GitHub Pages).</p>`:'';
 const ytFrame=id=>`<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" title="YouTube video" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;
+const ivMode=()=>canEmbed()&&localStorage.getItem('maths.ivmode')!=='plain';
 function videoBlock(cid,l){
   const v=l.videos;let i=0;const h=document.createElement('div');
-  const draw=()=>{h.innerHTML=`<div class="vidwrap">${ytFrame(v[i][0])}<div class="vlist"><b>Videos for this topic</b>${v.map((x,k)=>`<button class="vbtn ${k===i?'on':''}" data-k="${k}">${x[1]}</button>`).join('')}
+  const draw=()=>{const iv=ivMode();
+    h.innerHTML=`<div class="vidwrap"><div class="vmain">${iv?'':ytFrame(v[i][0])}</div><div class="vlist"><b>Videos for this topic</b>${v.map((x,k)=>`<button class="vbtn ${k===i?'on':''}" data-k="${k}">${x[1]}</button>`).join('')}
+    ${canEmbed()?`<label class="ivsw"><input type="checkbox" ${iv?'checked':''}> Interactive: stop for questions</label>`:''}
     <a href="https://www.youtube.com/watch?v=${v[i][0]}&list=${course(cid).playlist}&index=${v[i][2]}" target="_blank" rel="noopener">Open on YouTube ↗</a>${fileNote()}</div></div>`;
-    $$('.vbtn',h).forEach(b=>b.onclick=()=>{i=+b.dataset.k;draw()})};
+    if(iv)$('.vmain',h).appendChild(interactiveVideo(cid,l,v[i][0]));
+    $$('.vbtn',h).forEach(b=>b.onclick=()=>{i=+b.dataset.k;draw()});
+    const sw=$('.ivsw input',h);if(sw)sw.onchange=()=>{localStorage.setItem('maths.ivmode',sw.checked?'on':'plain');draw()}};
   draw();return h;
 }
-function videosTab(cid,l){$('#tabBody').appendChild(videoBlock(cid,l))}
+function videosTab(cid,l){
+  const b=$('#tabBody');if(l.videos)b.appendChild(videoBlock(cid,l));
+  if(extrasFor(cid,l)){const w=document.createElement('div');w.className='vtabwhy';b.appendChild(w);whySlide(w,cid,l);while(w.stepNext());}
+}
 
 // ---------- practice ----------
 function practice(cid,l){
@@ -154,6 +162,8 @@ function slides(cid,l){
   const body=$('#tabBody'),c=course(cid),m=c.modules[l.week-1],demo=demoFor(l),sk=l.review?lessonProblems(cid,l,3,rndSeed()).map(p=>p.skill):l.skills;
   const ex=[0,1,2].map(i=>({skill:sk[i%sk.length],lv:i}));
   const items=[
+    {name:'Title',mount:h=>titleSlide(h,cid,l,m,c)},
+    ...(extrasFor(cid,l)?[{name:'Why it matters',mount:h=>whySlide(h,cid,l)}]:[]),
     {name:'Objectives',mount:h=>{
       h.innerHTML=`<div class="s-title" style="--mc:${m.color}"><div class="s-u">${c.name} · Module ${m.n}: ${m.title} · Lesson${l.nLessons>1?'s':''} ${l.lessons}</div><div class="big">${l.title}</div>
         <p class="lead">Today: ${demo?'explore with an interactive demo, then ':''}work through examples step by step, try a random problem and check your understanding.</p>

@@ -1,0 +1,50 @@
+/* Title slide, "Why it matters", interactive video */
+.tslide{position:relative;min-height:min(62vh,560px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:1rem 1rem 3rem;
+  background:radial-gradient(circle at 20% 15%,color-mix(in srgb,var(--mc,var(--brand)) 14%,transparent),transparent 55%),radial-gradient(circle at 85% 90%,color-mix(in srgb,var(--mc,var(--brand)) 10%,transparent),transparent 50%);border-radius:14px}
+.ts-k{color:var(--mc,var(--brand));font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:.95rem}
+.ts-t{font-size:clamp(2.2rem,6vw,4.6rem);line-height:1.12;margin:.6rem 0 .8rem;font-weight:900;max-width:18ch}
+.tw{display:inline-block;white-space:nowrap}.tl{display:inline-block;position:relative;will-change:transform,opacity}
+.tl.nail-l::before,.tl.nail-r::before{content:"";position:absolute;top:6%;width:.13em;height:.13em;border-radius:50%;background:#64748b;box-shadow:0 0 0 2px rgba(100,116,139,.3)}
+.tl.nail-l::before{left:14%}.tl.nail-r::before{right:14%}
+.ts-s{color:var(--mute);font-weight:600;font-size:1.1rem}.ts-go{position:absolute;bottom:.8rem;left:0;right:0;animation:tsblink 2.4s infinite}
+@keyframes tsblink{50%{opacity:.35}}
+
+.whycards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.6rem 0 1rem}
+.whyc{display:flex;gap:.8rem;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-left:6px solid #f59e0b;border-radius:12px;padding:1rem 1.1rem;font-size:1.12rem;line-height:1.5;transition:opacity .35s,filter .35s}
+.whyc.use{border-left-color:#10b981}.whyc p{margin:.3rem 0 0}.wi{font-size:2rem;line-height:1}
+.pending{opacity:.12;filter:blur(3px);cursor:pointer}
+.funh{margin:.4rem 0 .5rem;transition:opacity .35s}
+.funv{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.8rem;transition:opacity .35s,filter .35s}
+.fv{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.fvthumb{position:relative;border:0;padding:0;background:#000;cursor:pointer;aspect-ratio:16/9}.fvthumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.fvthumb:hover img{opacity:1}.fvlen{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.75);color:#fff;font-size:.75rem;padding:0 .3rem;border-radius:4px}
+.fvplay{position:absolute;inset:0;display:grid;place-items:center;font-size:2rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.fvt{padding:.45rem .6rem;display:flex;flex-direction:column;gap:.15rem;font-size:.9rem;font-weight:600}.fvt small{color:var(--mute);font-weight:500}
+.funplay{margin-top:.8rem}.vtabwhy{margin-top:1.5rem}
+@media(max-width:800px){.whycards{grid-template-columns:1fr}}
+
+.iv{display:flex;flex-direction:column;gap:.4rem}
+.ivbox{position:relative;border-radius:10px;overflow:hidden;background:#000;aspect-ratio:16/9}
+.ivframe,.ivframe iframe,.ivframe>div{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ivq{position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 96%,transparent);overflow:auto;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.6rem;animation:fadein .25s}
+.ivqh{display:flex;gap:.6rem;align-items:center;font-size:1.15rem}.ivqq .qt{font-size:1.15rem}.ivqq .svg-fig{max-height:220px}
+.ivopts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.5rem}
+.ivopts button{text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:.6rem .8rem;font-size:1.05rem}
+.ivopts button b{color:var(--brand);margin-right:.3rem}.ivopts button:not(:disabled):hover{border-color:var(--brand)}
+.ivopts button.right{background:var(--ok-bg);border-color:var(--ok);font-weight:700}.ivopts button.wrong{background:var(--bad-bg);border-color:var(--bad)}
+.ivfb .sol{margin:.4rem 0}.ivqa{margin-top:auto}
+.ivsumq{display:flex;flex-direction:column;gap:.8rem}.ivsq{display:flex;gap:.7rem}.ivsq .ivqb{flex:1}
+.ivsn{flex:none;width:1.8rem;height:1.8rem;border-radius:8px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:800}
+.ivscore{font-size:2rem;font-weight:900;color:var(--ok)}.ivscore small{font-size:1rem;color:var(--mute);margin-left:.5rem}
+.ivtrack{position:relative;height:10px;background:var(--chip);border-radius:6px;margin:.6rem 0 .5rem}
+.ivprog{position:absolute;left:0;top:0;bottom:0;background:var(--brand);border-radius:6px;opacity:.5}
+.ivm{position:absolute;top:50%;transform:translate(-50%,-50%);width:1.5rem;height:1.5rem;border-radius:50%;border:2px solid var(--panel);background:#f59e0b;color:#111;font-size:.72rem;font-weight:800;padding:0;cursor:pointer}
+.ivm.ok{background:var(--ok);color:#fff}.ivm.no{background:var(--bad);color:#fff}
+.ivinfo{color:var(--mute);font-weight:600}.ivedit.on{outline:3px solid var(--brand)}
+.ivpanel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem}
+.ivtab{border-collapse:collapse;width:100%;margin:.4rem 0}.ivtab td,.ivtab th{border-bottom:1px solid var(--line);padding:.25rem .4rem;text-align:left}.ivt{width:4.5rem}
+.ivown{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}.ivown input{flex:1 1 12rem;padding:.4rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.ivoff{display:flex;gap:1rem;align-items:center}.ivoff a:first-child{position:relative;flex:none;width:min(320px,45%)}.ivoff img{width:100%;border-radius:10px;display:block}
+.ivoff a:first-child span{position:absolute;inset:0;display:grid;place-items:center;font-size:2.4rem;color:#fff;text-shadow:0 2px 8px #000}
+.ivsw{display:flex;gap:.4rem;align-items:center;font-weight:600;margin:.3rem 0}
+@media(max-width:700px){.ivopts{grid-template-columns:1fr}}

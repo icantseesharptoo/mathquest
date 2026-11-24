@@ -5,13 +5,15 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
 ## What is in it
 - **Year 8 and Year 10 courses.** The topics come from the school's Edupage teaching plans (`y8_plan_edupage.xls`, `y10_plan_edupage.xls`). Each chapter of a plan is a **module**, and each row is a **topic card** that shows its lesson numbers. Each module lists its curriculum objectives and has a module test.
 - **Slides for every topic**, in this order:
-  1. Objectives
-  2. Video (Year 8)
-  3. Interactive demo
-  4. Three worked examples (easy, medium, hard). Each step appears when you click, and the figure is drawn as you go.
-  5. Random-problem wheel
-  6. Check (three questions)
-  7. Practice
+  1. Title. The title's letters fade away and come back. Now and then one letter hangs from its last nail, wobbles and falls.
+  2. Why it matters: a fun fact, a real-life use and up to three fun or applied YouTube videos. Press Space to reveal each part.
+  3. Objectives
+  4. Video (Year 8)
+  5. Interactive demo
+  6. Three worked examples (easy, medium, hard). Each step appears when you click, and the figure is drawn as you go.
+  7. Random-problem wheel
+  8. Check (three questions)
+  9. Practice
 
   Press **Space** to show the next step, use **← →** to change slides, and press **F** for full screen.
 - **Interactive demos.** These cover:
@@ -32,7 +34,11 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
 - **Practice** (12 random questions per topic, with hints and worked solutions), **module tests** and a **final exam** for each year.
 
 ## Videos
-Year 8 topics embed videos from the playlist *Cambridge Lower Secondary Mathematics Book 8* (`PLYl6YfuS48dsFXbJCmnv4WyVzcA6ACokX`), matched to topics by exercise number. YouTube does not play embedded videos in a page opened straight from a file (`file://`). In that case use **Open on YouTube**, or serve the folder over http, for example with GitHub Pages or `python -m http.server`.
+**Interactive videos (H5P style).** When the site is opened through a web address, videos play in interactive mode. The video stops at checkpoints (by default at 30%, 60% and 85% of its length) and asks a 4-option question from the topic. A wrong answer shows the worked solution, and *Watch that part again* rewinds. At the end, a summary quiz of three questions gives the total score. Markers on the timeline show each question and turn green or red once it is answered. Use *✎ Edit questions* to move or delete checkpoints, add a topic question at the current time, or write your own question. These changes are saved in the browser. Untick *Interactive* to use the plain YouTube player.
+
+**Fun videos.** These were found by searching YouTube for each topic's real-life uses, and some were chosen by hand. Check a video before showing it to a class. To change them, edit `tools/build_extras.py` (the `E` table holds the facts and search queries, and `PICK` holds hand-chosen videos), then run `python tools/build_extras.py`. Add `--search` to search YouTube again.
+
+Year 8 topics embed videos from the playlist *Cambridge Lower Secondary Mathematics Book 8* (`PLYl6YfuS48dsFXbJCmnv4WyVzcA6ACokX`), matched to topics by exercise number. YouTube does not play embedded or interactive videos in a page opened straight from a file (`file://`). In that case use **Open on YouTube**, or serve the folder over http, for example with GitHub Pages or `python -m http.server`.
 
 ## Files
 | Path | Contents |
@@ -43,6 +49,8 @@ Year 8 topics embed videos from the playlist *Cambridge Lower Secondary Mathemat
 | `js/demos.js` | Interactive demos. |
 | `js/timer.js` | 40-minute lesson timer. |
 | `js/tools.js`, `css/tools.css` | Exit ticket, battle mode and whiteboard. |
+| `data/extras.js`, `tools/build_extras.py` | Fun facts, real-life uses and fun videos for each topic. `data/extras.js` is generated, so edit the Python file instead. |
+| `js/intro.js`, `js/ivideo.js`, `css/intro.css` | The animated title slide, the *Why it matters* slide and the interactive video player. |
 | `js/engine.js`, `js/ui.js` | Course model, exams, pages and slides. |
 | `test.html`, `test_ui.html` | Self-tests. Open them in a browser; the result is shown at the top of the page. |
 
