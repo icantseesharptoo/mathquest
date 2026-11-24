@@ -1,0 +1,23 @@
+/* Everything is sized in rem, so the page scales with the screen through the root font size.
+   Full-screen slides get a larger scale so they fill a projector screen. Loaded last. */
+html{font-size:clamp(15px,calc(.5vw + .6vh + 3.5px),32px)}
+:root:has(.deck:fullscreen){font-size:clamp(16px,calc(.62vw + .85vh + 2px),44px)}
+main{max-width:74rem}
+.deck{height:calc(100vh - 17rem);min-height:28rem}
+.deck:fullscreen .stage{font-size:1.1rem;padding:1.4rem 2.2rem}.deck:fullscreen .qt{font-size:1.25rem}.deck:fullscreen .eq{font-size:1.9rem}
+.deck:fullscreen .svg-fig{max-width:min(48rem,100%);max-height:55vh}
+.svg-fig{max-width:min(32rem,100%);max-height:21rem}.svg-fig.sq{max-width:min(26rem,100%)}
+.dot{width:.7rem;height:.7rem}
+.exgrid{grid-template-columns:minmax(18rem,1fr) minmax(18rem,1.1fr)}.exfig .svg-fig{max-height:calc(100vh - 27rem)}
+.dview .svg-fig{max-height:calc(100vh - 23rem);min-height:13rem}.deck:fullscreen .dview .svg-fig{max-height:calc(100vh - 16rem)}
+.net3d{height:23rem}
+.wheelwrap{grid-template-columns:minmax(16rem,22rem) 1fr}.wheel{max-width:21rem}
+.vidwrap{grid-template-columns:minmax(20rem,2fr) minmax(14rem,1fr)}
+.tcards{grid-template-columns:repeat(auto-fill,minmax(15rem,1fr))}
+.cards{grid-template-columns:repeat(auto-fit,minmax(17rem,1fr))}
+.examgrid{grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr))}
+.timeline{max-width:48rem}
+.funv{grid-template-columns:repeat(auto-fill,minmax(14rem,1fr))}
+.wc input[type=range]{width:10rem}
+.ltbanner{font-size:1.5rem}
+@media(max-width:860px){.exgrid,.vidwrap,.wheelwrap{grid-template-columns:1fr}}

@@ -1,4 +1,4 @@
-/* Classroom tools shown as full-screen overlays: exit ticket, battle mode, whiteboard.
+/* Classroom tools shown as full-screen overlays: exit ticket and battle mode (the whiteboard is in board.js).
    They open inside the full-screen slide deck too. Needs engine.js (makeProblem, checkAnswer, ansText). */
 function openOverlay(cls,html){
   closeOverlay();
@@ -55,7 +55,12 @@ function exitTicket(cid,l){
     grid.innerHTML=ps.map((p,i)=>`<div class="xtb" data-i="${i}"><div class="xtn">${i+1}</div><div class="xtq">${qBody(p)}</div><div class="xto">${p.opts.list.map((t,j)=>`<button data-j="${j}"><b>${'ABCD'[j]}</b> ${t}</button>`).join('')}</div></div>`).join('');
     $$('.xtb',grid).forEach(b=>$$('button',b).forEach(btn=>btn.onclick=()=>{const i=+b.dataset.i;if(i in answered)return;const p=ps[i],j=+btn.dataset.j,ok=j===p.opts.ok;answered[i]=ok;
       btn.classList.add(ok?'right':'wrong');$$('button',b)[p.opts.ok].classList.add('right');b.classList.add(ok?'done-ok':'done-no');score()}));
-    score();ltTick();};
+    score();ltTick();fitXT();setTimeout(fitXT,120);setTimeout(fitXT,600);};
+  // text and buttons grow with the screen, then shrink until every block fits
+  const over=()=>$$('.xtq',grid).some(q=>q.scrollHeight>q.clientHeight+1)||$$('.xtb',grid).some(b=>b.scrollHeight>b.clientHeight+1);
+  function fitXT(){if(!grid.isConnected)return;let f=Math.max(10,Math.min(44,innerWidth/58,innerHeight/30));grid.style.setProperty('--xtf',f+'px');
+    while(f>8&&over()){f-=.5;grid.style.setProperty('--xtf',f+'px')}grid.classList.toggle('xtscroll',over());o.xtf=f}
+  let raf=0;const ro=new ResizeObserver(()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(fitXT)});ro.observe(grid);o.cleanup=()=>ro.disconnect();
   $('[data-x=new]',o).onclick=()=>{seed=rndSeed();build()};
   $('[data-x=reveal]',o).onclick=()=>$$('.xtb',grid).forEach((b,i)=>$$('button',b)[ps[i].opts.ok].classList.add('right'));
   build();
@@ -106,50 +111,4 @@ function battle(cid,l){
   };
   o.cleanup=()=>clearInterval(timer);o.qs=qs;o.score=score;
   newRound();
-}
-
-// ===================== whiteboard =====================
-const WB={canvas:null,undo:[],color:'#111827',size:4,tool:'pen',bg:'grid'};
-function whiteboard(){
-  const cols=['#111827','#2455d6','#dc2626','#16a34a','#ea580c','#7c3aed'];
-  const o=openOverlay('wb',`<div class="ovbar wbbar"><b>Whiteboard</b>
-    <span class="wbgrp">${cols.map(c=>`<button class="wbc" data-c="${c}" style="background:${c}" title="Colour"></button>`).join('')}</span>
-    <span class="wbgrp">${[2,4,8,16].map(s=>`<button class="wbs" data-s="${s}" title="Pen size"><i style="width:${s+2}px;height:${s+2}px"></i></button>`).join('')}</span>
-    <span class="wbgrp"><button data-t="pen">✏️ Pen</button><button data-t="line">╱ Line</button><button data-t="text">T Text</button><button data-t="eraser">🧽 Eraser</button></span>
-    <span class="wbgrp"><button data-a="undo">↶ Undo</button><button data-a="clear">🗑 Clear</button><button data-a="bg">▦ Grid</button><button data-a="save">💾 Save</button></span>
-    <span class="sp"></span>${timerHTML()}<button class="btn" data-close>Close ✕</button></div><div class="wbarea"></div>`);
-  const area=$('.wbarea',o),dpr=window.devicePixelRatio||1;
-  if(!WB.canvas){WB.canvas=document.createElement('canvas');WB.canvas.className='wbcanvas'}
-  const cv=WB.canvas;area.appendChild(cv);area.dataset.bg=WB.bg;
-  const fit=()=>{const w=area.clientWidth,h=area.clientHeight;if(cv.width===Math.round(w*dpr)&&cv.height===Math.round(h*dpr))return;
-    const old=cv.width?cv.getContext('2d').getImageData(0,0,cv.width,cv.height):null;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';if(old)cv.getContext('2d').putImageData(old,0,0)};
-  fit();const ro=new ResizeObserver(fit);ro.observe(area);o.cleanup=()=>ro.disconnect();
-  const ctx=cv.getContext('2d'),snap=()=>{WB.undo.push(ctx.getImageData(0,0,cv.width,cv.height));if(WB.undo.length>30)WB.undo.shift()};
-  const mark=()=>{$$('.wbc',o).forEach(b=>b.classList.toggle('on',b.dataset.c===WB.color));$$('.wbs',o).forEach(b=>b.classList.toggle('on',+b.dataset.s===WB.size));$$('[data-t]',o).forEach(b=>b.classList.toggle('on',b.dataset.t===WB.tool));area.dataset.tool=WB.tool};
-  $$('.wbc',o).forEach(b=>b.onclick=()=>{WB.color=b.dataset.c;if(WB.tool==='eraser')WB.tool='pen';mark()});
-  $$('.wbs',o).forEach(b=>b.onclick=()=>{WB.size=+b.dataset.s;mark()});
-  $$('[data-t]',o).forEach(b=>b.onclick=()=>{WB.tool=b.dataset.t;mark()});
-  $('[data-a=undo]',o).onclick=()=>{const d=WB.undo.pop();if(d)ctx.putImageData(d,0,0);else ctx.clearRect(0,0,cv.width,cv.height)};
-  $('[data-a=clear]',o).onclick=()=>{snap();ctx.clearRect(0,0,cv.width,cv.height)};
-  $('[data-a=bg]',o).onclick=()=>{WB.bg={grid:'plain',plain:'dots',dots:'grid'}[WB.bg];area.dataset.bg=WB.bg};
-  $('[data-a=save]',o).onclick=()=>{const c2=document.createElement('canvas');c2.width=cv.width;c2.height=cv.height;const x=c2.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c2.width,c2.height);x.drawImage(cv,0,0);const a=document.createElement('a');a.download='whiteboard.png';a.href=c2.toDataURL('image/png');a.click()};
-  const pos=e=>{const b=cv.getBoundingClientRect();return [(e.clientX-b.left)*dpr,(e.clientY-b.top)*dpr]};
-  let down=false,last=null,start=null,base=null;
-  const setPen=(w)=>{ctx.lineCap='round';ctx.lineJoin='round';ctx.globalCompositeOperation=WB.tool==='eraser'?'destination-out':'source-over';ctx.strokeStyle=WB.color;ctx.lineWidth=w*dpr};
-  cv.onpointerdown=e=>{
-    if(WB.tool==='text'){e.preventDefault();return textAt(e)}
-    try{cv.setPointerCapture(e.pointerId)}catch(err){}down=true;snap();last=pos(e);start=last;base=ctx.getImageData(0,0,cv.width,cv.height);
-    setPen(WB.tool==='eraser'?WB.size*5:WB.size);ctx.beginPath();ctx.arc(last[0],last[1],ctx.lineWidth/2,0,Math.PI*2);if(WB.tool==='pen'){ctx.fillStyle=WB.color;ctx.fill()}
-  };
-  cv.onpointermove=e=>{if(!down)return;
-    if(WB.tool==='line'){ctx.putImageData(base,0,0);const p=pos(e);setPen(WB.size);ctx.beginPath();ctx.moveTo(...start);ctx.lineTo(...p);ctx.stroke();return}
-    const evs=e.getCoalescedEvents?e.getCoalescedEvents():[];if(!evs.length)evs.push(e);for(const ev of evs){const p=pos(ev),pr=ev.pressure&&ev.pointerType==='pen'?.5+ev.pressure:1;setPen((WB.tool==='eraser'?WB.size*5:WB.size)*pr);ctx.beginPath();ctx.moveTo(...last);ctx.lineTo(...p);ctx.stroke();last=p}};
-  cv.onpointerup=cv.onpointercancel=()=>{down=false;ctx.globalCompositeOperation='source-over'};
-  function textAt(e){
-    const b=area.getBoundingClientRect(),inp=document.createElement('input');inp.className='wbtext';inp.style.left=(e.clientX-b.left)+'px';inp.style.top=(e.clientY-b.top-14)+'px';inp.style.color=WB.color;inp.style.fontSize=(16+WB.size*2)+'px';inp.placeholder='Type, then Enter';
-    area.appendChild(inp);setTimeout(()=>inp.focus(),0);
-    let done=false;const commit=()=>{if(done)return;done=true;if(inp.value.trim()){snap();ctx.globalCompositeOperation='source-over';ctx.fillStyle=WB.color;ctx.font=`600 ${(16+WB.size*2)*dpr}px "Segoe UI",Arial,sans-serif`;ctx.textBaseline='middle';ctx.fillText(inp.value,(e.clientX-b.left)*dpr,(e.clientY-b.top)*dpr)}inp.remove()};
-    inp.onkeydown=ev=>{if(ev.key==='Enter')commit();else if(ev.key==='Escape')inp.remove();ev.stopPropagation()};inp.onblur=commit;
-  }
-  mark();
 }
