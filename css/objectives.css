@@ -1,0 +1,13 @@
+/* Curriculum objectives carousel */
+.stage>.slideIn.objslide{flex:1 0 auto;display:flex;flex-direction:column}
+.objslide>.s-title{flex:1 0 auto;display:flex;flex-direction:column}
+.objc{flex:1 0 auto;display:flex;flex-direction:column;gap:.5rem;margin:.3rem 0 .6rem}
+.objtop{display:flex;justify-content:space-between;font-size:.95rem}.objn{color:var(--mute);font-weight:700}
+.objview{position:relative;flex:1 0 auto;min-height:max(14rem,40vh);border-radius:16px;overflow:hidden}
+.objcard{position:absolute;inset:0;padding:1.2rem 2rem;color:#fff;display:flex;align-items:center;border-radius:16px;overflow:hidden}
+.objfit{width:100%;line-height:1.28;font-weight:400}.objfit b{font-weight:900}
+.objcode{font-size:.45em;font-weight:700;letter-spacing:.04em;opacity:.9;margin-bottom:.5em}
+.objfit ul{margin:.35em 0 0;padding-left:1.1em;font-size:.75em}
+.objnav{display:flex;align-items:center;justify-content:center;gap:.6rem}
+.objnav>button{width:2.2rem;height:2.2rem;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:1.1rem;line-height:1;padding:0}
+.objdots{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center}.objdots button{width:.75rem;height:.75rem;border-radius:99px;border:0;padding:0;background:var(--line);transition:width .3s}.objdots button.on{width:1.9rem}

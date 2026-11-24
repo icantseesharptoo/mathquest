@@ -167,8 +167,9 @@ function slides(cid,l){
     {name:'Objectives',mount:h=>{
       h.innerHTML=`<div class="s-title" style="--mc:${m.color}"><div class="s-u">${c.name} · Module ${m.n}: ${m.title} · Lesson${l.nLessons>1?'s':''} ${l.lessons}</div><div class="big">${l.title}</div>
         <p class="lead">Today: ${demo?'explore with an interactive demo, then ':''}work through examples step by step, try a random problem and check your understanding.</p>
-        ${m.goals.length?`<div class="objbox"><b>Curriculum objectives (module ${m.n})</b><ul class="objs">${m.goals.slice(0,6).map(o=>`<li>${o}</li>`).join('')}</ul></div>`:''}
-        <div class="timeline"><span style="flex:5">Starter 5′</span><span style="flex:8">Demo 8′</span><span style="flex:8">Examples 8′</span><span style="flex:12">Practice 12′</span><span style="flex:7">Check 7′</span></div></div>`}},
+        <div class="objhost"></div>
+        <div class="timeline"><span style="flex:5">Starter 5′</span><span style="flex:8">Demo 8′</span><span style="flex:8">Examples 8′</span><span style="flex:12">Practice 12′</span><span style="flex:7">Check 7′</span></div></div>`;
+      h.classList.add('objslide');const oc=objectivesCarousel(m.goals,h);if(oc)$('.objhost',h).replaceWith(oc)}},
     ...(l.videos?[{name:'Video',mount:h=>{h.appendChild(videoBlock(cid,l))}}]:[]),
     ...(demo&&DEMOS[demo]?[{name:'Interactive demo',mount:h=>{const d=document.createElement('div');h.appendChild(d);mountDemo(d,DEMOS[demo]);h.stepNext=()=>d.demoNext?d.demoNext():false}}]:[]),
     ...ex.map((e,i)=>({name:`Example ${i+1}`,mount:h=>exampleSlide(h,cid,l,e)})),

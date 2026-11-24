@@ -7,7 +7,7 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
 - **Slides for every topic**, in this order:
   1. Title. The title's letters fade away and come back. This happens rarely (one effect every few seconds), and now and then a letter hangs from its last nail, wobbles and falls.
   2. Why it matters: a fun fact, a real-life use and up to three fun or applied YouTube videos. Press Space to reveal each part.
-  3. Objectives
+  3. Objectives: the curriculum objectives as a carousel. Each has its own background colour, the text fills the card, and the main words are bold. It moves on by itself and pauses while the mouse is over it.
   4. Video (Year 8)
   5. Interactive demo
   6. Three worked examples (easy, medium, hard). Each step appears when you click, and the figure is drawn as you go.
@@ -64,6 +64,7 @@ Year 8 topics embed videos from the playlist *Cambridge Lower Secondary Mathemat
 | `js/timer.js` | 40-minute lesson timer. |
 | `js/tools.js`, `css/tools.css` | Exit ticket and battle mode, plus the styles for all three tools. |
 | `js/board.js` | Whiteboard and its task mode. |
+| `js/objectives.js`, `css/objectives.css` | Curriculum objectives carousel. |
 | `css/scale.css` | Scaling of text, slides and buttons to the screen size. |
 | `data/extras.js`, `tools/build_extras.py` | Fun facts, real-life uses and fun videos for each topic. `data/extras.js` is generated, so edit the Python file instead. |
 | `js/intro.js`, `js/ivideo.js`, `css/intro.css` | The animated title slide, the *Why it matters* slide and the interactive video player. |
