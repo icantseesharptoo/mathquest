@@ -5,7 +5,7 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
 ## What is in it
 - **Year 8 and Year 10 courses.** The topics come from the school's Edupage teaching plans (`y8_plan_edupage.xls`, `y10_plan_edupage.xls`). Each chapter of a plan is a **module**, and each row is a **topic card** that shows its lesson numbers. Each module lists its curriculum objectives and has a module test.
 - **Slides for every topic**, in this order:
-  1. Title. The title's letters fade away and come back. Now and then one letter hangs from its last nail, wobbles and falls.
+  1. Title. The title's letters fade away and come back. This happens rarely (one effect every few seconds), and now and then a letter hangs from its last nail, wobbles and falls.
   2. Why it matters: a fun fact, a real-life use and up to three fun or applied YouTube videos. Press Space to reveal each part.
   3. Objectives
   4. Video (Year 8)
@@ -15,7 +15,7 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
   8. Check (three questions)
   9. Practice
 
-  Press **Space** to show the next step, use **← →** to change slides, and press **F** for full screen.
+  Press **Space** to show the next step, use **← →** to change slides, and press **F** for full screen. In full screen (the *Full screen* button, or the browser's own F11), the slide fills the whole screen.
 - **Interactive demos.** These cover:
   - straight lines (table, gradient–intercept and cover-up methods), matching a line to its equation, and real-life graphs
   - parallel lines, triangles, polygons, bearings and transformations
@@ -25,7 +25,19 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
   - a spinner experiment, sample spaces and tree diagrams
   - sequences
   - curves (Year 10)
-- **Lesson timer** (top bar, and in full-screen slides). It counts down 40 minutes, plays a sound and shows a banner when **5 minutes are left**, and chimes at the end. 🔔 tests the sound. Browsers only play sound after a click, so start the timer with its ▶ button.
+- **Lesson timer** (top bar, and in the slides). It follows the school timetable by itself. During the lesson times (8:30–9:10, 9:15–9:55 and 10:00–10:40) it counts down the current lesson by the clock and shows *Lesson 1/2/3*, and between lessons it counts down the break. Click the word *Lesson* to change the times, or leave them empty to switch automatic timing off. Pressing ▶/⏸ or ↺ during a lesson switches to manual timing until that lesson ends, and 🕘 goes back to automatic timing. Outside the lesson times it is a manual 40-minute timer.
+- **Soft notifications** appear in the bottom-right corner with a gentle chime at each lesson milestone:
+  - the lesson starts
+  - 5 min: new content
+  - 13 min: worked examples
+  - 21 min: practice
+  - 7 minutes left: check understanding
+  - 5 minutes left: exit ticket (with a button that opens it)
+  - 1 minute left: pack up
+  - the lesson ends (with the time of the next lesson)
+  - 1 minute before the next lesson starts
+
+  🔔 plays a test notification. Browsers only play sound after the page has been clicked once.
 - **Classroom tools** (buttons in the slide bar, and in the Tools menu):
   - **🎟 Exit ticket** for the last 5 minutes. The screen splits into 20 numbered blocks: the same question with different numbers in each, and 4 options to choose from. Each student answers the block with their number; *Show answers* reveals them all. When the timer reaches 5 minutes, its banner has a button that opens it.
   - **⚔️ Battle.** The screen splits into left and right halves, each with a medium question of the same type but different numbers. Each side answers on its own on-screen numpad. A 2-minute timer runs, and the first correct answer wins the round. Scores add up over the rounds, and you can click a team name to rename it.
@@ -36,7 +48,7 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
 - **Practice** (12 random questions per topic, with hints and worked solutions), **module tests** and a **final exam** for each year.
 
 ## Videos
-**Interactive videos (H5P style).** When the site is opened through a web address, videos play in interactive mode. The video stops at checkpoints (by default at 30%, 60% and 85% of its length) and asks a 4-option question from the topic. A wrong answer shows the worked solution, and *Watch that part again* rewinds. At the end, a summary quiz of three questions gives the total score. Markers on the timeline show each question and turn green or red once it is answered. Use *✎ Edit questions* to move or delete checkpoints, add a topic question at the current time, or write your own question. These changes are saved in the browser. Untick *Interactive* to use the plain YouTube player.
+**Interactive videos (H5P style).** When the site is opened through a web address, videos play in interactive mode. The video stops at checkpoints (by default at 30%, 60% and 85% of its length) and asks a 4-option question from the topic. A wrong answer shows the worked solution, and *Watch that part again* rewinds. After answering, close the question with ✕ or *Continue*. At the end, a summary quiz of three questions gives the total score. Markers on the timeline show each question and turn green or red once it is answered. Use *✎ Edit questions* to move or delete checkpoints, add a topic question at the current time, or write your own question. These changes are saved in the browser. Untick *Interactive* to use the plain YouTube player.
 
 **Fun videos.** These were found by searching YouTube for each topic's real-life uses, and some were chosen by hand. Check a video before showing it to a class. To change them, edit `tools/build_extras.py` (the `E` table holds the facts and search queries, and `PICK` holds hand-chosen videos), then run `python tools/build_extras.py`. Add `--search` to search YouTube again.
 

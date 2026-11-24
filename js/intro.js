@@ -7,6 +7,7 @@ function titleSlide(h,cid,l,m,c){
   const words=l.title.split(' ').map(w=>`<span class="tw">${[...w].map(ch=>`<span class="tl">${esc(ch)}</span>`).join('')}</span>`).join(' ');
   h.innerHTML=`<div class="tslide" style="--mc:${m.color}"><div class="ts-k">${c.name} · Module ${m.n}</div><h1 class="ts-t">${words}</h1>
     <div class="ts-s">${m.title} · Lesson${l.nLessons>1?'s':''} ${l.lessons}</div><div class="ts-go note">Press → to begin</div></div>`;
+  h.classList.add('fill');
   const box=$('.tslide',h),ls=$$('.tl',h).filter(x=>/[^\s.,:;()'’\-–]/.test(x.textContent));
   const busy=new Set();let falling=false,timer=null;
   const alive=()=>h.isConnected&&!document.hidden;
@@ -30,10 +31,10 @@ function titleSlide(h,cid,l,m,c){
   };
   const step=()=>{
     if(!h.isConnected)return;
-    if(alive()&&ls.length){const el=free();if(el){if(!falling&&!REDUCED()&&Math.random()<.22)fall(el);else fade(el)}}
-    timer=setTimeout(step,700+Math.random()*1300);
+    if(alive()&&ls.length){const el=free();if(el){if(!falling&&!REDUCED()&&Math.random()<.35)fall(el);else fade(el)}}
+    timer=setTimeout(step,3500+Math.random()*8000);   // rare: one effect every 3.5–11.5 s
   };
-  timer=setTimeout(step,900);
+  timer=setTimeout(step,1500+Math.random()*2500);
   h.titleLetters=ls;
 }
 

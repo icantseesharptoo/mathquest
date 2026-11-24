@@ -181,7 +181,7 @@ function slides(cid,l){
   body.innerHTML=`<div class="deck" id="deck" style="--mc:${m.color}"><div class="deckbar"><span id="dn"></span><div class="dots" id="dots"></div><span class="sp"></span>${timerHTML()}<details class="dtools"><summary>Tools</summary><div>${classTools()}${toolLinks()}</div></details><button class="ghost" data-tool="exit" title="Exit ticket for the last 5 minutes">🎟 Exit ticket</button><button class="ghost" data-tool="battle">⚔️ Battle</button><button class="ghost" data-tool="board">🖊 Board</button><button class="ghost" id="fs">Full screen</button></div><div class="stage" id="stage"></div><div class="decknav"><button class="btn alt" id="pv">Back</button><span id="num"></span><span class="note">Space = next step</span><button class="btn" id="nt">Next</button></div></div>`;
   DECK={i:0,items,h:null};
   $('#pv').onclick=()=>go(DECK.i-1);$('#nt').onclick=()=>go(DECK.i+1);$('#fs').onclick=toggleFS;
-  go(0);ltTick();
+  go(0);ltTick();fsState();
 }
 function go(i){
   if(!DECK)return;i=Math.max(0,Math.min(DECK.items.length-1,i));DECK.i=i;
@@ -191,6 +191,10 @@ function go(i){
   $$('#dots .dot').forEach(b=>b.onclick=()=>go(+b.dataset.k));
   $('#pv').disabled=i===0;$('#nt').disabled=i===DECK.items.length-1;
 }
+// full screen: the Full screen button (.fs), or the browser's own full screen such as F11 (.bfs) — the deck then fills the screen
+function fsState(){const r=document.documentElement,deck=!!$('#deck'),browser=!window.NO_BFS&&!document.fullscreenElement&&((window.matchMedia&&matchMedia('(display-mode: fullscreen)').matches)||(innerHeight>=screen.height-2&&innerWidth>=screen.width-2));
+  r.classList.toggle('fs',!!document.fullscreenElement);r.classList.toggle('bfs',browser&&deck);document.body.classList.toggle('has-deck',deck)}
+addEventListener('resize',fsState);document.addEventListener('fullscreenchange',fsState);
 function toggleFS(){const d=$('#deck');if(!d)return;if(document.fullscreenElement)document.exitFullscreen();else (d.requestFullscreen||d.webkitRequestFullscreen||(()=>{})).call(d)}
 document.addEventListener('keydown',e=>{
   if(!DECK||!$('#deck')||$('.ovl')||e.target.isContentEditable)return;if(['INPUT','SELECT','TEXTAREA','BUTTON'].includes(e.target.tagName)&&e.key!=='Escape')return;
@@ -230,7 +234,7 @@ function runExam(def){
 
 // ---------- router ----------
 function route(){
-  clearInterval(TIMER);DECK=null;CUR=null;closeOverlay();if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  clearInterval(TIMER);DECK=null;CUR=null;closeOverlay();setTimeout(fsState);if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
   const p=location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
   if(!p.length)return home();
   if(p[0]==='exams')return examsPage();

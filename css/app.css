@@ -13,7 +13,7 @@ header .tools a:hover,.dtools a:hover{background:var(--chip);text-decoration:non
 
 /* lesson timer */
 .lt{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .35rem .2rem .7rem;border:1px solid var(--line);border-radius:99px;background:var(--panel);color:var(--ink);font-variant-numeric:tabular-nums}
-.ltlab{font-size:.72rem;color:var(--mute);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.ltlab{border:0;background:none;padding:0;cursor:pointer;font-size:.72rem;color:var(--mute);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .ltime{font-weight:800;font-size:1.1rem;min-width:3.2rem;text-align:center}
 .ltb{border:0;background:var(--chip);color:var(--ink);border-radius:99px;width:1.9rem;height:1.9rem;padding:0;font-size:.9rem}
 .lt.run{border-color:var(--ok)}
@@ -21,10 +21,15 @@ header .tools a:hover,.dtools a:hover{background:var(--chip);text-decoration:non
 .lt.over{background:#fee2e2;border-color:#dc2626;color:#991b1b}
 .lt.warn .ltlab,.lt.over .ltlab{color:inherit}
 @keyframes ltpulse{50%{box-shadow:0 0 0 6px rgba(245,158,11,.3)}}
-.ltbanner{position:fixed;left:50%;top:18%;transform:translateX(-50%);z-index:999;padding:1.2rem 1.6rem;border-radius:14px;font-size:1.5rem;display:flex;gap:1rem;align-items:center;box-shadow:0 20px 50px rgba(0,0,0,.3)}
-.ltbanner.warn{background:#fef3c7;color:#92400e;border:3px solid #f59e0b}
-.ltbanner.over{background:#fee2e2;color:#991b1b;border:3px solid #dc2626}
-.ltbanner button{font-size:1rem;padding:.4rem 1rem;border-radius:8px;border:0;background:#111827;color:#fff}
+.lttoasts{position:fixed;right:1.2rem;bottom:5rem;z-index:999;display:flex;flex-direction:column;gap:.6rem;align-items:flex-end;pointer-events:none}
+.lttoast{pointer-events:auto;position:relative;overflow:hidden;display:flex;gap:.8rem;align-items:flex-start;width:min(26rem,calc(100vw - 2.4rem));padding:.85rem 1rem .95rem;border-radius:14px;
+  background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:blur(8px);color:var(--ink);border:1px solid var(--line);border-left:5px solid var(--brand);box-shadow:0 12px 32px rgba(15,23,42,.18);animation:ltin .45s cubic-bezier(.2,.9,.3,1.2)}
+.lttoast.warn{border-left-color:#f59e0b}.lttoast.over{border-left-color:#dc2626}
+.lttoast.out{animation:ltout .3s forwards}.lti{font-size:1.6rem;line-height:1}.ltc{flex:1;font-size:.95rem;line-height:1.4}.ltc b{font-size:1.05rem}.ltc .btn{margin-top:.5rem;font-size:.9rem}
+.ltx{border:0;background:none;color:var(--mute);font-size:.9rem;padding:0 .2rem;cursor:pointer}
+.ltbar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--brand);opacity:.45;transform-origin:left;animation:ltbar linear forwards}
+.lttoast.warn .ltbar{background:#f59e0b}.lttoast.over .ltbar{background:#dc2626}.lttoast.hold .ltbar{animation-play-state:paused}
+@keyframes ltin{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}@keyframes ltout{to{opacity:0;transform:translateX(30px)}}@keyframes ltbar{to{transform:scaleX(0)}}
 
 /* modules and topic cards */
 section.module{margin:1.4rem 0 2rem}
@@ -88,3 +93,5 @@ table.mini td.hl{background:#fde68a;color:#111;font-weight:800}
 
 /* column vector */
 .cvec{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;border-left:2px solid currentColor;border-right:2px solid currentColor;border-radius:8px;padding:0 .35em;line-height:1.15;font-size:.9em;margin:0 .15em}
+.ltrange{display:none;font-size:.72rem;color:var(--mute);font-weight:600}#hdrTimer .lt.auto .ltrange{display:inline}
+.lt.auto .ltlab{color:var(--brand)}.lt.brk{background:var(--chip);border-style:dashed}.ltlab:hover{text-decoration:underline}

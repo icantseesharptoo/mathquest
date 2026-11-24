@@ -58,10 +58,10 @@ function interactiveVideo(cid,l,vid,opts={}){
     $$('.ivm',marks).forEach(b=>b.onclick=()=>{const c=cps[+b.dataset.i];player.seekTo(Math.max(0,c.t-0.5),true);last=c.t-1;player.playVideo()});drawInfo()};
   const ask=i=>{
     asking=true;player.pauseVideo();const c=cps[i];qbox.hidden=false;
-    qbox.innerHTML=`<div class="ivqh"><b>Question ${i+1}</b><span class="note">at ${mmss(c.t)}</span><span class="sp"></span></div><div class="ivqb"></div>
+    qbox.innerHTML=`<div class="ivqh"><b>Question ${i+1}</b><span class="note">at ${mmss(c.t)}</span><span class="sp"></span><button class="ghost ivx" title="Close and continue the video" hidden>✕</button></div><div class="ivqb"></div>
       <div class="row ivqa"><button class="btn alt ivback">↺ Watch that part again</button><span class="sp"></span><button class="btn ivgo" disabled>Continue ▶</button></div>`;
-    ivQuiz($('.ivqb',qbox),ivQuestion(cid,l,c,seed+i*101),ok=>{results[i]=ok;$('.ivgo',qbox).disabled=false;drawMarks()});
-    $('.ivgo',qbox).onclick=()=>{qbox.hidden=true;asking=false;player.playVideo()};
+    ivQuiz($('.ivqb',qbox),ivQuestion(cid,l,c,seed+i*101),ok=>{results[i]=ok;$('.ivgo',qbox).disabled=false;$('.ivx',qbox).hidden=false;drawMarks()});
+    $('.ivgo',qbox).onclick=$('.ivx',qbox).onclick=()=>{qbox.hidden=true;asking=false;player.playVideo()};
     $('.ivback',qbox).onclick=()=>{const prev=i?cps[i-1].t:0;qbox.hidden=true;asking=false;delete results[i];player.seekTo(Math.max(prev,c.t-30),true);last=Math.max(prev,c.t-30);player.playVideo();drawMarks()};
     h.ivAsking=i;
   };

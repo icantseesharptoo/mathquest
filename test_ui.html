@@ -1,6 +1,7 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><title>ui test</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/app.css"><link rel="stylesheet" href="css/tools.css"><link rel="stylesheet" href="css/intro.css"><link rel="stylesheet" href="css/scale.css"></head><body>
 <header class="top"><a class="logo" href="#/">MathQuest</a><nav><a data-nav="y8"></a><a data-nav="y10"></a><a data-nav="exams"></a></nav><span id="hdrTimer"></span><details class="tools"><summary>Tools</summary><div id="toolsMenu"></div></details><button id="themeBtn"></button></header><main id="app"></main><pre id="res"></pre>
-<script>localStorage.clear();location.hash='#/y8/l/5/practice';window.confirm=()=>true;</script>
+<script>localStorage.clear();location.hash='#/y8/l/5/practice';window.confirm=()=>true;window.NO_BFS=true;
+const DAY=new Date();DAY.setHours(0,0,0,0);let FAKE=DAY.getTime()+7*3600e3;window.LT_CLOCK=()=>FAKE;const at=(h,m,s=0)=>{FAKE=DAY.getTime()+((h*60+m)*60+s)*1000;ltTick()};</script>
 <script src="data/y8.js"></script><script src="data/y10.js"></script><script src="data/extras.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/g_y8.js"></script><script src="js/g_extra.js"></script><script src="js/engine.js"></script><script src="js/demos.js"></script><script src="js/timer.js"></script><script src="js/tools.js"></script><script src="js/board.js"></script><script src="js/ivideo.js"></script><script src="js/intro.js"></script><script src="js/ui.js"></script>
 <script>
 const out=[],bad=[];const log=s=>out.push(s),fail=s=>{bad.push(s);out.push('FAIL '+s)};
@@ -34,11 +35,25 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
   document.querySelector('.spinw').click();await wait(3400);log('wheel picked: '+document.querySelector('.wheelq .big').textContent+' with card '+!!document.querySelector('.wheelq .q'));
   // videos tab
   location.hash='#/y8/l/2/videos';await wait(30);log('videos tab iframes: '+document.querySelectorAll('.yt iframe').length+' src '+document.querySelector('.yt iframe').src);
-  // timer
-  document.querySelector('[data-lt=toggle]').click();await wait(300);LT.el=LT_TOTAL-LT_WARN+1;LT.t0=Date.now();await wait(1400);
-  log('timer at 5 min: warned='+LT.warned+' banner='+!!document.querySelector('.ltbanner.warn')+' class='+document.querySelector('.lt').className);
-  LT.el=LT_TOTAL+1;await wait(400);log('timer end: ended='+LT.ended+' text='+document.querySelector('.ltime').textContent);
-  document.querySelector('[data-lt=reset]').click();log('timer reset: '+document.querySelector('.ltime').textContent);
+  // timer: manual 40 minutes outside the lesson times
+  const lt=()=>document.querySelector('#hdrTimer .lt'),lab=()=>lt().querySelector('.ltlab').textContent,tm=()=>lt().querySelector('.ltime').textContent,
+    toasts=()=>[...document.querySelectorAll('.lttoast b')].map(b=>b.textContent),clearT=()=>document.querySelectorAll('.lttoast').forEach(t=>t.remove());
+  at(7,0);log(`7:00 -> ${lab()} ${tm()}`);if(tm()!=='40:00')fail('manual timer start value');
+  lt().querySelector('[data-lt=toggle]').click();at(7,0,2);if(!toasts().includes('Lesson has started'))fail('start toast');clearT();
+  at(7,35,1);log(`manual at 35 min: ${tm()}, class ${lt().className}, toasts ${toasts()} exit button ${!!document.querySelector('.lttoast [data-tool=exit]')}`);if(!/warn/.test(lt().className)||!toasts().includes('5 minutes left'))fail('manual 5-minute warning');clearT();
+  at(7,40,1);log(`manual end: ${tm()} ${lt().className} toasts ${toasts()}`);if(tm()!=='0:00'||!toasts().includes('Lesson is over'))fail('manual end');clearT();
+  lt().querySelector('[data-lt=reset]').click();log('reset: '+tm());if(tm()!=='40:00')fail('reset');
+  // automatic lesson times
+  at(9,15,1);log(`9:15 -> ${lab()} ${lt().querySelector('.ltrange').textContent} ${tm()} toasts ${toasts()}`);if(lab()!=='Lesson 2'||tm()!=='40:00'||!toasts().includes('Lesson 2 has started'))fail('slot 2 start');clearT();
+  const seen=[];for(const [h,m] of [[9,20],[9,28],[9,36],[9,48]]){at(h,m,3);seen.push(...toasts());clearT()}log('9:20–9:48 milestones: '+seen.join(' | '));if(seen.length!==4)fail('milestones');
+  at(9,50,2);if(!toasts().includes('5 minutes left'))fail('slot warning');clearT();
+  at(9,55,1);log(`9:55 -> ${lab()} ${tm()} (${lt().querySelector('.ltrange').textContent}) toasts ${toasts()} · ${document.querySelector('.lttoast.over div')?.textContent}`);if(lab()!=='Break'||!toasts().includes('Lesson 2 is over'))fail('break');clearT();
+  at(9,59,10);log('9:59 -> '+toasts());if(!toasts().includes('Lesson 3 starts in 1 minute'))fail('lesson soon');clearT();
+  at(10,5);lt().querySelector('[data-lt=toggle]').click();log(`10:05 pause -> ${lab()} ${tm()}, auto button shown ${!lt().querySelector('[data-lt=auto]').hidden}`);if(lab()!=='Lesson'||tm()!=='35:00')fail('pause in slot');
+  at(10,7);if(tm()!=='35:00')fail('paused timer moved');lt().querySelector('[data-lt=auto]').click();log(`back to auto: ${lab()} ${tm()}`);if(lab()!=='Lesson 3'||tm()!=='33:00')fail('back to auto');
+  at(10,30);lt().querySelector('[data-lt=reset]').click();at(10,41);log(`override ends with the lesson: 10:41 -> ${lab()} ${tm()}`);if(tm()!=='40:00')fail('override end');clearT();
+  localStorage.setItem('maths.slots','8:00-8:45');at(8,10);log(`custom times 8:00-8:45 at 8:10: ${lab()} ${tm()}`);if(lab()!=='Lesson 1'||tm()!=='35:00')fail('custom slots');
+  localStorage.removeItem('maths.slots');at(7,0);clearT();
   // exit ticket for every topic: 20 blocks, 4 distinct options, exactly one correct
   let xtSame=0,xtTot=0;
   for(const cid of COURSE_IDS)for(const l of allLessons(cid)){
@@ -112,11 +127,11 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
   window.YT={Player:class{constructor(id,o){this.o=o;this.t=0;this.state=-1;MOCK=this;setTimeout(()=>o.events.onReady(),5)}getCurrentTime(){return this.t}getDuration(){return 300}pauseVideo(){this.state=2}playVideo(){this.state=1}seekTo(t){this.t=t}destroy(){}}};
   localStorage.removeItem('maths.ivideo');
   const ivh=interactiveVideo('y8',lessonN('y8',34),'TESTVID');document.body.appendChild(ivh);await wait(60);ivh.ivTick();
-  const nm=ivh.querySelectorAll('.ivm').length;MOCK.playVideo();
+  const nm=ivh.querySelectorAll('.ivm').length;MOCK.playVideo();if(getComputedStyle(ivh.querySelector('.ivq')).display!=='none')fail('question overlay visible before its time');
   for(let t=0;t<=95;t+=0.5){MOCK.t=t;ivh.ivTick();if(!ivh.querySelector('.ivq').hidden)break}
   const q1=!ivh.querySelector('.ivq').hidden;log(`interactive video: ${nm} markers, stopped at ${MOCK.t}s: ${q1}, paused ${MOCK.state===2}, options ${ivh.querySelectorAll('.ivopts button').length}`);
   if(nm!==3||!q1||MOCK.state!==2)fail('interactive video checkpoint');
-  ivh.querySelector('.ivopts button').click();ivh.querySelector('.ivgo').click();if(MOCK.state!==1||!ivh.querySelector('.ivq').hidden)fail('interactive video continue');
+  if(!ivh.querySelector('.ivx').hidden)fail('close shown before answering');ivh.querySelector('.ivopts button').click();if(ivh.querySelector('.ivx').hidden)fail('no close button after answering');ivh.querySelector('.ivx').click();if(MOCK.state!==1||getComputedStyle(ivh.querySelector('.ivq')).display!=='none')fail('interactive video close');
   ivh.querySelector('.ivedit').click();MOCK.t=120;ivh.querySelector('.ivedit').click();ivh.querySelector('.ivedit').click();ivh.querySelector('.ivaddt').click();
   const saved=JSON.parse(localStorage.getItem('maths.ivideo')).TESTVID.cps.map(c=>c.t);log('after adding a question at 2:00: '+saved.join(', ')+' s');if(saved.length!==4)fail('add checkpoint');
   ivh.querySelector('.ivaddo').click();const f=ivh.querySelector('.ivown');f.text.value='What is 2+2?';f.right.value='4';f.w1.value='5';f.w2.value='3';f.requestSubmit();
