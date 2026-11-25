@@ -51,19 +51,48 @@ function fourOptions(p,r){
   let k=1;while(w.length<3){const v=rd(a+k*Math.max(7,(p.tol||0)*5),4);if(!seen.has(v)){seen.add(v);w.push(fmtNum(v))}k++}
   const o=r.shuffle([main,...w]);return {list:o.map(show),ok:o.indexOf(main)};
 }
+// the table or drawing is taken out of the text, so that it can stand beside it
+function xtBody(p){
+  const d=document.createElement('div');d.innerHTML=qBody(p);const fig=$$('table.mini,svg.svg-fig',d);
+  fig.forEach(e=>e.replaceWith(' '));$$('.eq',d).forEach(e=>{if(!e.textContent.trim()&&!e.children.length)e.remove()});
+  return `<div class="xtq">${d.innerHTML}</div>${fig.length?`<div class="xtfig">${fig.map(e=>e.outerHTML).join('')}</div>`:''}`;
+}
 function exitTicket(cid,l){
   let seed=rndSeed(),ps,answered={},N=0,who=[];const kids=classSeats(cid).filter(Boolean),away=new Set();const nKey='maths.nstud.'+cid;
-  const o=openOverlay('xt',`<div class="ovbar"><b>Exit ticket</b><span class="xtsub">${l.title} · find your ${kids.length?'name':'number'}</span><span class="sp"></span><span class="xtscore"></span>${timerHTML()}<button class="btn alt" data-x="count">Students</button><button class="btn alt" data-x="reveal">Show answers</button><button class="btn alt" data-x="new">New numbers</button><button class="btn" data-close>Close ✕</button></div><div class="xtgrid"></div><div class="xtask" hidden><form class="seatform xtn1"><h3>How many students?</h3><div class="xtcount"><button type="button" class="btn alt" data-d="-1" aria-label="One less">−</button><input type="number" name="n" min="1" max="40" step="1" required aria-label="Number of students"><button type="button" class="btn alt" data-d="1" aria-label="One more">+</button></div>${kids.length?`<div class="xtkids">${kids.map((k,i)=>`<button type="button" data-kid="${i}" aria-pressed="true">${avHTML(k)}<span>${esc(k.name)}</span></button>`).join('')}</div><p class="note">Click a student who is absent.</p>`:''}<p class="note">The exit ticket gets one question for each student and 2 extra.</p><div class="row"><button class="btn">Start exit ticket</button><span class="sp"></span><button type="button" class="btn alt" data-k="no">Cancel</button></div></form></div>`);
+  const o=openOverlay('xt',`<div class="ovbar"><b>Exit ticket</b><span class="xtsub">${l.title} · find your ${kids.length?'name':'number'}</span><span class="sp"></span><span class="xtscore"></span>${timerHTML()}<button class="btn alt" data-x="count">Students</button><button class="btn alt" data-x="reveal">Show answers</button><button class="btn alt" data-x="new">New numbers</button><button class="btn" data-close>Close ✕</button></div><div class="xtcommon" hidden></div><div class="xtgrid"></div><div class="xtask" hidden><form class="seatform xtn1"><h3>How many students?</h3><div class="xtcount"><button type="button" class="btn alt" data-d="-1" aria-label="One less">−</button><input type="number" name="n" min="1" max="40" step="1" required aria-label="Number of students"><button type="button" class="btn alt" data-d="1" aria-label="One more">+</button></div>${kids.length?`<div class="xtkids">${kids.map((k,i)=>`<button type="button" data-kid="${i}" aria-pressed="true">${avHTML(k)}<span>${esc(k.name)}</span></button>`).join('')}</div><p class="note">Click a student who is absent.</p>`:''}<p class="note">The exit ticket gets one question for each student and 2 extra.</p><div class="row"><button class="btn">Start exit ticket</button><span class="sp"></span><button type="button" class="btn alt" data-k="no">Cancel</button></div></form></div>`);
   const grid=$('.xtgrid',o),score=()=>{const v=Object.values(answered);$('.xtscore',o).textContent=`Answered ${v.length} / ${N} · correct ${v.filter(Boolean).length}`};
-  const build=()=>{answered={};ps=exitTicketSet(l,seed,N);const cols=Math.ceil(Math.sqrt(N*1.25));grid.style.setProperty('--xc',cols);grid.style.setProperty('--xr',Math.ceil(N/cols));
-    grid.innerHTML=ps.map((p,i)=>`<div class="xtb${i>=N-2?' extra':''}" data-i="${i}"><div class="xtn">${i+1}</div>${who[i]?`<div class="xtav">${avHTML(who[i])}</div><div class="xtname">${esc(who[i].name)}</div>`:''}<div class="xtq">${qBody(p)}</div><div class="xto">${p.opts.list.map((t,j)=>`<button data-j="${j}"><b>${'ABCD'[j]}</b> ${t}</button>`).join('')}</div></div>`).join('');
+  const build=()=>{answered={};ps=exitTicketSet(l,seed,N);
+    grid.innerHTML=ps.map((p,i)=>`<div class="xtb${i>=N-2?' extra':''}${who.length?' named':''}" data-i="${i}"><div class="xth"><span class="xtn">${i+1}</span>${who[i]?`${avHTML(who[i])}<span class="xtname">${esc(who[i].name)}</span>`:''}</div>${xtBody(p)}<div class="xto">${p.opts.list.map((t,j)=>`<button data-j="${j}"><b>${'ABCD'[j]}</b> ${t}</button>`).join('')}</div></div>`).join('');
+    shareText();
     $$('.xtb',grid).forEach(b=>$$('button',b).forEach(btn=>btn.onclick=()=>{const i=+b.dataset.i;if(i in answered)return;const p=ps[i],j=+btn.dataset.j,ok=j===p.opts.ok;answered[i]=ok;
       btn.classList.add(ok?'right':'wrong');$$('button',b)[p.opts.ok].classList.add('right');b.classList.add(ok?'done-ok':'done-no');score()}));
-    score();ltTick();fitXT();setTimeout(fitXT,120);setTimeout(fitXT,600);};
-  // text and buttons grow with the screen, then shrink until every block fits
-  const over=()=>$$('.xtq',grid).some(q=>q.scrollHeight>q.clientHeight+1)||$$('.xtb',grid).some(b=>b.scrollHeight>b.clientHeight+1);
-  function fitXT(){if(!grid.isConnected||!N)return;let f=Math.max(10,Math.min(44,innerWidth/58,innerHeight/30));grid.style.setProperty('--xtf',f+'px');
-    while(f>8&&over()){f-=.5;grid.style.setProperty('--xtf',f+'px')}grid.classList.toggle('xtscroll',over());o.xtf=f}
+    score();ltTick();fitXT(true);setTimeout(fitXT,120);setTimeout(fitXT,600);};
+  // Text and buttons are as large as fits. Several layouts (figure above, beside or under the text, options in a row,
+  // and different numbers of columns) are tried, and the one that allows the largest text is used.
+  const over=()=>$$('.xtb',grid).some(b=>b.scrollHeight>b.clientHeight+1||b.scrollWidth>b.clientWidth+1||[...b.children].some(e=>(e.matches('.xtq')&&e.scrollHeight>e.clientHeight+1)||(e.matches('.xtq,.xtfig')&&e.scrollWidth>e.clientWidth+1)||(e.matches('.xtfig')&&e.scrollHeight>e.clientHeight+1)||(e.matches('.xto')&&(e.scrollWidth>e.clientWidth+1||[...e.children].some(x=>x.scrollWidth>x.clientWidth+1)))));
+  const setF=f=>grid.style.setProperty('--xtf',f+'px');
+  const setL=([c,k])=>{grid.style.setProperty('--xc',c);grid.style.setProperty('--xr',Math.ceil(N/c));grid.className='xtgrid '+k};
+  // size of the writing inside the drawings
+  const labels=()=>Math.min(99,...$$('.xtb:first-child .xtfig svg',grid).map(e=>{const v=e.viewBox.baseVal,b=e.getBoundingClientRect(),t=Math.max(0,...$$('text',e).map(x=>parseFloat(getComputedStyle(x).fontSize)||0));return v&&v.width&&t?Math.min(b.width/v.width,b.height/v.height)*t:99}));
+  // sentences that are the same in every block are shown once, above the blocks
+  function shareText(){
+    const bar=$('.xtcommon',o),qs=$$('.xtq>.qt',grid);bar.hidden=true;bar.innerHTML='';if(qs.length<N||N<2)return;
+    const parts=qs.map(q=>q.innerHTML.trim().replace(/\s+/g,' ').split(/(?<=[.?!:])\s+(?=[A-Z<])/));let n=0,safe=0;
+    while(n<parts[0].length&&parts.every(p=>p[n]===parts[0][n])){n++;const t=parts[0].slice(0,n).join(' ');if((t.match(/<\w/g)||[]).length===(t.match(/<\//g)||[]).length&&!/<br|<svg|<table/.test(t))safe=n}
+    const t=parts[0].slice(0,safe).join(' ');if(stripTags(t).length<12)return;
+    bar.innerHTML=t;bar.hidden=false;qs.forEach((q,i)=>{q.innerHTML=parts[i].slice(safe).join(' ');if(!q.innerHTML)q.hidden=true});
+  }
+  let fitKey='';
+  function fitXT(force){
+    if(!grid.isConnected||!N)return;const key=[grid.clientWidth,grid.clientHeight,seed,N].join();if(force!==true&&key===fitKey&&!over())return;fitKey=key;
+    const max=Math.max(10,Math.min(44,innerWidth/58,innerHeight/30)),c0=Math.ceil(Math.sqrt(N*1.25)),fig=!!$('.xtfig',grid);let best=null;
+    for(const c of [c0,c0-1,c0+1])if(c>0)for(const k of fig?['','xl-row','xl-side','xl-split']:['','xl-row']){
+      setL([c,k]);let lo=7,hi=max;setF(lo);if(over()){if(!best)best={f:7,l:[c,k],s:0};continue}
+      setF(hi);if(!over())lo=hi;else while(hi-lo>.3){const m=(lo+hi)/2;setF(m);if(over())hi=m;else lo=m}
+      setF(lo);const v=Math.min(lo,20),s=v+lo/20+2*Math.min(v,labels()*1.3)-Math.max(0,13-lo)*3+(k||c!==c0?0:.4);if(!best||s>best.s)best={f:lo,l:[c,k],s};
+    }
+    setL(best.l);setF(best.f);if(over())grid.classList.add('xtscroll');o.xtf=best.f;o.xtlab=labels();o.xtl=best.l;
+  }
   let raf=0;const ro=new ResizeObserver(()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(fitXT)});ro.observe(grid);o.cleanup=()=>ro.disconnect();
   $('[data-x=new]',o).onclick=()=>{seed=rndSeed();build()};
   $('[data-x=reveal]',o).onclick=()=>$$('.xtb',grid).forEach((b,i)=>$$('button',b)[ps[i].opts.ok].classList.add('right'));

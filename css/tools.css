@@ -1,6 +1,7 @@
 /* Full-screen classroom tools: exit ticket, battle, whiteboard */
 .ovl{position:fixed;inset:0;z-index:500;background:var(--bg);color:var(--ink);display:flex;flex-direction:column}
 .ovbar{display:flex;align-items:center;gap:.7rem;padding:.5rem 1rem;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}
+.xt .ovbar{flex-wrap:nowrap}.xt .ovbar>*{flex:none}.xt .xtsub{flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ovbar>b{font-size:1.15rem}.xtsub,.xtscore{color:var(--mute);font-weight:600;font-size:.9rem}
 .ovl .btn{padding:.45rem .9rem}
 .deckbar .ghost[data-tool]{white-space:nowrap}
@@ -12,17 +13,26 @@ header .tools hr,.dtools hr{border:0;border-top:1px solid var(--line);margin:.3r
 
 /* exit ticket: one block per student and 2 extra */
 .xtgrid{font-size:var(--xtf,15px);flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--xc,5),1fr);grid-template-rows:repeat(var(--xr,4),1fr);gap:6px;padding:6px;overflow:auto}
-.xtb{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.35em .5em .4em 2.2em;display:flex;flex-direction:column;gap:.25em;min-height:0;overflow:hidden;font-size:.82em;line-height:1.3}
-.xtn{position:absolute;left:.35em;top:.35em;width:1.6em;height:1.6em;border-radius:8px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:800;font-size:.95em}
-.xtq{flex:1;min-height:0;overflow:hidden}.xtscroll .xtq{overflow:auto}.xtq .qt{font-size:.82em;margin:0}.xtq .eq{font-size:1.05em;margin:.1em 0}.xtq table.mini th,.xtq table.mini td{padding:.05em .3em}
-.xtq .svg-fig{max-height:6em;max-width:100%;margin:.1em auto}
-.xto{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.xtb{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.3em .45em .35em;display:grid;grid-template:"h" auto "q" auto "f" 1fr "o" auto/minmax(0,1fr);gap:.2em .4em;min-height:0;min-width:0;overflow:hidden;font-size:.82em;line-height:1.25}
+.xtb:not(:has(.xtfig)){grid-template:"h" auto "q" 1fr "o" auto/minmax(0,1fr)}
+.xtb:not(.named){padding-left:2.1em}.xtb:not(.named) .xth{position:absolute;grid-area:auto;left:.3em;top:.3em}
+.xth{grid-area:h;display:flex;align-items:center;gap:.35em;min-width:0}.xth .av{height:1.55em}.xth .av i{font-size:.9em}
+.xtn{flex:none;min-width:1.55em;height:1.55em;border-radius:.4em;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:800;font-size:.95em}
+.xtq{grid-area:q;min-height:0;min-width:0;overflow:hidden}.xtscroll .xtq{overflow:auto}.xtq .qt{font-size:.85em;margin:0}.xtq .eq{font-size:1.05em;margin:.1em 0}
+.xtfig{grid-area:f;min-height:0;min-width:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.xtfig table.mini{font-size:.85em;line-height:1.15;margin:0}.xtfig table.mini th,.xtfig table.mini td{padding:.04em .22em}
+.xtfig .svg-fig{display:block;flex:1 0 5em;height:5em;width:100%;min-height:5em;max-height:none;max-width:100%;margin:0}
+.xtcommon{flex:none;padding:.35rem .9rem 0;font-size:1.15rem;line-height:1.25;text-align:center}
+/* layouts: options in one row; figure beside a column of options; figure beside text and options */
+.xl-row .xto{grid-template-columns:repeat(4,minmax(0,1fr))}
+.xl-side .xtb:has(.xtfig){grid-template:"h h" auto "q q" auto "f o" minmax(0,1fr)/minmax(0,1.7fr) minmax(0,1fr)}.xl-side .xto{grid-template-columns:minmax(0,1fr);align-content:center}
+.xl-split .xtb:has(.xtfig){grid-template:"h h" auto "q f" minmax(0,1fr) "o f" auto/minmax(0,1fr) minmax(0,1.1fr)}
+.xto{grid-area:o;min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:3px}
 .xto button{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:6px;padding:.2em .35em;text-align:left;font-size:.8em;line-height:1.2}
 .xto button b{color:var(--brand);margin-right:.15em}.xto button:hover{border-color:var(--brand)}
 .xto button.right{background:var(--ok-bg);border-color:var(--ok);font-weight:700}.xto button.wrong{background:var(--bad-bg);border-color:var(--bad)}
 .xtb.done-ok{border-color:var(--ok)}.xtb.done-no{border-color:var(--bad)}
-@media(max-width:1000px){.xtgrid{grid-template-columns:repeat(4,1fr);grid-template-rows:none}}
-@media(max-width:700px){.xtgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.xt .ovbar{flex-wrap:wrap}.xtgrid{grid-template-columns:repeat(2,1fr)}}
 
 /* battle */
 .barena{font-size:clamp(14px,min(1.35vw,2.3vh),40px);flex:1;min-height:0;display:grid;grid-template-columns:1fr 9em 1fr}

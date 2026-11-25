@@ -21,8 +21,7 @@
 .avpick{display:grid;grid-template-columns:repeat(6,1fr);gap:.5rem}.avpick button{border:3px solid transparent;border-radius:50%;background:none;padding:0}.avpick button.on{border-color:var(--brand)}.avpick .av{height:auto;width:100%}
 .seatform.xtn1{width:min(34rem,100%);text-align:center}.xtcount{display:flex;gap:.6rem;justify-content:center}.xtcount button{width:3.5rem;font-size:1.6rem}.xtcount input{font:inherit;font-size:2.2rem;font-weight:800;text-align:center;width:7rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
 .xtb.extra .xtn{background:var(--mute)}
-.xtb .xtav{position:absolute;left:.2em;top:2.2em;width:1.9em}.xtav .av{height:auto;width:100%}.xtav .av i{font-size:1em}
-.xtname{font-weight:800;font-size:.85em;line-height:1.15;color:var(--brand);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:none}
+.xtname{font-weight:800;font-size:.95em;line-height:1.2;color:var(--brand);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .xtkids{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem;max-height:42vh;overflow:auto}.xtkids button{display:flex;flex-direction:column;align-items:center;gap:.15rem;min-width:0;border:1px solid var(--line);border-radius:10px;background:none;color:var(--ink);padding:.3rem;font-size:.8rem}
 .xtkids .av{height:2.4rem}.xtkids .av i{font-size:1rem}.xtkids span:last-child{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.xtkids .away{opacity:.35}.xtkids .away span:last-child{text-decoration:line-through}
 /* number facts */
@@ -31,3 +30,4 @@
 .nfcard{position:relative;max-width:min(60rem,94%);max-height:100%;overflow:auto;background:rgba(15,10,8,.82);color:#fff;border-radius:20px;padding:1.5rem 2.5rem;text-align:center}
 .nfnum{font-size:clamp(3rem,11vh,9rem);font-weight:900;line-height:1.1;color:#ffb27a;overflow-wrap:anywhere}.nftext{font-size:clamp(1.2rem,3.6vh,2.6rem);line-height:1.35}.nftext ul{text-align:left;font-size:.72em;margin:.3em 0}
 .nfsrc{position:absolute;right:.8rem;bottom:.4rem;font-size:.75rem;color:#fff}.nfsrc a{color:#ffb27a}.nfform input{width:9rem}
+.nfby{font-size:.5em;opacity:.8;margin:0}.nf .seatdlg input{font:inherit;padding:.5rem .7rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}

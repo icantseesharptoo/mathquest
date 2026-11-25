@@ -18,12 +18,13 @@ function makeTask(type,R,seed){
   else if(type==='shape'){
     const kind=r.pick(['rectangle','square','parallelogram','right-angled triangle','isosceles triangle']);let P;
     const a=I(-R,R-4),b=I(-R,R-4);
-    if(kind==='rectangle'){const w=I(2,Math.min(6,R-a)),h=nz(2,Math.min(4,R-b));P=[[a,b],[a+w,b],[a+w,b+h],[a,b+h]]}
+    if(kind==='rectangle'){const h=I(2,3),w=h+I(1,3);P=[[a,b],[a+w,b],[a+w,b+h],[a,b+h]]}
     else if(kind==='square'){const s=I(2,Math.min(4,R-a,R-b));P=[[a,b],[a+s,b],[a+s,b+s],[a,b+s]]}
     else if(kind==='parallelogram'){const w=I(2,4),s=I(1,2),h=I(2,3);P=[[a-2,b],[a-2+w,b],[a-2+w+s,b+h],[a-2+s,b+h]]}
     else if(kind==='right-angled triangle'){const w=I(2,5),h=I(2,4);P=[[a,b],[a+w,b],[a,b+h]]}
     else{const w=I(1,3),h=I(2,5);P=[[a-w,b],[a+w,b],[a,b+h]]}
-    P=P.map(([x,y])=>[Math.max(-R,Math.min(R,x)),Math.max(-R,Math.min(R,y))]);
+    // move the whole shape inside the grid, so that its sides keep their lengths
+    const mv=k=>{const v=P.map(p=>p[k]),lo=Math.min(...v),hi=Math.max(...v);return lo<-R?-R-lo:hi>R?R-hi:0},mx=mv(0),my=mv(1);P=P.map(([x,y])=>[x+mx,y+my]);
     T.dots=P.map(([x,y],i)=>({x,y,l:L[i]}));T.segs=P.map((p,i)=>[...p,...P[(i+1)%P.length]]);T.kind=kind;
     T.text=`Plot ${T.dots.map(d=>`${d.l}${ptxt(d.x,d.y)}`).join(', ')} and join them in order back to ${L[0]}. What shape have you drawn?`}
   else if(type==='line'){const m=r.pick([1,2,3,-1,-2,-3,.5,-.5]),c=I(-4,4);T.lines=[{m,c}];T.text=`Draw the line ${yEq(m,c)}. Mark at least two points on it, then join them with a long straight line.`}

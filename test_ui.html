@@ -108,7 +108,7 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
      o.querySelector('[data-k=check]').click();const res=o.querySelector('.wbres').textContent;
      if(!/All correct/.test(res)){bad++;fail(`task ${T.type} "${T.text}" -> ${res}`)}
      if(k===0||k===1)log(`task: ${T.text.replace(/<[^>]+>/g,' ')} -> ${res}`);
-     if(k===2){dot(T.dots.length?T.dots[0].x+1:1,1);o.querySelector('[data-k=check]').click();log('with a wrong extra dot: '+o.querySelector('.wbres').textContent);if(/All correct/.test(o.querySelector('.wbres').textContent))fail('wrong dot accepted')}
+     if(k===2){{let X=T.dots.length?T.dots[0].x+1:1;while(T.dots.some(d=>d.x===X&&d.y===1))X=X>3?X-5:X+1;dot(X,1)}o.querySelector('[data-k=check]').click();log('with a wrong extra dot: '+o.querySelector('.wbres').textContent);if(/All correct/.test(o.querySelector('.wbres').textContent))fail('wrong dot accepted')}
    }
    log('task types: '+JSON.stringify(types));
    const nm=WB.marks.length;o.querySelector('[data-a=undo]').click();if(WB.marks.length!==nm-1)fail('undo task mark');
@@ -141,13 +141,17 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
    const g=o.querySelector('.seatgrid').getBoundingClientRect();if(g.bottom>innerHeight)fail('seating overflows');closeOverlay();
    exitTicket('y8',lessonN('y8',2));if(document.querySelector('.xtask input').value!=='3')fail('exit count from class');
    document.querySelector('[data-kid="0"]').click();const fq=document.querySelector('.xtask form');if(fq.n.value!=='2')fail('absent count');fq.requestSubmit();const nm=[...document.querySelectorAll('.xtname')].map(e=>e.textContent);log('exit ticket names: '+nm);
-   if(nm.length!==2||document.querySelectorAll('.xtb').length!==4||document.querySelectorAll('.xtb .xtav .av').length!==2)fail('exit ticket names');closeOverlay();
+   if(nm.length!==2||document.querySelectorAll('.xtb').length!==4||document.querySelectorAll('.xtb .xth .av').length!==2)fail('exit ticket names');closeOverlay();
    localStorage.setItem('maths.class.y8',JSON.stringify(Array.from({length:20},(_,i)=>({name:'Long alias number '+i,style:'bottts',seed:'s'+i}))));
    for(const n of [2,10,34,46,60]){exitTicket('y8',lessonN('y8',n)||lessonN('y8',3));document.querySelector('.xtask form').requestSubmit();await wait(700);const x=document.querySelector('.ovl.xt'),ov=[...x.querySelectorAll('.xtq,.xtb')].filter(q=>q.scrollHeight>q.clientHeight+1).length;log(`exit ticket names topic ${n}: font ${x.xtf}`);if(ov)fail('names overflow '+n);closeOverlay()}
    numberFacts();let nf=document.querySelector('.ovl.nf'),ff=nf.querySelector('form');const ask=v=>{ff.n.value=v;ff.requestSubmit();return nf.querySelector('.nftext').textContent};
    if(!/perfect number/.test(ask('28'))||!/prime/.test(ask('97'))||!/Type a whole/.test(ask('2.5'))||!/5² = 25|3² \+ 4²/.test(ask('25'))||!/Type a whole/.test(ask('x')))fail('number facts');
    for(let n=0;n<3000;n++)if(/NaN|undefined/.test(n?nfWork(n).join():''))fail('nf '+n);nfWork(1e6);log('number facts: '+NF.length+' · 360: '+ask('360'));
-   for(let k=0;k<NF.length+2;k++){nf.querySelector('[data-k=rnd]').click();if(!nf.querySelector('.nftext').textContent)fail('empty fact')}closeOverlay();localStorage.removeItem('maths.class.y8')}
+   for(let k=0;k<NF.length+2;k++){nf.querySelector('[data-k=rnd]').click();if(!nf.querySelector('.nftext').textContent)fail('empty fact')}
+   {const of=window.fetch;let hdr;window.fetch=async(u,x)=>{hdr=x;const ok=x.headers.Authorization==='Bearer good';return {ok,status:ok?200:401,json:async()=>({contents:{fact:'API <b>fact'}})}};
+    const key=async v=>{nf.querySelector('[data-k=key]').click();const kf=nf.querySelector('.seatform');kf.t.value=v;kf.requestSubmit();await wait(30)};
+    await key('bad');if(nfToken()||!/not accept/.test(nf.querySelector('.nfmsg').textContent))fail('bad token');nf.querySelector('[data-k=no]').click();await key('good');if(nfToken()!=='good')fail('good token');
+    ask('12');await wait(30);if(!/API <b>fact \(math.tools\)/.test(nf.querySelector('.nftext').textContent))fail('api fact');log('number facts api ok');localStorage.removeItem('maths.mathtools');window.fetch=of}closeOverlay();localStorage.removeItem('maths.class.y8')}
   for(const k of [1,18,30,40]){xtOpen(k,()=>exitTicket('y8',lessonN('y8',2)));await wait(700);const o=document.querySelector('.ovl.xt'),B=o.querySelectorAll('.xtb'),ov=[...o.querySelectorAll('.xtq')].filter(q=>q.scrollHeight>q.clientHeight+1).length;
    log(`exit ticket for ${k}: ${B.length} blocks, font ${o.xtf}, overflow ${ov}`);if(B.length!==k+2||ov||B[0].textContent.length<5)fail('exit ticket count '+k);closeOverlay()}
   // interactive video with a mock YouTube player

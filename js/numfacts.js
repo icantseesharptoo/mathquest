@@ -65,15 +65,34 @@ function nfWork(n){
   o.push(`In binary it is <b>${n.toString(2)}</b>${n<4000?`, and in Roman numerals <b>${nfRoman(n)}</b>`:''}.`);
   return o;
 }
+// optional: facts from the math.tools API (a paid service; the token stays in this browser)
+const NF_KEY='maths.mathtools';
+const nfToken=()=>localStorage.getItem(NF_KEY)||'';
+async function nfApi(n,token=nfToken()){
+  const r=await fetch('https://math.tools/api/numbers/fact?number='+encodeURIComponent(n),{headers:{Accept:'application/json',Authorization:'Bearer '+token},signal:AbortSignal.timeout(6000)});
+  if(!r.ok)throw Object.assign(new Error('HTTP '+r.status),{status:r.status});
+  const c=(await r.json()).contents||{};if(!c.fact)throw new Error('no fact');return String(c.fact);
+}
 function numberFacts(){
-  const o=openOverlay('nf',`<div class="ovbar"><b>Number facts</b><span class="sp"></span><form class="row nfform"><input type="text" inputmode="numeric" name="n" placeholder="Type a number" aria-label="Number" autocomplete="off"><button class="btn alt">Facts about it</button></form><button class="btn" data-k="rnd">Random fact</button><button class="btn" data-close>Close ✕</button></div>
-    <div class="nfbody"><img class="nfbg" alt="" referrerpolicy="no-referrer"><div class="nfcard"><div class="nfnum"></div><div class="nftext"></div></div><div class="nfsrc">Background: Mars, <a href="https://bootprint.space" target="_blank" rel="noopener">Bootprint Space</a></div></div>`);
+  const o=openOverlay('nf',`<div class="ovbar"><b>Number facts</b><span class="sp"></span><form class="row nfform"><input type="text" inputmode="numeric" name="n" placeholder="Type a number" aria-label="Number" autocomplete="off"><button class="btn alt">Facts about it</button></form><button class="btn alt" data-k="key" title="math.tools API token">🔑</button><button class="btn" data-k="rnd">Random fact</button><button class="btn" data-close>Close ✕</button></div>
+    <div class="nfbody"><img class="nfbg" alt="" referrerpolicy="no-referrer"><div class="nfcard"><div class="nfnum"></div><div class="nftext"></div></div><div class="seatdlg" hidden></div><div class="nfsrc">Background: Mars, <a href="https://bootprint.space" target="_blank" rel="noopener">Bootprint Space</a></div></div>`);
   let bag=[];const bg=$('.nfbg',o);bg.onerror=()=>{bg.hidden=$('.nfsrc',o).hidden=true};bg.src=`https://cdn.bootprint.space/mars/${1+Math.floor(Math.random()*4)}.png`;
   const show=(n,h)=>{$('.nfnum',o).textContent=nfFmt(n);$('.nftext',o).innerHTML=h;const c=$('.nfcard',o);if(!REDUCED())c.animate([{transform:'scale(.9)',opacity:0},{transform:'none',opacity:1}],{duration:400,easing:'ease-out'})};
-  const rnd=()=>{if(!bag.length)bag=mkR(rndSeed()).shuffle(NF);const [n,t]=bag.pop();show(n,`<p>${t}</p>`)};
+  let turn=0;const rnd=async()=>{const t=++turn;
+    if(nfToken()&&Math.random()<.6){const n=1+Math.floor(Math.random()*200);try{const x=await nfApi(n);if(t===turn&&o.isConnected)show(n,`<p>${esc(x)}</p><p class="nfby">math.tools</p>`);return}catch(e){}if(t!==turn||!o.isConnected)return}
+    if(!bag.length)bag=mkR(rndSeed()).shuffle(NF);const [n,txt]=bag.pop();show(n,`<p>${txt}</p>`)};
   $('[data-k=rnd]',o).onclick=rnd;
-  $('form',o).onsubmit=e=>{e.preventDefault();const n=Number(e.target.n.value.replace(/[\s,]/g,''));
+  $('.nfform',o).onsubmit=e=>{e.preventDefault();const t=++turn;const n=Number(e.target.n.value.replace(/[\s,]/g,''));
     if(!e.target.n.value.trim()||!Number.isInteger(n)||n<0||n>1e6){$('.nfnum',o).textContent='?';$('.nftext',o).innerHTML='<p>Type a whole number from 0 to 1 000 000.</p>';return}
+    if(nfToken())nfApi(n).then(x=>{if(t!==turn||!o.isConnected)return;const li=document.createElement('li');li.textContent=x+' (math.tools)';const u=$('.nftext ul',o);if(u)u.prepend(li)}).catch(()=>{});
     const own=NF.filter(f=>f[0]===n).map(f=>f[1]);show(n,`<ul>${[...own,...(n?nfWork(n):[])].map(x=>`<li>${x}</li>`).join('')}</ul>`)};
+  const dlg=$('.seatdlg',o);
+  $('[data-k=key]',o).onclick=()=>{
+    dlg.innerHTML=`<form class="seatform"><h3>math.tools facts</h3><p class="note">The <a href="https://math.tools/api/numbers" target="_blank" rel="noopener">math.tools Numbers API</a> is a paid service. With a token from your account, its facts are added to the built-in ones. The token is kept only in this browser.</p><input type="password" name="t" placeholder="Token" autocomplete="off" aria-label="Token"><div class="note nfmsg"></div><div class="row"><button class="btn">Save</button>${nfToken()?'<button type="button" class="btn alt" data-k="del">Remove token</button>':''}<span class="sp"></span><button type="button" class="btn alt" data-k="no">Cancel</button></div></form>`;
+    dlg.hidden=false;const f=$('form',dlg),shut=()=>{dlg.hidden=true;dlg.innerHTML=''};f.t.focus();$('[data-k=no]',f).onclick=shut;
+    if($('[data-k=del]',f))$('[data-k=del]',f).onclick=()=>{localStorage.removeItem(NF_KEY);shut()};
+    f.onsubmit=async e=>{e.preventDefault();const t=f.t.value.trim();if(!t)return;$('.nfmsg',f).textContent='Checking…';
+      try{await nfApi(11,t);localStorage.setItem(NF_KEY,t);shut()}catch(x){$('.nfmsg',f).textContent=x.status===401||x.status===403?'math.tools did not accept this token.':x.status===429?'The daily limit of this token has been reached.':'math.tools could not be reached. Try again later.'}};
+  };
   rnd();
 }
