@@ -1,0 +1,23 @@
+/* Meme slide, seating plan, and the exit ticket's student count */
+.meme{flex:1;min-height:0;display:flex;flex-direction:column;gap:.5rem}
+.memet{font-size:1.3rem;font-weight:700;text-align:center}
+.memeimg{flex:1 1 0;min-height:16rem;position:relative;display:grid;place-items:center}
+.memeimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.memeonly{display:flex;gap:.35rem;align-items:center}.memesrc{font-size:.85rem}
+.seatwrap{flex:1;min-height:0;display:flex;flex-direction:column;gap:.5rem;padding:.6rem 1rem}
+.seatboard{align-self:center;width:50%;text-align:center;border-radius:8px;background:var(--chip);border:1px solid var(--line);font-weight:700;padding:.15rem}
+.seatgrid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(5,minmax(0,1fr));gap:.6rem;width:100%;max-width:75rem;margin:0 auto}
+.seat{position:relative;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;gap:.7rem;background:var(--panel);border:2px solid var(--line);border-radius:12px;color:var(--ink);padding:.3rem .6rem;overflow:hidden}
+.seat:hover,.seat.over{border-color:var(--brand)}.seat.moving{border-color:var(--brand);background:var(--chip)}
+.seat.empty{border-style:dashed;background:transparent}.seatplus{font-size:1.6rem;color:var(--mute)}
+.seatn{position:absolute;left:.4rem;top:.3rem;font-size:.8rem;font-weight:700;color:var(--mute)}
+.seatname{font-weight:700;font-size:1.15rem;min-width:0;overflow-wrap:anywhere;line-height:1.15;text-align:left}
+.av{position:relative;flex:none;display:block;height:min(5.5rem,11vh);aspect-ratio:1;border-radius:50%;overflow:hidden;background:var(--chip)}
+.av i{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:1.5rem;color:var(--brand)}.av img{position:absolute;inset:0;width:100%;height:100%}
+.seatnote{text-align:center;margin:0}
+.seatdlg,.xtask{position:absolute;inset:0;z-index:5;background:rgba(0,0,0,.45);display:grid;place-items:center;padding:1rem;overflow:auto}
+.seatform{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.2rem 1.4rem;width:min(38rem,100%);display:flex;flex-direction:column;gap:.8rem}
+.seatform h3{margin:0}.seatform textarea{font:inherit;width:100%;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);padding:.5rem}
+.avpick{display:grid;grid-template-columns:repeat(6,1fr);gap:.5rem}.avpick button{border:3px solid transparent;border-radius:50%;background:none;padding:0}.avpick button.on{border-color:var(--brand)}.avpick .av{height:auto;width:100%}
+.seatform.xtn1{width:min(26rem,100%);text-align:center}.xtcount{display:flex;gap:.6rem;justify-content:center}.xtcount button{width:3.5rem;font-size:1.6rem}.xtcount input{font:inherit;font-size:2.2rem;font-weight:800;text-align:center;width:7rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.xtb.extra .xtn{background:var(--mute)}

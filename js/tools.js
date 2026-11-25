@@ -16,24 +16,28 @@ const needsFig=p=>!!p.svg&&FIG_RE.test(stripTags(p.text))&&!/^Use the dual inter
 const qBody=p=>`<div class="qt">${p.text||''}</div>${p.eq?`<div class="eq">${p.eq}</div>`:''}${needsFig(p)?p.svg:''}`;
 
 // ===================== exit ticket =====================
-// one question type, 20 versions with different numbers, 4 options each
+// one question type, one version per student (and 2 extra) with different numbers, 4 options each
 const shapeOf=p=>stripTags(p.text+' '+(p.eq||'')).replace(/[−-]?\d+([.,/]\d+)?/g,'#').replace(/\s+/g,' ').trim()+(p.mc?'|mc':'');
-function exitTicketSet(l,seed){
+const xtKey=p=>stripTags(p.text+p.eq)+ansText(p)+(needsFig(p)?p.svg:'')+(p.mc?p.choices[p.ans]:'');
+function exitTicketSet(l,seed,n=20){
   const r=mkR(seed);let best=null;
   for(const skill of r.shuffle(l.skills)){
     for(const lv of [1,0]){
       const groups={};
-      for(let i=0;i<160;i++){let p;try{p=makeProblem(skill,r,lv)}catch(e){break}if(p.mc&&p.choices.length<4)break;(groups[shapeOf(p)]=groups[shapeOf(p)]||[]).push(p)}
+      for(let i=0;i<Math.max(160,n*8);i++){let p;try{p=makeProblem(skill,r,lv)}catch(e){break}if(p.mc&&p.choices.length<4)break;(groups[shapeOf(p)]=groups[shapeOf(p)]||[]).push(p)}
       for(const g of Object.values(groups)){
-        const uniq=[...new Map(g.map(p=>[stripTags(p.text+p.eq)+ansText(p),p])).values()];
-        const len=sum(uniq.map(p=>stripTags(p.text+p.eq).length))/uniq.length,score=Math.min(uniq.length,20)*10-(needsFig(uniq[0])?60:0)-len/8;
+        const uniq=[...new Map(g.map(p=>[xtKey(p),p])).values()];
+        const len=sum(uniq.map(p=>stripTags(p.text+p.eq).length))/uniq.length,score=Math.min(uniq.length,n)/n*200-(needsFig(uniq[0])?60:0)-len/8;
         if(!best||score>best.score)best={score,ps:uniq,skill,lv};
       }
-      if(best&&best.ps.length>=20&&!needsFig(best.ps[0]))break;
+      if(best&&best.ps.length>=n&&!needsFig(best.ps[0]))break;
     }
-    if(best&&best.ps.length>=20&&!needsFig(best.ps[0]))break;
+    if(best&&best.ps.length>=n&&!needsFig(best.ps[0]))break;
   }
-  if(!best)return exitTicketSet({...l,skills:['intOps']},seed);const ps=r.shuffle(best.ps).slice(0,20);while(ps.length<20)ps.push(makeProblem(best.skill,r,best.lv));
+  if(!best)return exitTicketSet({...l,skills:['intOps']},seed,n);const ps=r.shuffle(best.ps).slice(0,n);// too few versions of that question: first other questions of the topic, then repeats
+  const used=new Set(ps.map(xtKey));
+  for(const same of [true,false])for(let t=0;t<300&&ps.length<n;t++){let p;try{p=makeProblem(same?best.skill:pick(r,l.skills),r,same?best.lv:t%3)}catch(e){continue}const k=xtKey(p);if(used.has(k)||p.mc&&p.choices.length<4)continue;used.add(k);ps.push(p)}
+  while(ps.length<n)ps.push(makeProblem(best.skill,r,best.lv));
   return ps.map(p=>Object.assign(p,{opts:fourOptions(p,r)}));
 }
 function fourOptions(p,r){
@@ -48,22 +52,30 @@ function fourOptions(p,r){
   const o=r.shuffle([main,...w]);return {list:o.map(show),ok:o.indexOf(main)};
 }
 function exitTicket(cid,l){
-  let seed=rndSeed(),ps,answered={};
-  const o=openOverlay('xt',`<div class="ovbar"><b>Exit ticket</b><span class="xtsub">${l.title} · find the block with your number</span><span class="sp"></span><span class="xtscore"></span>${timerHTML()}<button class="btn alt" data-x="reveal">Show answers</button><button class="btn alt" data-x="new">New numbers</button><button class="btn" data-close>Close ✕</button></div><div class="xtgrid"></div>`);
-  const grid=$('.xtgrid',o),score=()=>{const v=Object.values(answered);$('.xtscore',o).textContent=`Answered ${v.length} / 20 · correct ${v.filter(Boolean).length}`};
-  const build=()=>{answered={};ps=exitTicketSet(l,seed);
-    grid.innerHTML=ps.map((p,i)=>`<div class="xtb" data-i="${i}"><div class="xtn">${i+1}</div><div class="xtq">${qBody(p)}</div><div class="xto">${p.opts.list.map((t,j)=>`<button data-j="${j}"><b>${'ABCD'[j]}</b> ${t}</button>`).join('')}</div></div>`).join('');
+  let seed=rndSeed(),ps,answered={},N=0;const nKey='maths.nstud.'+cid;
+  const o=openOverlay('xt',`<div class="ovbar"><b>Exit ticket</b><span class="xtsub">${l.title} · find the block with your number</span><span class="sp"></span><span class="xtscore"></span>${timerHTML()}<button class="btn alt" data-x="count">Students</button><button class="btn alt" data-x="reveal">Show answers</button><button class="btn alt" data-x="new">New numbers</button><button class="btn" data-close>Close ✕</button></div><div class="xtgrid"></div><div class="xtask" hidden><form class="seatform xtn1"><h3>How many students?</h3><div class="xtcount"><button type="button" class="btn alt" data-d="-1" aria-label="One less">−</button><input type="number" name="n" min="1" max="40" step="1" required aria-label="Number of students"><button type="button" class="btn alt" data-d="1" aria-label="One more">+</button></div><p class="note">The exit ticket gets one question for each student and 2 extra.</p><div class="row"><button class="btn">Start exit ticket</button><span class="sp"></span><button type="button" class="btn alt" data-k="no">Cancel</button></div></form></div>`);
+  const grid=$('.xtgrid',o),score=()=>{const v=Object.values(answered);$('.xtscore',o).textContent=`Answered ${v.length} / ${N} · correct ${v.filter(Boolean).length}`};
+  const build=()=>{answered={};ps=exitTicketSet(l,seed,N);const cols=Math.ceil(Math.sqrt(N*1.25));grid.style.setProperty('--xc',cols);grid.style.setProperty('--xr',Math.ceil(N/cols));
+    grid.innerHTML=ps.map((p,i)=>`<div class="xtb${i>=N-2?' extra':''}" data-i="${i}"><div class="xtn">${i+1}</div><div class="xtq">${qBody(p)}</div><div class="xto">${p.opts.list.map((t,j)=>`<button data-j="${j}"><b>${'ABCD'[j]}</b> ${t}</button>`).join('')}</div></div>`).join('');
     $$('.xtb',grid).forEach(b=>$$('button',b).forEach(btn=>btn.onclick=()=>{const i=+b.dataset.i;if(i in answered)return;const p=ps[i],j=+btn.dataset.j,ok=j===p.opts.ok;answered[i]=ok;
       btn.classList.add(ok?'right':'wrong');$$('button',b)[p.opts.ok].classList.add('right');b.classList.add(ok?'done-ok':'done-no');score()}));
     score();ltTick();fitXT();setTimeout(fitXT,120);setTimeout(fitXT,600);};
   // text and buttons grow with the screen, then shrink until every block fits
   const over=()=>$$('.xtq',grid).some(q=>q.scrollHeight>q.clientHeight+1)||$$('.xtb',grid).some(b=>b.scrollHeight>b.clientHeight+1);
-  function fitXT(){if(!grid.isConnected)return;let f=Math.max(10,Math.min(44,innerWidth/58,innerHeight/30));grid.style.setProperty('--xtf',f+'px');
+  function fitXT(){if(!grid.isConnected||!N)return;let f=Math.max(10,Math.min(44,innerWidth/58,innerHeight/30));grid.style.setProperty('--xtf',f+'px');
     while(f>8&&over()){f-=.5;grid.style.setProperty('--xtf',f+'px')}grid.classList.toggle('xtscroll',over());o.xtf=f}
   let raf=0;const ro=new ResizeObserver(()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(fitXT)});ro.observe(grid);o.cleanup=()=>ro.disconnect();
   $('[data-x=new]',o).onclick=()=>{seed=rndSeed();build()};
   $('[data-x=reveal]',o).onclick=()=>$$('.xtb',grid).forEach((b,i)=>$$('button',b)[ps[i].opts.ok].classList.add('right'));
-  build();
+  const dlg=$('.xtask',o),f=$('form',dlg);
+  const ask=()=>{dlg.hidden=false;f.n.value=N?N-2:(classCount(cid)||+localStorage.getItem(nKey)||20);f.n.focus();f.n.select()};
+  $$('[data-d]',f).forEach(b=>b.onclick=()=>{f.n.value=Math.max(1,Math.min(40,(+f.n.value||0)+ +b.dataset.d))});
+  f.onsubmit=e=>{e.preventDefault();const k=Math.max(1,Math.min(40,Math.round(+f.n.value)||1));try{localStorage.setItem(nKey,k)}catch(e){}dlg.hidden=true;N=k+2;build()};
+  dlg.onclick=e=>{if(e.target===dlg&&N)dlg.hidden=true};
+  $('[data-x=count]',o).onclick=ask;
+  $('[data-k=no]',f).onclick=()=>{if(N)dlg.hidden=true;else closeOverlay()};
+  ['new','reveal'].forEach(k=>{const b=$(`[data-x=${k}]`,o),go=b.onclick;b.onclick=()=>{if(N)go()}});
+  ltTick();ask();
 }
 
 // ===================== battle mode =====================

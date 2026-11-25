@@ -14,10 +14,10 @@ $('#themeBtn').onclick=()=>{ST.theme={system:'light',light:'dark',dark:'system'}
 applyTheme();
 $('#hdrTimer').innerHTML=timerHTML();
 let CUR=null;   // the topic being shown, for exit ticket and battle
-const classTools=()=>`<button data-tool="exit" ${CUR?'':'disabled title="Open a topic first"'}>🎟 Exit ticket</button><button data-tool="battle" ${CUR?'':'disabled title="Open a topic first"'}>⚔️ Battle</button><button data-tool="board">🖊 Whiteboard</button><hr>`;
+const classTools=()=>`<button data-tool="exit" ${CUR?'':'disabled title="Open a topic first"'}>🎟 Exit ticket</button><button data-tool="battle" ${CUR?'':'disabled title="Open a topic first"'}>⚔️ Battle</button><button data-tool="board">🖊 Whiteboard</button>${COURSE_IDS.map(c=>`<button data-tool="seat" data-cid="${c}">🪑 ${course(c).name} seats</button>`).join('')}<hr>`;
 const refreshTools=()=>{$('#toolsMenu').innerHTML=classTools()+toolLinks()};refreshTools();
 document.addEventListener('click',e=>{const b=e.target.closest('[data-tool]');if(!b||b.disabled)return;const d=b.closest('details');if(d)d.open=false;
-  if(b.dataset.tool==='board')whiteboard();else if(CUR&&b.dataset.tool==='exit')exitTicket(CUR.cid,CUR.l);else if(CUR&&b.dataset.tool==='battle')battle(CUR.cid,CUR.l)});
+  if(b.dataset.tool==='board')whiteboard();else if(b.dataset.tool==='seat')seating(b.dataset.cid);else if(CUR&&b.dataset.tool==='exit')exitTicket(CUR.cid,CUR.l);else if(CUR&&b.dataset.tool==='battle')battle(CUR.cid,CUR.l)});
 window.onLessonWarn=()=>CUR?`<button data-tool="exit" class="btn">Open exit ticket</button>`:'';
 
 // ---------- problem card ----------
@@ -66,7 +66,7 @@ function coursePage(cid){
       <div class="tc-t">${l.title}</div>
       <div class="tc-m">${l.review?'Mixed questions from the whole year':`${l.skills.length} question type${l.skills.length>1?'s':''}`}${demoFor(l)?' · interactive demo':''}${l.videos?` · ${l.videos.length} video${l.videos.length>1?'s':''}`:''}</div>
       ${pg?`<div class="progress"><i style="width:${Math.min(100,pg.best/pg.total*100)}%"></i></div>`:''}</a>`};
-  app.innerHTML=`${crumbs(['Home','#/'],[c.name])}<h1>${c.name}</h1><p class="lead">Topics from the school teaching plan (<i>${c.source}</i>), grouped by module. Each card opens interactive slides and practice.</p>
+  app.innerHTML=`${crumbs(['Home','#/'],[c.name])}<div class="row"><h1>${c.name}</h1><span class="sp"></span><button class="btn alt" data-tool="seat" data-cid="${cid}">🪑 Seating plan</button></div><p class="lead">Topics from the school teaching plan (<i>${c.source}</i>), grouped by module. Each card opens interactive slides and practice.</p>
    <input type="search" class="search" placeholder="Search topics" aria-label="Search topics">
    ${c.modules.map(m=>{const done=m.lessons.filter(l=>lessonComplete(cid,l.n)).length,ex=ST.exams[`${cid}-m${m.n}`],real=m.lessons.some(l=>!l.review);
      return `<section class="module" style="--mc:${m.color}"><div class="modh"><span class="mnum">${m.n}</span><div class="mtt"><div class="mk">Module ${m.n} · lessons ${m.lessons[0].lessons.split('–')[0]}–${m.lessons[m.lessons.length-1].lessons.split('–').pop()}</div><h2>${m.title}</h2></div><span class="sp"></span><span class="wp">${done} / ${m.lessons.length} done</span>${real?`<a class="btn alt" href="#/exam/${cid}-m${m.n}">Module test${ex?` · best ${ex.best}/${ex.total}`:''}</a>`:''}</div>
@@ -164,15 +164,10 @@ function slides(cid,l){
   const items=[
     {name:'Title',mount:h=>titleSlide(h,cid,l,m,c)},
     ...(extrasFor(cid,l)?[{name:'Why it matters',mount:h=>whySlide(h,cid,l)}]:[]),
-    {name:'Objectives',mount:h=>{
-      h.innerHTML=`<div class="s-title" style="--mc:${m.color}"><div class="s-u">${c.name} · Module ${m.n}: ${m.title} · Lesson${l.nLessons>1?'s':''} ${l.lessons}</div><div class="big">${l.title}</div>
-        <p class="lead">Today: ${demo?'explore with an interactive demo, then ':''}work through examples step by step, try a random problem and check your understanding.</p>
-        <div class="objhost"></div>
-        <div class="timeline"><span style="flex:5">Starter 5′</span><span style="flex:8">Demo 8′</span><span style="flex:8">Examples 8′</span><span style="flex:12">Practice 12′</span><span style="flex:7">Check 7′</span></div></div>`;
-      h.classList.add('objslide');const oc=objectivesCarousel(m.goals,h);if(oc)$('.objhost',h).replaceWith(oc)}},
     ...(l.videos?[{name:'Video',mount:h=>{h.appendChild(videoBlock(cid,l))}}]:[]),
     ...(demo&&DEMOS[demo]?[{name:'Interactive demo',mount:h=>{const d=document.createElement('div');h.appendChild(d);mountDemo(d,DEMOS[demo]);h.stepNext=()=>d.demoNext?d.demoNext():false}}]:[]),
     ...ex.map((e,i)=>({name:`Example ${i+1}`,mount:h=>exampleSlide(h,cid,l,e)})),
+    {name:'Meme break',mount:h=>memeSlide(h)},
     {name:'Random problem',mount:h=>wheelSlide(h,cid,l)},
     {name:'Check',mount:h=>{
       const ps=lessonProblems(cid,l,3,rndSeed(),[0,1,2]);h.innerHTML='<div class="big">Check your understanding</div><div id="ck"></div>';

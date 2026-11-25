@@ -59,7 +59,7 @@ function ltToast(icon,title,text,o={}){
   if(o.sound!==false)(o.sound||ltSoftSound)();
   return t;
 }
-// milestones follow the lesson plan on the Objectives slide: starter 5′, demo 8′, examples 8′, practice 12′, check 7′
+// milestones follow the lesson plan: starter 5′, demo 8′, examples 8′, practice 12′, check 7′
 const LT_MS=[
   {k:'start',at:0,icon:'🚀',title:s=>`${s.label} has started`,text:s=>`${s.range&&s.mode==='slot'?s.range+' · ':''}Starter: 5 minutes.`},
   {k:'demo',at:300,icon:'💡',title:()=>'New content',text:()=>'Time for the interactive demo or the new idea (8 minutes).'},

@@ -1,11 +1,15 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>ui test</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/app.css"><link rel="stylesheet" href="css/tools.css"><link rel="stylesheet" href="css/intro.css"><link rel="stylesheet" href="css/scale.css"><link rel="stylesheet" href="css/objectives.css"></head><body>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ui test</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/app.css"><link rel="stylesheet" href="css/tools.css"><link rel="stylesheet" href="css/intro.css"><link rel="stylesheet" href="css/scale.css"><link rel="stylesheet" href="css/class.css"></head><body>
 <header class="top"><a class="logo" href="#/">MathQuest</a><nav><a data-nav="y8"></a><a data-nav="y10"></a><a data-nav="exams"></a></nav><span id="hdrTimer"></span><details class="tools"><summary>Tools</summary><div id="toolsMenu"></div></details><button id="themeBtn"></button></header><main id="app"></main><pre id="res"></pre>
 <script>localStorage.clear();location.hash='#/y8/l/5/practice';window.confirm=()=>true;window.NO_BFS=true;
 const DAY=new Date();DAY.setHours(0,0,0,0);let FAKE=DAY.getTime()+7*3600e3;window.LT_CLOCK=()=>FAKE;const at=(h,m,s=0)=>{FAKE=DAY.getTime()+((h*60+m)*60+s)*1000;ltTick()};</script>
-<script src="data/y8.js"></script><script src="data/y10.js"></script><script src="data/extras.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/g_y8.js"></script><script src="js/g_extra.js"></script><script src="js/engine.js"></script><script src="js/demos.js"></script><script src="js/timer.js"></script><script src="js/tools.js"></script><script src="js/board.js"></script><script src="js/ivideo.js"></script><script src="js/intro.js"></script><script src="js/objectives.js"></script><script src="js/ui.js"></script>
+<script src="data/y8.js"></script><script src="data/y10.js"></script><script src="data/extras.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/g_y8.js"></script><script src="js/g_extra.js"></script><script src="js/engine.js"></script><script src="js/demos.js"></script><script src="js/timer.js"></script><script src="js/tools.js"></script><script src="js/board.js"></script><script src="js/ivideo.js"></script><script src="js/intro.js"></script><script src="js/memes.js"></script><script src="js/seats.js"></script><script src="js/ui.js"></script>
 <script>
 const out=[],bad=[];const log=s=>out.push(s),fail=s=>{bad.push(s);out.push('FAIL '+s)};
 const fill=c=>{const p=c.p;if(p.mc){c.el.querySelector(`input[value="${p.ans}"]`).checked=true}else{c.el.querySelector('input[type=text]').value=p.ansStr?p.ansStr.split(' ')[0].replace(/−/g,'-'):String(p.ans)}};
+const xtOpen=(n,f)=>{f();const q=document.querySelector('.xtask form');q.n.value=n;q.requestSubmit()};
+const BADMEME=['nsfw.png','rude.png','evil.png'],PX='data:image/svg+xml,';
+Object.defineProperty(HTMLImageElement.prototype,'src',{set(v){this.setAttribute('src',v);if(/i\.redd\.it/.test(v))setTimeout(()=>this.onload&&this.onload(),5)},get(){return this.getAttribute('src')}});
+window.fetch=async u=>({ok:true,json:async()=>({memes:[...Array.from({length:6},(_,i)=>({url:'https://i.redd.it/m'+i+'.png',title:'Meme '+i,postLink:'https://redd.it/x'+i,subreddit:'mathmemes',author:'a'})),{url:'https://i.redd.it/nsfw.png',nsfw:true,title:'x',postLink:'https://redd.it/n'},{url:'https://i.redd.it/rude.png',title:'What the fuck',postLink:'https://redd.it/r'},{url:'https://example.com/evil.png',title:'e',postLink:'https://redd.it/e'}]})});
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 (async()=>{
  try{
@@ -66,7 +70,7 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
         o.list.forEach((t,j)=>{if(j!==o.ok&&checkAnswer(p,t.replace(p.unit||'','').replace(/−/g,'-')))fail(`exit ticket two right options ${cid} ${l.n}: ${t}`)})}});
   }
   log(`exit tickets: ${xtTot} topics, ${xtSame} use one question shape for all 20 blocks`);
-  location.hash='#/y8/l/34/slides';await wait(30);document.querySelector('.deckbar [data-tool=exit]').click();
+  location.hash='#/y8/l/34/slides';await wait(30);xtOpen(18,()=>document.querySelector('.deckbar [data-tool=exit]').click());
   log('exit ticket overlay blocks: '+document.querySelectorAll('.xtb').length);
   const b0=document.querySelector('.xtb');b0.querySelectorAll('.xto button')[0].click();log('exit ticket after one answer: '+document.querySelector('.xtscore').textContent);
   closeOverlay();
@@ -110,7 +114,7 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
    const nm=WB.marks.length;o.querySelector('[data-a=undo]').click();if(WB.marks.length!==nm-1)fail('undo task mark');
    o.querySelector('[data-k=answer]').click();o.querySelector('[data-a=task]').click();closeOverlay();}
   // exit ticket text fits its blocks at this screen size
-  location.hash='#/y8/l/46/slides';await wait(30);document.querySelector('.deckbar [data-tool=exit]').click();await wait(60);
+  location.hash='#/y8/l/46/slides';await wait(30);xtOpen(18,()=>document.querySelector('.deckbar [data-tool=exit]').click());await wait(60);
   {const o=document.querySelector('.ovl.xt'),ov=[...o.querySelectorAll('.xtq')].filter(q=>q.scrollHeight>q.clientHeight+1).length;log(`exit ticket font ${o.xtf}px at ${innerWidth}x${innerHeight}, overflowing blocks ${ov}`);if(ov)fail('exit ticket overflow');closeOverlay()}
   // title slide animation and "Why it matters"
   location.hash='#/y8/l/2/slides';await wait(30);
@@ -122,15 +126,22 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
   log('fun videos: '+document.querySelectorAll('#stage .fv').length+' · fact: '+document.querySelector('.whyc.fact p').textContent.slice(0,60)+'…');
   let noX=0;for(const cid of COURSE_IDS)for(const l of allLessons(cid)){const x=extrasFor(cid,l);if(!x||!x.fact||!x.use)fail('no extras '+cid+' '+l.title);else if(!x.videos.length)noX++}
   log('topics without fun videos: '+noX);
-  // objectives carousel
-  let objN=0;for(const cid of COURSE_IDS)for(const m of course(cid).modules){if(!m.goals.length)continue;const l=m.lessons[0];location.hash=`#/${cid}/l/${l.n}/slides/2`;await wait(40);
-    const oc=document.querySelector('.objc');if(!oc){fail('no carousel '+cid+m.n);continue}
-    const seen=new Set();for(let k=0;k<oc.items.length;k++){const c=oc.querySelector('.objcard:not(.leave)'),t=c.querySelector('.objfit');objN++;seen.add(c.style.background);
-      if(t.scrollHeight>c.clientHeight)fail(`objective overflows ${cid} m${m.n} #${k}`);if(!c.querySelector('.objtext b'))fail('objective without bold word: '+c.textContent);
-      if(parseFloat(t.style.fontSize)<14)fail('objective text too small '+t.style.fontSize);DECK.h.stepNext()}
-    if(seen.size!==Math.min(7,oc.items.length))fail('carousel colours '+seen.size)}
-  location.hash='#/y8/l/2/slides/2';await wait(40);const o1=document.querySelector('.objn').textContent;await wait(12000);const o2=document.querySelector('.objn').textContent;
-  log(`objectives: ${objN} cards; auto-advance ${o1} -> ${o2}`);if(o1===o2)fail('carousel does not auto-advance');
+  // meme slide (mocked API), seating plan
+  {location.hash='#/y8/l/2/slides';await wait(40);while(document.getElementById('dn').textContent!=='Meme break')document.getElementById('nt').click();await wait(80);
+   const h=DECK.h,im=()=>h.querySelector('.memeimg img');if(!im())fail('meme not shown');if(BADMEME.some(b=>MEME_POOL.some(m=>m.url.includes(b))))fail('unsuitable meme in pool');
+   const u1=im().src;h.querySelector('.memehide').click();await wait(80);if(!im()||im().src===u1||!memeStore().hidden.length)fail('meme hide');
+   h.querySelector('.memekeep').click();const keptU=im().src;h.querySelector('.memeonly input').click();await wait(80);if(im().src!==keptU)fail('saved memes only');log('meme slide ok: '+h.querySelector('.memet').textContent);localStorage.removeItem('maths.memes')}
+  {seating('y8');let o=document.querySelector('.ovl.seats');const S=()=>[...o.querySelectorAll('.seat')];if(S().length!==20)fail('seats '+S().length);
+   S()[0].click();let f=o.querySelector('form');f.nm.value='<b>Pi';f.requestSubmit();if(S()[0].querySelector('.seatname').textContent!=='<b>Pi')fail('alias escaped');
+   o.querySelector('[data-k=list]').click();f=o.querySelector('form');f.tx.value='Sigma\nTau\nPhi';f.requestSubmit();if(classCount('y8')!==4||classCount('y10')!==0)fail('seat count');
+   S()[0].click();o.querySelector('[data-k=move]').click();S()[19].click();if(S()[0].matches(':not(.empty)')||!/Pi/.test(S()[19].textContent))fail('move seat');
+   S()[19].click();o.querySelector('[data-k=del]').click();if(classCount('y8')!==3)fail('remove');o.querySelector('[data-k=mix]').click();
+   if(S().some(b=>b.querySelector('img')&&/Sigma|Tau|Phi/.test(b.querySelector('img').src)))fail('alias sent to avatar service');
+   closeOverlay();seating('y8');o=document.querySelector('.ovl.seats');log('seating: '+o.querySelector('.seatcount').textContent);
+   const g=o.querySelector('.seatgrid').getBoundingClientRect();if(g.bottom>innerHeight)fail('seating overflows');closeOverlay();
+   exitTicket('y8',lessonN('y8',2));if(document.querySelector('.xtask input').value!=='3')fail('exit count from class');closeOverlay();localStorage.removeItem('maths.class.y8')}
+  for(const k of [1,18,30,40]){xtOpen(k,()=>exitTicket('y8',lessonN('y8',2)));await wait(700);const o=document.querySelector('.ovl.xt'),B=o.querySelectorAll('.xtb'),ov=[...o.querySelectorAll('.xtq')].filter(q=>q.scrollHeight>q.clientHeight+1).length;
+   log(`exit ticket for ${k}: ${B.length} blocks, font ${o.xtf}, overflow ${ov}`);if(B.length!==k+2||ov||B[0].textContent.length<5)fail('exit ticket count '+k);closeOverlay()}
   // interactive video with a mock YouTube player
   window.IV_FORCE=true;let MOCK=null;
   window.YT={Player:class{constructor(id,o){this.o=o;this.t=0;this.state=-1;MOCK=this;setTimeout(()=>o.events.onReady(),5)}getCurrentTime(){return this.t}getDuration(){return 300}pauseVideo(){this.state=2}playVideo(){this.state=1}seekTo(t){this.t=t}destroy(){}}};

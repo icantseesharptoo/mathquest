@@ -7,10 +7,10 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
 - **Slides for every topic**, in this order:
   1. Title. The title's letters fade away and come back. This happens rarely (one effect every few seconds), and now and then a letter hangs from its last nail, wobbles and falls.
   2. Why it matters: a fun fact, a real-life use and up to three fun or applied YouTube videos. Press Space to reveal each part.
-  3. Objectives: the curriculum objectives as a carousel. Each has its own background colour, the text fills the card, and the main words are bold. It moves on by itself and pauses while the mouse is over it.
-  4. Video (Year 8)
-  5. Interactive demo
-  6. Three worked examples (easy, medium, hard). Each step appears when you click, and the figure is drawn as you go.
+  3. Video (Year 8)
+  4. Interactive demo
+  5. Three worked examples (easy, medium, hard). Each step appears when you click, and the figure is drawn as you go.
+  6. Meme break: a maths meme from r/mathmemes or r/MathematicsMemes, through [Meme_Api](https://github.com/D3vd/Meme_Api). It needs the internet. NSFW and spoiler posts and rude titles are left out, but the text inside a picture cannot be checked. *Save* good memes before the lesson and tick *Saved only* to show just those. *Hide* never shows a meme again.
   7. Random-problem wheel
   8. Check (three questions)
   9. Practice
@@ -39,11 +39,12 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
 
   🔔 plays a test notification. Browsers only play sound after the page has been clicked once.
 - **Classroom tools** (buttons in the slide bar, and in the Tools menu):
-  - **🎟 Exit ticket** for the last 5 minutes. The screen splits into 20 numbered blocks: the same question with different numbers in each, and 4 options to choose from. Each student answers the block with their number; *Show answers* reveals them all. When the timer reaches 5 minutes, its banner has a button that opens it.
+  - **🎟 Exit ticket** for the last 5 minutes. It first asks for the number of students (the size of the seating plan, or the last number used, is filled in). The screen then splits into one numbered block per student and 2 extra: the same question with different numbers in each, and 4 options to choose from. *Students* changes the number, and *Show answers* reveals all the answers. When the timer reaches 5 minutes, its banner has a button that opens it.
+  - **🪑 Seating plan** for each year (Tools menu, or the button on the year's page): 5 rows of 4 seats. Click a seat to type an alias and choose a [DiceBear](https://www.dicebear.com) avatar, or add a list of aliases at once. Drag students to move or swap them (on a touch screen, click the student and use *Move*), or shuffle the seats. It is stored only in this browser, and the avatar service gets a random code, never the alias.
   - **⚔️ Battle.** The screen splits into left and right halves, each with a medium question of the same type but different numbers. Each side answers on its own on-screen numpad. A 2-minute timer runs, and the first correct answer wins the round. Scores add up over the rounds, and you can click a team name to rename it.
   - **🖊 Whiteboard.** Students can draw and write. It has a pen, straight lines, dots, text, an eraser, 6 colours, 4 sizes, undo and clear, a background that switches between grid, plain and dots, and *Save* to download a PNG. The drawing stays until you clear it.
     - **🎯 Task mode** shows a coordinate grid with a task. The task types are plot points, plot and join a shape, draw *y = mx + c*, draw *x = a* or *y = b*, midpoint, reflection, translation and rotation. You can also type your own task. Students answer with the Dot and Line tools, which snap to the grid (turn *Snap* off for free placement). *Check ✓* marks each dot and line green or red. *Show answer* draws the answer in dashed green, and *New task* picks new numbers.
-- **Fits any screen.** Text, buttons and slides scale with the size of the window, and full-screen slides get bigger again for a projector. The exit ticket sets its text as large as possible while all 20 blocks still fit on the screen.
+- **Fits any screen.** Text, buttons and slides scale with the size of the window, and full-screen slides get bigger again for a projector. The exit ticket sets its text as large as possible while all the blocks still fit on the screen.
 - **Tools menu.** Also links to [Wheel of names](https://spinthewheel.io/), [Bouncy Balls](https://bouncyballs.org/) (noise meter) and the [Kahoot channel](https://create.kahoot.it/channel/fb860daf-26f1-43c6-913f-98baf1ad0633).
 - **Practice** (12 random questions per topic, with hints and worked solutions), **module tests** and a **final exam** for each year.
 
@@ -64,7 +65,7 @@ Year 8 topics embed videos from the playlist *Cambridge Lower Secondary Mathemat
 | `js/timer.js` | 40-minute lesson timer. |
 | `js/tools.js`, `css/tools.css` | Exit ticket and battle mode, plus the styles for all three tools. |
 | `js/board.js` | Whiteboard and its task mode. |
-| `js/objectives.js`, `css/objectives.css` | Curriculum objectives carousel. |
+| `js/memes.js`, `js/seats.js`, `css/class.css` | Meme slide and seating plans. |
 | `css/scale.css` | Scaling of text, slides and buttons to the screen size. |
 | `data/extras.js`, `tools/build_extras.py` | Fun facts, real-life uses and fun videos for each topic. `data/extras.js` is generated, so edit the Python file instead. |
 | `js/intro.js`, `js/ivideo.js`, `css/intro.css` | The animated title slide, the *Why it matters* slide and the interactive video player. |

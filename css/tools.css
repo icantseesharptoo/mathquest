@@ -10,8 +10,8 @@ header .tools button[disabled],.dtools button[disabled]{opacity:.45;cursor:not-a
 header .tools hr,.dtools hr{border:0;border-top:1px solid var(--line);margin:.3rem 0}
 
 
-/* exit ticket: 20 blocks */
-.xtgrid{font-size:var(--xtf,15px);flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);gap:6px;padding:6px;overflow:auto}
+/* exit ticket: one block per student and 2 extra */
+.xtgrid{font-size:var(--xtf,15px);flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--xc,5),1fr);grid-template-rows:repeat(var(--xr,4),1fr);gap:6px;padding:6px;overflow:auto}
 .xtb{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.35em .5em .4em 2.2em;display:flex;flex-direction:column;gap:.25em;min-height:0;overflow:hidden;font-size:.82em;line-height:1.3}
 .xtn{position:absolute;left:.35em;top:.35em;width:1.6em;height:1.6em;border-radius:8px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:800;font-size:.95em}
 .xtq{flex:1;min-height:0;overflow:hidden}.xtscroll .xtq{overflow:auto}.xtq .qt{font-size:.82em;margin:0}.xtq .eq{font-size:1.05em;margin:.1em 0}.xtq table.mini th,.xtq table.mini td{padding:.05em .3em}
