@@ -39,7 +39,8 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
 
   🔔 plays a test notification. Browsers only play sound after the page has been clicked once.
 - **Classroom tools** (buttons in the slide bar, and in the Tools menu):
-  - **🎟 Exit ticket** for the last 5 minutes. It first asks for the number of students (the size of the seating plan, or the last number used, is filled in). The screen then splits into one numbered block per student and 2 extra: the same question with different numbers in each, and 4 options to choose from. *Students* changes the number, and *Show answers* reveals all the answers. When the timer reaches 5 minutes, its banner has a button that opens it.
+  - **🎟 Exit ticket** for the last 5 minutes. It first asks for the number of students (the size of the seating plan, or the last number used, is filled in). The screen then splits into one numbered block per student and 2 extra: the same question with different numbers in each, and 4 options to choose from. If the year has a seating plan, each block shows the student's alias and avatar; click the students who are absent before starting. *Students* changes the number, and *Show answers* reveals all the answers. When the timer reaches 5 minutes, its banner has a button that opens it.
+  - **🔢 Number facts** (Tools menu). Shows a random fact about a number, or type any whole number up to 1 000 000 to see its prime factors, factors, special types, binary and Roman numeral. The facts are in `js/numfacts.js` and need no internet. The Mars background pictures come from [Bootprint Space](https://bootprint.space).
   - **🪑 Seating plan** for each year (Tools menu, or the button on the year's page): 5 rows of 4 seats. Click a seat to type an alias and choose a [DiceBear](https://www.dicebear.com) avatar, or add a list of aliases at once. Drag students to move or swap them (on a touch screen, click the student and use *Move*), or shuffle the seats. It is stored only in this browser, and the avatar service gets a random code, never the alias.
   - **⚔️ Battle.** The screen splits into left and right halves, each with a medium question of the same type but different numbers. Each side answers on its own on-screen numpad. A 2-minute timer runs, and the first correct answer wins the round. Scores add up over the rounds, and you can click a team name to rename it.
   - **🖊 Whiteboard.** Students can draw and write. It has a pen, straight lines, dots, text, an eraser, 6 colours, 4 sizes, undo and clear, a background that switches between grid, plain and dots, and *Save* to download a PNG. The drawing stays until you clear it.
@@ -65,7 +66,7 @@ Year 8 topics embed videos from the playlist *Cambridge Lower Secondary Mathemat
 | `js/timer.js` | 40-minute lesson timer. |
 | `js/tools.js`, `css/tools.css` | Exit ticket and battle mode, plus the styles for all three tools. |
 | `js/board.js` | Whiteboard and its task mode. |
-| `js/memes.js`, `js/seats.js`, `css/class.css` | Meme slide and seating plans. |
+| `js/memes.js`, `js/seats.js`, `js/numfacts.js`, `css/class.css` | Meme slide, seating plans and number facts. |
 | `css/scale.css` | Scaling of text, slides and buttons to the screen size. |
 | `data/extras.js`, `tools/build_extras.py` | Fun facts, real-life uses and fun videos for each topic. `data/extras.js` is generated, so edit the Python file instead. |
 | `js/intro.js`, `js/ivideo.js`, `css/intro.css` | The animated title slide, the *Why it matters* slide and the interactive video player. |

@@ -14,10 +14,10 @@ $('#themeBtn').onclick=()=>{ST.theme={system:'light',light:'dark',dark:'system'}
 applyTheme();
 $('#hdrTimer').innerHTML=timerHTML();
 let CUR=null;   // the topic being shown, for exit ticket and battle
-const classTools=()=>`<button data-tool="exit" ${CUR?'':'disabled title="Open a topic first"'}>🎟 Exit ticket</button><button data-tool="battle" ${CUR?'':'disabled title="Open a topic first"'}>⚔️ Battle</button><button data-tool="board">🖊 Whiteboard</button>${COURSE_IDS.map(c=>`<button data-tool="seat" data-cid="${c}">🪑 ${course(c).name} seats</button>`).join('')}<hr>`;
+const classTools=()=>`<button data-tool="exit" ${CUR?'':'disabled title="Open a topic first"'}>🎟 Exit ticket</button><button data-tool="battle" ${CUR?'':'disabled title="Open a topic first"'}>⚔️ Battle</button><button data-tool="board">🖊 Whiteboard</button><button data-tool="nf">🔢 Number facts</button>${COURSE_IDS.map(c=>`<button data-tool="seat" data-cid="${c}">🪑 ${course(c).name} seats</button>`).join('')}<hr>`;
 const refreshTools=()=>{$('#toolsMenu').innerHTML=classTools()+toolLinks()};refreshTools();
 document.addEventListener('click',e=>{const b=e.target.closest('[data-tool]');if(!b||b.disabled)return;const d=b.closest('details');if(d)d.open=false;
-  if(b.dataset.tool==='board')whiteboard();else if(b.dataset.tool==='seat')seating(b.dataset.cid);else if(CUR&&b.dataset.tool==='exit')exitTicket(CUR.cid,CUR.l);else if(CUR&&b.dataset.tool==='battle')battle(CUR.cid,CUR.l)});
+  if(b.dataset.tool==='board')whiteboard();else if(b.dataset.tool==='nf')numberFacts();else if(b.dataset.tool==='seat')seating(b.dataset.cid);else if(CUR&&b.dataset.tool==='exit')exitTicket(CUR.cid,CUR.l);else if(CUR&&b.dataset.tool==='battle')battle(CUR.cid,CUR.l)});
 window.onLessonWarn=()=>CUR?`<button data-tool="exit" class="btn">Open exit ticket</button>`:'';
 
 // ---------- problem card ----------
