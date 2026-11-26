@@ -45,6 +45,9 @@ header .tools hr,.dtools hr{border:0;border-top:1px solid var(--line);margin:.3r
 .bq .qt{font-size:1.15em}.bq .svg-fig{max-height:12em;max-width:100%}.bopts{margin:.3em 0;padding-left:1.6em}
 .bdisp{display:flex;gap:.5em;align-items:center;justify-content:center;font-size:1.5em;background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:.4em}
 .blab{font-size:1em;color:var(--mute);font-weight:600}.bval{min-width:8em;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
+.bpadw{position:relative;max-width:26em;width:100%;margin:0 auto}
+.bside.locked .bpad{filter:grayscale(1) blur(1px);opacity:.35;pointer-events:none}
+.block{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;color:var(--bad);font-size:1.3em;text-align:center;pointer-events:none}.block b{font-size:3.2em;line-height:1.05;font-variant-numeric:tabular-nums}
 .bpad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:26em;width:100%;margin:0 auto}
 .bpad button{font-size:1.5em;font-weight:700;padding:.55em 0;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);touch-action:manipulation}
 .bpad button:active{transform:scale(.96);background:var(--chip)}.bpad .bgo{grid-column:1/-1;background:var(--ok);color:#fff;border:0}

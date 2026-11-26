@@ -109,39 +109,53 @@ function exitTicket(cid,l){
 }
 
 // ===================== battle mode =====================
+// how much work a question needs: more steps and a less obvious answer score higher
+function hardness(p){
+  const a=Math.abs(p.ans),plain=!p.mc&&Number.isInteger(p.ans)&&a<=10;
+  return p.steps.length*2+(p.mc?1:Math.min(4,String(p.ansStr||p.ans).replace(/[^0-9]/g,'').length))+stripTags(p.text||'').length/90-(plain?4:0)-(p.steps.length<2?3:0);
+}
+const LOCK=15;   // seconds a side waits after a wrong answer
 const PAD=['7','8','9','4','5','6','1','2','3','−','0','.','/','⌫','C'];
 function battle(cid,l){
-  const score={L:0,R:0};let round=0,timer=null,live=false,secs=120,qs={};
+  const score={L:0,R:0},lock={L:0,R:0},lockT={};let round=0,timer=null,live=false,secs=120,qs={};
   const side=k=>`<div class="bside" data-s="${k}"><div class="bhead"><span class="bteam" contenteditable="true" spellcheck="false">${k==='L'?'Left team':'Right team'}</span><span class="bpts">0</span></div>
     <div class="bq"></div><div class="bdisp"><span class="blab"></span><span class="bval"></span><span class="bunit"></span></div>
-    <div class="bpad">${PAD.map(k2=>`<button data-k="${k2}">${k2}</button>`).join('')}<button class="bgo" data-k="go">Submit ✔</button></div><div class="bmsg"></div></div>`;
+    <div class="bpadw"><div class="bpad">${PAD.map(k2=>`<button data-k="${k2}">${k2}</button>`).join('')}<button class="bgo" data-k="go">Submit ✔</button></div><div class="block" hidden>🔒 Wrong answer<b></b>seconds</div></div><div class="bmsg"></div></div>`;
   const o=openOverlay('battle',`<div class="ovbar"><b>Battle</b><span class="xtsub">${l.title} · first correct answer wins</span><span class="sp"></span><button class="btn" data-close>Close ✕</button></div>
     <div class="barena">${side('L')}<div class="bmid"><div class="bclock">2:00</div><button class="btn bstart">Start</button><div class="bround"></div></div>${side('R')}</div>`);
   const S=k=>$(`.bside[data-s=${k}]`,o),val={L:'',R:''};
   const showVal=k=>{$('.bval',S(k)).textContent=val[k]||' '};
+  const unlock=k=>{clearInterval(lockT[k]);lock[k]=0;S(k).classList.remove('locked');$('.block',S(k)).hidden=true};
+  const lockSide=k=>{
+    const b=S(k),until=Date.now()+LOCK*1000,show=()=>{const s=Math.ceil((until-Date.now())/1000);if(s<=0||!live)return unlock(k);$('.block b',b).textContent=s};
+    clearInterval(lockT[k]);lock[k]=until;b.classList.add('locked');$('.block',b).hidden=false;show();lockT[k]=setInterval(show,200);
+  };
   const newRound=()=>{
-    clearInterval(timer);live=false;secs=120;round++;$('.bclock',o).textContent='2:00';$('.bclock',o).className='bclock';$('.bround',o).textContent=`Round ${round}`;
-    const r=mkR(rndSeed()),pool=l.skills.filter(s=>{try{return !makeProblem(s,mkR(7),1).mc}catch(e){return false}}),skill=pick(r,pool.length?pool:l.skills);
-    qs.L=makeProblem(skill,r,1);for(let t=0;t<30;t++){qs.R=makeProblem(skill,r,1);if(ansText(qs.R)!==ansText(qs.L))break}
+    clearInterval(timer);unlock('L');unlock('R');live=false;secs=120;round++;$('.bclock',o).textContent='2:00';$('.bclock',o).className='bclock';$('.bround',o).textContent=`Round ${round}`;
+    // hard questions only: try several and keep the ones that need the most work
+    const r=mkR(rndSeed()),pool=l.skills.filter(s=>{try{return !makeProblem(s,mkR(7),2).mc}catch(e){return false}}),skills=pool.length?pool:l.skills;
+    const best=(make,ok=()=>true)=>{let b=null;for(let t=0;t<14;t++){let p;try{p=make()}catch(e){continue}if(!ok(p))continue;p.hard=hardness(p);if(!b||p.hard>b.hard)b=p}return b};
+    qs.L=best(()=>makeProblem(pick(r,skills),r,2));const skill=qs.L.skill;
+    qs.R=best(()=>makeProblem(skill,r,2),p=>ansText(p)!==ansText(qs.L))||makeProblem(skill,r,2);
     ['L','R'].forEach(k=>{const p=qs[k],b=S(k);val[k]='';showVal(k);b.classList.remove('win','lose','shake');
       $('.bq',b).innerHTML=qBody(p)+(p.mc?`<ol class="bopts">${p.choices.map(c=>`<li>${c}</li>`).join('')}</ol>`:'');$('.bq',b).classList.add('hidden');
       $('.blab',b).textContent=p.mc?'Option number =':(p.label&&p.label!=='Answer ='?p.label:'Answer =');$('.bunit',b).textContent=p.unit||'';$('.bmsg',b).innerHTML='';});
     $('.bstart',o).textContent='Start';$('.bstart',o).disabled=false;
   };
   const finish=(win)=>{
-    live=false;clearInterval(timer);
+    live=false;clearInterval(timer);unlock('L');unlock('R');
     ['L','R'].forEach(k=>{const b=S(k),p=qs[k];b.classList.add(win===k?'win':win?'lose':'');$('.bmsg',b).innerHTML=`${win===k?'<div class="bwin">🏆 Winner!</div>':''}<ol class="sol">${p.steps.map(x=>`<li>${x}</li>`).join('')}<li>Answer: <b>${ansText(p)}</b></li></ol>`});
     if(win){score[win]++;$('.bpts',S(win)).textContent=score[win]}else $('.bclock',o).textContent="Time's up";
     $('.bstart',o).textContent='Next round';$('.bstart',o).disabled=false;
   };
   const submit=k=>{
-    if(!live||!val[k])return;const p=qs[k],v=val[k].replace(/−/g,'-');
+    if(!live||lock[k]||!val[k])return;const p=qs[k],v=val[k].replace(/−/g,'-');
     const ok=p.mc?Number(v)-1===p.ans:checkAnswer(p,v);
     if(ok)return finish(k);
-    const b=S(k);b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');$('.bmsg',b).innerHTML='<b class="bno">✗ Not correct — try again</b>';val[k]='';showVal(k);
+    const b=S(k);b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');$('.bmsg',b).innerHTML=`<b class="bno">✗ Not correct — wait ${LOCK} seconds, then try again</b>`;val[k]='';showVal(k);lockSide(k);
   };
   $$('.bpad button',o).forEach(btn=>btn.onclick=()=>{
-    const k=btn.closest('.bside').dataset.s,key=btn.dataset.k;if(!live)return;
+    const k=btn.closest('.bside').dataset.s,key=btn.dataset.k;if(!live||lock[k])return;
     if(key==='go')return submit(k);
     if(key==='⌫')val[k]=val[k].slice(0,-1);else if(key==='C')val[k]='';else if(key==='−'){val[k]=val[k].startsWith('−')?val[k].slice(1):'−'+val[k]}else if(val[k].length<12)val[k]+=key;
     $('.bmsg',S(k)).innerHTML='';showVal(k);
@@ -151,6 +165,6 @@ function battle(cid,l){
     live=true;$('.bstart',o).disabled=true;$$('.bq',o).forEach(q=>q.classList.remove('hidden'));
     const t0=Date.now();timer=setInterval(()=>{secs=Math.max(0,120-Math.floor((Date.now()-t0)/1000));const c=$('.bclock',o);c.textContent=`${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}`;c.className='bclock'+(secs<=20?' low':'');if(secs<=0)finish(null)},250);
   };
-  o.cleanup=()=>clearInterval(timer);o.qs=qs;o.score=score;
+  o.cleanup=()=>{clearInterval(timer);clearInterval(lockT.L);clearInterval(lockT.R)};o.qs=qs;o.lock=lock;o.score=score;
   newRound();
 }

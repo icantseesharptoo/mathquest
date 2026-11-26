@@ -31,3 +31,17 @@
 .nfnum{font-size:clamp(3rem,11vh,9rem);font-weight:900;line-height:1.1;color:#ffb27a;overflow-wrap:anywhere}.nftext{font-size:clamp(1.2rem,3.6vh,2.6rem);line-height:1.35}.nftext ul{text-align:left;font-size:.72em;margin:.3em 0}
 .nfsrc{position:absolute;right:.8rem;bottom:.4rem;font-size:.75rem;color:#fff}.nfsrc a{color:#ffb27a}.nfform input{width:9rem}
 .nfby{font-size:.5em;opacity:.8;margin:0}.nf .seatdlg input{font:inherit;padding:.5rem .7rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+
+/* pen mode: drawing on top of the slides */
+.deck{position:relative}
+.pencv{position:absolute;z-index:5;pointer-events:none;touch-action:none}
+.deck.penon .pencv{pointer-events:auto;cursor:crosshair}.deck.penon .pencv[data-mode=er]{cursor:cell}
+.deck.penon .stage{user-select:none}
+.deckbar #pen.on{background:var(--mc,var(--brand));color:#fff;border-color:transparent}
+.penbar{position:absolute;z-index:6;left:50%;bottom:4.2rem;transform:translateX(-50%);display:flex;align-items:center;gap:.3rem;padding:.35rem .5rem;background:var(--panel);border:1px solid var(--line);border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.penbar button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;min-width:2.1rem;height:2.1rem;font-size:1rem;font-weight:700;padding:0 .45rem;touch-action:manipulation}
+.penbar button.on{outline:3px solid var(--mc,var(--brand));outline-offset:1px}
+.penbar .pcol{background:var(--c);min-width:1.8rem;width:1.8rem;height:1.8rem;padding:0}
+.penbar [data-w="3"]{font-size:.6rem}.penbar .pbig{font-size:1.3rem}
+.penbar .pdone{background:var(--mc,var(--brand));color:#fff;border:0;padding:0 .9rem}
+.penbar .psep{width:1px;align-self:stretch;background:var(--line);margin:0 .15rem}

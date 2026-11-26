@@ -174,9 +174,9 @@ function slides(cid,l){
       ps.forEach((p,i)=>$('#ck',h).appendChild(problemCard(p,{title:`Question ${i+1}`}).el))}},
     {name:'Practice',mount:h=>{h.innerHTML=`<div class="big">Practice</div><p><a class="btn" href="#/${cid}/l/${l.n}/practice">Start practice (12 questions)</a></p>${l.n<allLessons(cid).length?`<p><a href="#/${cid}/l/${l.n+1}">Next topic: ${lessonN(cid,l.n+1).title} →</a></p>`:''}<p class="note">Quiz the class on Kahoot: <a href="${TOOLS[2].u}" target="_blank" rel="noopener">open the channel ↗</a></p>`}},
   ];
-  body.innerHTML=`<div class="deck" id="deck" style="--mc:${m.color}"><div class="deckbar"><span id="dn"></span><div class="dots" id="dots"></div><span class="sp"></span>${timerHTML()}<details class="dtools"><summary>Tools</summary><div>${classTools()}${toolLinks()}</div></details><button class="ghost" data-tool="exit" title="Exit ticket for the last 5 minutes">🎟 Exit ticket</button><button class="ghost" data-tool="battle">⚔️ Battle</button><button class="ghost" data-tool="board">🖊 Board</button><button class="ghost" id="fs">Full screen</button></div><div class="stage" id="stage"></div><div class="decknav"><button class="btn alt" id="pv">Back</button><span id="num"></span><span class="note">Space = next step</span><button class="btn" id="nt">Next</button></div></div>`;
+  body.innerHTML=`<div class="deck" id="deck" style="--mc:${m.color}"><div class="deckbar"><span id="dn"></span><div class="dots" id="dots"></div><span class="sp"></span>${timerHTML()}<details class="dtools"><summary>Tools</summary><div>${classTools()}${toolLinks()}</div></details><button class="ghost" data-tool="exit" title="Exit ticket for the last 5 minutes">🎟 Exit ticket</button><button class="ghost" data-tool="battle">⚔️ Battle</button><button class="ghost" data-tool="board">🖊 Board</button><button class="ghost" id="pen" title="Draw on the slide (P)" aria-pressed="false">✏️ Pen</button><button class="ghost" id="fs">Full screen</button></div><div class="stage" id="stage"></div>${penHTML()}<div class="decknav"><button class="btn alt" id="pv">Back</button><span id="num"></span><span class="note">Space = next step</span><button class="btn" id="nt">Next</button></div></div>`;
   DECK={i:0,items,h:null};
-  $('#pv').onclick=()=>go(DECK.i-1);$('#nt').onclick=()=>go(DECK.i+1);$('#fs').onclick=toggleFS;
+  $('#pv').onclick=()=>go(DECK.i-1);$('#nt').onclick=()=>go(DECK.i+1);$('#fs').onclick=toggleFS;$('#pen').onclick=()=>penToggle();penMount($('#deck'));
   go(0);ltTick();fsState();
 }
 function go(i){
@@ -186,6 +186,7 @@ function go(i){
   $('#dots').innerHTML=DECK.items.map((s,k)=>`<button class="dot ${k===i?'on':k<i?'seen':''}" data-k="${k}" title="${s.name}"></button>`).join('');
   $$('#dots .dot').forEach(b=>b.onclick=()=>go(+b.dataset.k));
   $('#pv').disabled=i===0;$('#nt').disabled=i===DECK.items.length-1;
+  penDraw();
 }
 // full screen: the Full screen button (.fs), or the browser's own full screen such as F11 (.bfs) — the deck then fills the screen
 function fsState(){const r=document.documentElement,deck=!!$('#deck'),browser=!window.NO_BFS&&!document.fullscreenElement&&((window.matchMedia&&matchMedia('(display-mode: fullscreen)').matches)||(innerHeight>=screen.height-2&&innerWidth>=screen.width-2));

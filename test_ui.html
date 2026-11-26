@@ -2,7 +2,7 @@
 <header class="top"><a class="logo" href="#/">MathQuest</a><nav><a data-nav="y8"></a><a data-nav="y10"></a><a data-nav="exams"></a></nav><span id="hdrTimer"></span><details class="tools"><summary>Tools</summary><div id="toolsMenu"></div></details><button id="themeBtn"></button></header><main id="app"></main><pre id="res"></pre>
 <script>localStorage.clear();location.hash='#/y8/l/5/practice';window.confirm=()=>true;window.NO_BFS=true;
 const DAY=new Date();DAY.setHours(0,0,0,0);let FAKE=DAY.getTime()+7*3600e3;window.LT_CLOCK=()=>FAKE;const at=(h,m,s=0)=>{FAKE=DAY.getTime()+((h*60+m)*60+s)*1000;ltTick()};</script>
-<script src="data/y8.js"></script><script src="data/y10.js"></script><script src="data/extras.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/g_y8.js"></script><script src="js/g_extra.js"></script><script src="js/engine.js"></script><script src="js/demos.js"></script><script src="js/timer.js"></script><script src="js/tools.js"></script><script src="js/board.js"></script><script src="js/ivideo.js"></script><script src="js/intro.js"></script><script src="js/memes.js"></script><script src="js/seats.js"></script><script src="js/numfacts.js"></script><script src="js/ui.js"></script>
+<script src="data/y8.js"></script><script src="data/y10.js"></script><script src="data/extras.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/g_y8.js"></script><script src="js/g_extra.js"></script><script src="js/engine.js"></script><script src="js/demos.js"></script><script src="js/timer.js"></script><script src="js/tools.js"></script><script src="js/board.js"></script><script src="js/ivideo.js"></script><script src="js/intro.js"></script><script src="js/memes.js"></script><script src="js/seats.js"></script><script src="js/numfacts.js"></script><script src="js/pen.js"></script><script src="js/ui.js"></script>
 <script>
 const out=[],bad=[];const log=s=>out.push(s),fail=s=>{bad.push(s);out.push('FAIL '+s)};
 const fill=c=>{const p=c.p;if(p.mc){c.el.querySelector(`input[value="${p.ans}"]`).checked=true}else{c.el.querySelector('input[type=text]').value=p.ansStr?p.ansStr.split(' ')[0].replace(/−/g,'-'):String(p.ans)}};
@@ -78,10 +78,34 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
   for(const n of [34,2,51]){location.hash=`#/y8/l/${n}/slides`;await wait(30);document.querySelector('.deckbar [data-tool=battle]').click();
     const ov=document.querySelector('.battle'),press=(s,txt)=>{for(const ch of txt){const k=ch==='-'?'−':ch;[...ov.querySelectorAll(`.bside[data-s=${s}] .bpad button`)].find(b=>b.dataset.k===k).click()}ov.querySelector(`.bside[data-s=${s}] .bgo`).click()};
     ov.querySelector('.bstart').click();press('L','98765');
+    {const q=ov.qs.L,t=q.mc?String(q.ans+1):String(q.ansStr?q.ansStr.split(' ')[0]:fmtNum(q.ans)).replace(/−/g,'-');press('L',t);
+     const sl=ov.querySelector('.bside[data-s=L]');if(!sl.classList.contains('locked')||sl.classList.contains('win')||!ov.lock.L)fail(`battle ${n}: left side not locked after a wrong answer`);
+     log(`battle ${n}: left locked=${sl.classList.contains('locked')} showing "${sl.querySelector('.block').textContent.trim()}"`)}
     const p=ov.qs.R,typed=p.mc?String(p.ans+1):String(p.ansStr?p.ansStr.split(' ')[0]:fmtNum(p.ans)).replace(/−/g,'-');press('R',typed);
     const won=ov.querySelector('.bside[data-s=R]').classList.contains('win');if(!won)fail(`battle ${n}: right side did not win with ${typed}`);
     log(`battle ${n}: left wrong -> "${ov.querySelector('.bside[data-s=L] .bmsg').textContent.trim()}"; right typed ${typed} -> win=${won}, score L${ov.score.L}:R${ov.score.R}`);
+    if(ov.querySelector('.bside.locked'))fail(`battle ${n}: lock not removed at the end of the round`);
     closeOverlay();}
+  // battle questions: hard level, not simple
+  {let lo=99,simple=0,tot=0,worst='';for(const cid of ['y8','y10'])for(let n=1;n<=allLessons(cid).length;n+=3){location.hash=`#/${cid}/l/${n}/slides`;await wait(5);
+     document.querySelector('.deckbar [data-tool=battle]').click();const ov=document.querySelector('.battle');
+     for(const p of [ov.qs.L,ov.qs.R]){tot++;if(p.lv!==2)fail('battle level '+p.lv);if(p.hard<lo){lo=p.hard;worst=`${cid} ${n} ${p.skill}: ${stripTags(p.text).slice(0,70)} = ${ansText(p)}`}if(p.steps.length<2&&!p.mc&&Math.abs(p.ans)<=10)simple++}
+     closeOverlay()}
+   log(`battle questions: ${tot}, one-step with small answer: ${simple}, easiest: ${worst}`)}
+  // pen on the slides
+  {location.hash='#/y8/l/5/slides';await wait(30);const deck=document.getElementById('deck'),cv=deck.querySelector('.pencv');
+   const ev=(t,x,y)=>{const b=cv.getBoundingClientRect();cv.dispatchEvent(new PointerEvent(t,{clientX:b.left+x,clientY:b.top+y,pointerId:1,bubbles:true}))};
+   const line=(x,y)=>{ev('pointerdown',x,y);for(let k=1;k<=10;k++)ev('pointermove',x+k*8,y+k*3);ev('pointerup',x+80,y+30)};
+   if(getComputedStyle(cv).pointerEvents!=='none')fail('pen canvas catches clicks while off');
+   document.getElementById('pen').click();if(!deck.classList.contains('penon')||deck.querySelector('.penbar').hidden)fail('pen did not turn on');
+   line(60,60);deck.querySelector('.penbar [data-m=hi]').click();line(60,120);
+   const n0=PEN.ink[DECK.i].length;go(DECK.i+1);const n1=(PEN.ink[DECK.i]||[]).length;go(DECK.i-1);const n2=PEN.ink[DECK.i].length;
+   const px=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data.some((v,k)=>k%4===3&&v>0);
+   deck.querySelector('.penbar [data-a=undo]').click();const n3=PEN.ink[DECK.i].length;
+   deck.querySelector('.penbar [data-m=er]').click();line(60,60);const n4=PEN.ink[DECK.i].length;
+   document.dispatchEvent(new KeyboardEvent('keydown',{key:'p',bubbles:true}));const off=!deck.classList.contains('penon');
+   log(`pen: strokes ${n0}, next slide ${n1}, back ${n2}, drawn ${px}, after undo ${n3}, after eraser ${n4}, P turns off ${off}`);
+   if(n0!==2||n1!==0||n2!==2||!px||n3!==1||n4!==0||!off)fail('pen mode')}
   // whiteboard: draw, undo, text
   document.querySelector('#toolsMenu [data-tool=board]').click();await wait(50);
   const cv=document.querySelector('.wbcanvas'),r=cv.getBoundingClientRect(),ev=(t,x,y)=>cv.dispatchEvent(new PointerEvent(t,{clientX:r.left+x,clientY:r.top+y,pointerId:1,bubbles:true,pointerType:'mouse'}));
