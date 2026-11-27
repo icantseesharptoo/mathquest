@@ -2,7 +2,7 @@
 <header class="top"><a class="logo" href="#/">MathQuest</a><nav><a data-nav="y8"></a><a data-nav="y10"></a><a data-nav="exams"></a></nav><span id="hdrTimer"></span><details class="tools"><summary>Tools</summary><div id="toolsMenu"></div></details><button id="themeBtn"></button></header><main id="app"></main><pre id="res"></pre>
 <script>localStorage.clear();location.hash='#/y8/l/5/practice';window.confirm=()=>true;window.NO_BFS=true;
 const DAY=new Date();DAY.setHours(0,0,0,0);let FAKE=DAY.getTime()+7*3600e3;window.LT_CLOCK=()=>FAKE;const at=(h,m,s=0)=>{FAKE=DAY.getTime()+((h*60+m)*60+s)*1000;ltTick()};</script>
-<script src="data/y8.js"></script><script src="data/y10.js"></script><script src="data/extras.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/g_y8.js"></script><script src="js/g_extra.js"></script><script src="js/engine.js"></script><script src="js/demos.js"></script><script src="js/timer.js"></script><script src="js/tools.js"></script><script src="js/board.js"></script><script src="js/ivideo.js"></script><script src="js/intro.js"></script><script src="js/memes.js"></script><script src="js/seats.js"></script><script src="js/numfacts.js"></script><script src="js/pen.js"></script><script src="js/ui.js"></script>
+<script src="data/y8.js"></script><script src="data/y10.js"></script><script src="data/extras.js"></script><script src="data/terms.js"></script><script src="js/lib.js"></script><script src="js/g_number.js"></script><script src="js/g_algebra.js"></script><script src="js/g_geometry.js"></script><script src="js/g_data.js"></script><script src="js/g_y8.js"></script><script src="js/g_extra.js"></script><script src="js/engine.js"></script><script src="js/demos.js"></script><script src="js/timer.js"></script><script src="js/tools.js"></script><script src="js/board.js"></script><script src="js/ivideo.js"></script><script src="js/intro.js"></script><script src="js/memes.js"></script><script src="js/seats.js"></script><script src="js/numfacts.js"></script><script src="js/pen.js"></script><script src="js/terms.js"></script><script src="js/ui.js"></script>
 <script>
 const out=[],bad=[];const log=s=>out.push(s),fail=s=>{bad.push(s);out.push('FAIL '+s)};
 const fill=c=>{const p=c.p;if(p.mc){c.el.querySelector(`input[value="${p.ans}"]`).checked=true}else{c.el.querySelector('input[type=text]').value=p.ansStr?p.ansStr.split(' ')[0].replace(/−/g,'-'):String(p.ans)}};
@@ -99,13 +99,38 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
    if(getComputedStyle(cv).pointerEvents!=='none')fail('pen canvas catches clicks while off');
    document.getElementById('pen').click();if(!deck.classList.contains('penon')||deck.querySelector('.penbar').hidden)fail('pen did not turn on');
    line(60,60);deck.querySelector('.penbar [data-m=hi]').click();line(60,120);
-   const n0=PEN.ink[DECK.i].length;go(DECK.i+1);const n1=(PEN.ink[DECK.i]||[]).length;go(DECK.i-1);const n2=PEN.ink[DECK.i].length;
+   const n0=PEN.ink[penSlide()].length;go(DECK.i+1);const n1=(PEN.ink[penSlide()]||[]).length;go(DECK.i-1);const n2=PEN.ink[penSlide()].length;
    const px=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data.some((v,k)=>k%4===3&&v>0);
-   deck.querySelector('.penbar [data-a=undo]').click();const n3=PEN.ink[DECK.i].length;
-   deck.querySelector('.penbar [data-m=er]').click();line(60,60);const n4=PEN.ink[DECK.i].length;
+   deck.querySelector('.penbar [data-a=undo]').click();const n3=PEN.ink[penSlide()].length;
+   deck.querySelector('.penbar [data-m=er]').click();line(60,60);const n4=PEN.ink[penSlide()].length;
    document.dispatchEvent(new KeyboardEvent('keydown',{key:'p',bubbles:true}));const off=!deck.classList.contains('penon');
    log(`pen: strokes ${n0}, next slide ${n1}, back ${n2}, drawn ${px}, after undo ${n3}, after eraser ${n4}, P turns off ${off}`);
    if(n0!==2||n1!==0||n2!==2||!px||n3!==1||n4!==0||!off)fail('pen mode')}
+  // pen drawings are saved: open the lesson again
+  {const k=Object.keys(localStorage).filter(x=>x.startsWith('maths.pen.'));location.hash='#/y8/l/6/slides';await wait(20);location.hash='#/y8/l/5/slides';await wait(30);
+   const n=(PEN.ink[DECK.items[DECK.i].name]||[]).length;log(`pen saved: keys ${k.join(',')}, strokes after reopening ${n}`);
+   document.getElementById('pen').click();const cv=document.querySelector('.pencv'),b=cv.getBoundingClientRect();
+   cv.dispatchEvent(new PointerEvent('pointerdown',{clientX:b.left+50,clientY:b.top+50,pointerId:1}));cv.dispatchEvent(new PointerEvent('pointermove',{clientX:b.left+90,clientY:b.top+60,pointerId:1}));cv.dispatchEvent(new PointerEvent('pointerup',{clientX:b.left+90,clientY:b.top+60,pointerId:1}));
+   location.hash='#/y8/l/6/slides';await wait(20);location.hash='#/y8/l/5/slides';await wait(30);const n2=(PEN.ink[DECK.items[DECK.i].name]||[]).length;
+   log(`pen strokes after drawing and reopening: ${n2}`);if(n2<1)fail('pen drawing lost after reopening');localStorage.removeItem('maths.pen.y8.5')}
+  // solution steps are numbered 1) 2)
+  {const ol=document.createElement('ol');ol.className='sol';ol.innerHTML='<li>a</li>';document.body.appendChild(ol);const t=getComputedStyle(ol).listStyleType;ol.remove();log('step numbers: '+t);if(t!=='paren')fail('steps not numbered 1) 2)')}
+  // key words: every topic, every picture inside its frame
+  {let bad2=[],cnt=0,pics=0;const D=KEYWORDS.D;
+   for(const cid of ['y8','y10'])for(const l of allLessons(cid)){const ts=termsFor(cid,l);cnt+=ts.length;if(ts.length<4)bad2.push(`${cid} ${l.n} ${l.title}: ${ts.length} words`)}
+   for(const [k,d] of Object.entries(D)){if(d.length!==5||d.some(x=>!x))bad2.push('incomplete '+k);if(d[4][0]==='@'&&!TVIS[d[4].slice(1)])bad2.push('no picture '+k)}
+   const host=document.createElement('div');host.style.cssText='position:absolute;left:0;top:0;width:400px';document.body.appendChild(host);
+   for(const [n,fn] of Object.entries(TVIS)){pics++;let svg;try{svg=fn()}catch(e){bad2.push('picture '+n+' '+e.message);continue}host.innerHTML=svg;const el=host.firstChild;
+     for(const c of el.children){const bb=c.getBBox();if(bb.x<-2||bb.y<-2||bb.x+bb.width>202||bb.y+bb.height>122)bad2.push(`${n}: ${c.tagName} outside (${bb.x.toFixed(0)},${bb.y.toFixed(0)},${(bb.x+bb.width).toFixed(0)},${(bb.y+bb.height).toFixed(0)})`)}}
+   host.remove();log(`key words: ${Object.keys(D).length} words, ${cnt} on topics, ${pics} pictures, problems ${bad2.length}`);bad2.slice(0,30).forEach(x=>log('  '+x));if(bad2.length)fail('key words')}
+  {location.hash='#/y10/l/30/slides';await wait(30);const k=DECK.items.findIndex(x=>x.name==='Key words');go(k);const rows=document.querySelectorAll('.tterms tbody tr').length;go(k+1);const cards=document.querySelectorAll('.kwcard').length,svgs=document.querySelectorAll('.kwcard svg').length;
+   DECK.h.stepNext();DECK.h.stepNext();const dim=document.querySelectorAll('.kwcard.dim').length;log(`key words slide ${k}: rows ${rows}, cards ${cards}, pictures ${svgs}, dim after 2 steps ${dim}`);if(k!==1||!rows||rows!==cards||dim!==cards-2)fail('key words slides')}
+  // the wheel has one segment for each student
+  {const saved=localStorage.getItem('maths.class.y8');localStorage.setItem('maths.class.y8',JSON.stringify(Array.from({length:15},(_,i)=>({name:'Student '+String.fromCharCode(65+i),style:'bottts',seed:'s'+i}))));
+   location.hash='#/y8/l/5/slides';await wait(30);go(DECK.items.findIndex(x=>x.name==='Random problem'));const h=DECK.h,segs=h.querySelectorAll('.wheel path').length;
+   h.querySelector('.spinw').click();await wait(3400);const who=(h.querySelector('.wwho')||{}).textContent||'';
+   log(`wheel: ${segs} segments, picked "${who}" (${h.wheelPick}), problem card ${!!h.querySelector('.wheelq .q')}`);if(segs!==15||!/Student [A-O]/.test(who)||!h.querySelector('.wheelq .q'))fail('wheel with students');
+   saved===null?localStorage.removeItem('maths.class.y8'):localStorage.setItem('maths.class.y8',saved);go(DECK.i);if(DECK.h.querySelectorAll('.wheel path').length!==(classCount('y8')>=2?classCount('y8'):8))fail('wheel after class change')}
   // whiteboard: draw, undo, text
   document.querySelector('#toolsMenu [data-tool=board]').click();await wait(50);
   const cv=document.querySelector('.wbcanvas'),r=cv.getBoundingClientRect(),ev=(t,x,y)=>cv.dispatchEvent(new PointerEvent(t,{clientX:r.left+x,clientY:r.top+y,pointerId:1,bubbles:true,pointerType:'mouse'}));
@@ -145,7 +170,7 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
   if(document.getElementById('dn').textContent!=='Title')fail('first slide is not Title');
   const tl=DECK.h.titleLetters;let anim=0;for(let k=0;k<30;k++){await wait(200);if(document.getAnimations().some(a=>tl.includes(a.effect&&a.effect.target)))anim++}
   log(`title: ${tl.length} letters, animated in ${anim}/30 checks, nail seen: ${!!document.querySelector('.tl.nail-l,.tl.nail-r')||'not in this window'}`);if(!anim)fail('title letters not animated');
-  document.getElementById('nt').click();log('slide 2: '+document.getElementById('dn').textContent+', pending parts '+document.querySelectorAll('#stage .pending').length);
+  go(DECK.items.findIndex(x=>x.name==='Why it matters'));log('why slide: '+document.getElementById('dn').textContent+', pending parts '+document.querySelectorAll('#stage .pending').length);
   while(DECK.h.stepNext());if(document.querySelector('#stage .pending'))fail('why slide not fully revealed');
   log('fun videos: '+document.querySelectorAll('#stage .fv').length+' · fact: '+document.querySelector('.whyc.fact p').textContent.slice(0,60)+'…');
   let noX=0;for(const cid of COURSE_IDS)for(const l of allLessons(cid)){const x=extrasFor(cid,l);if(!x||!x.fact||!x.use)fail('no extras '+cid+' '+l.title);else if(!x.videos.length)noX++}

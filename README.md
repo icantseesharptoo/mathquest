@@ -6,14 +6,16 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
 - **Year 8 and Year 10 courses.** The topics come from the school's Edupage teaching plans (`y8_plan_edupage.xls`, `y10_plan_edupage.xls`). Each chapter of a plan is a **module**, and each row is a **topic card** that shows its lesson numbers. Each module lists its curriculum objectives and has a module test.
 - **Slides for every topic**, in this order:
   1. Title. The title's letters fade away and come back. This happens rarely (one effect every few seconds), and now and then a letter hangs from its last nail, wobbles and falls.
-  2. Why it matters: a fun fact, a real-life use and up to three fun or applied YouTube videos. Press Space to reveal each part.
-  3. Video (Year 8)
-  4. Interactive demo
-  5. Three worked examples (easy, medium, hard). Each step appears when you click, and the figure is drawn as you go.
-  6. Meme break: a maths meme from r/mathmemes or r/MathematicsMemes, through [Meme_Api](https://github.com/D3vd/Meme_Api). It needs the internet. NSFW and spoiler posts and rude titles are left out, but the text inside a picture cannot be checked. *Save* good memes before the lesson and tick *Saved only* to show just those. *Hide* never shows a meme again.
-  7. Random-problem wheel
-  8. Check (three questions)
-  9. Practice
+  2. Key words: the topic's words in English and Russian, with 🔊 buttons that read each word aloud (English and Russian voices, if the computer has them).
+  3. Word meanings: each word with a simple explanation, an example and a picture. Press Space to bring the words in one at a time.
+  4. Why it matters: a fun fact, a real-life use and up to three fun or applied YouTube videos. Press Space to reveal each part.
+  5. Video (Year 8)
+  6. Interactive demo
+  7. Three worked examples (easy, medium, hard). Each step appears when you click, and the figure is drawn as you go. Steps are numbered 1), 2), 3).
+  8. Meme break: a maths meme from r/mathmemes or r/MathematicsMemes, through [Meme_Api](https://github.com/D3vd/Meme_Api). It needs the internet. NSFW and spoiler posts and rude titles are left out, but the text inside a picture cannot be checked. *Save* good memes before the lesson and tick *Saved only* to show just those. *Hide* never shows a meme again.
+  9. Random-problem wheel: one segment for each student in the class's seating plan (🪑), with their alias, and each student has their own problem. Spin to pick who answers; their avatar and name are shown with the problem. Without a class list the wheel has 8 numbered problems.
+  10. Check (three questions)
+  11. Practice
 
   Press **Space** to show the next step, use **← →** to change slides, and press **F** for full screen. In full screen (the *Full screen* button, or the browser's own F11), the slide fills the whole screen.
 - **Interactive demos.** These cover:
@@ -43,7 +45,7 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
   - **🔢 Number facts** (Tools menu). Shows a random fact about a number, or type any whole number up to 1 000 000 to see its prime factors, factors, special types, binary and Roman numeral. The facts are in `js/numfacts.js` and need no internet. 🔑 adds facts from the [math.tools Numbers API](https://math.tools/api/numbers), a paid service, if you enter a token; it is kept only in the browser. The Mars background pictures come from [Bootprint Space](https://bootprint.space).
   - **🪑 Seating plan** for each year (Tools menu, or the button on the year's page): 5 rows of 4 seats. Click a seat to type an alias and choose a [DiceBear](https://www.dicebear.com) avatar, or add a list of aliases at once. Drag students to move or swap them (on a touch screen, click the student and use *Move*), or shuffle the seats. It is stored only in this browser, and the avatar service gets a random code, never the alias.
   - **⚔️ Battle.** The screen splits into left and right halves, each with a hard question of the same type but different numbers. Several questions are tried and the ones that need the most working are kept, so very simple questions are left out. Each side answers on its own on-screen numpad. A 2-minute timer runs, and the first correct answer wins the round. Scores add up over the rounds, and you can click a team name to rename it. A wrong answer locks that side's numpad for 15 seconds, with a countdown, so teams cannot just guess.
-  - **✏️ Pen.** Draw straight on top of the slides (button on the slide bar, or the **P** key). It has 6 colours, thin and thick lines, a highlighter, an eraser that removes a whole line, undo (Ctrl+Z) and clear. Each slide keeps its own drawing while the lesson is open, the drawing moves with the slide when it scrolls, and the mouse wheel still scrolls. Press **Done**, **P** or Esc to use the slide again.
+  - **✏️ Pen.** Draw straight on top of the slides (button on the slide bar, or the **P** key). It has 6 colours, thin and thick lines, a highlighter, an eraser that removes a whole line, undo (Ctrl+Z) and clear. Each slide keeps its own drawing, saved in this browser, so it is still there when you open the lesson again (examples and random problems get new numbers each time, so clear those drawings if they no longer fit). The drawing moves with the slide when it scrolls, and the mouse wheel still scrolls. Press **Done**, **P** or Esc to use the slide again.
   - **🖊 Whiteboard.** Students can draw and write. It has a pen, straight lines, dots, text, an eraser, 6 colours, 4 sizes, undo and clear, a background that switches between grid, plain and dots, and *Save* to download a PNG. The drawing stays until you clear it.
     - **🎯 Task mode** shows a coordinate grid with a task. The task types are plot points, plot and join a shape, draw *y = mx + c*, draw *x = a* or *y = b*, midpoint, reflection, translation and rotation. You can also type your own task. Students answer with the Dot and Line tools, which snap to the grid (turn *Snap* off for free placement). *Check ✓* marks each dot and line green or red. *Show answer* draws the answer in dashed green, and *New task* picks new numbers.
 - **Fits any screen.** Text, buttons and slides scale with the size of the window, and full-screen slides get bigger again for a projector. The exit ticket tries several block layouts and numbers of columns, and uses the one with the largest text that still fits on the screen. Wording that is the same in every block is shown once, above the blocks.
@@ -69,6 +71,8 @@ Year 8 topics embed videos from the playlist *Cambridge Lower Secondary Mathemat
 | `js/board.js` | Whiteboard and its task mode. |
 | `js/memes.js`, `js/seats.js`, `js/numfacts.js`, `css/class.css` | Meme slide, seating plans and number facts. |
 | `css/scale.css` | Scaling of text, slides and buttons to the screen size. |
+| `js/pen.js` | Pen mode for drawing on the slides; drawings are saved in localStorage (`maths.pen.<course>.<topic>`). |
+| `data/terms.js`, `js/terms.js` | Key words for every topic (English, Russian, explanation, example) and the pictures for the *Word meanings* slide. |
 | `data/extras.js`, `tools/build_extras.py` | Fun facts, real-life uses and fun videos for each topic. `data/extras.js` is generated, so edit the Python file instead. |
 | `js/intro.js`, `js/ivideo.js`, `css/intro.css` | The animated title slide, the *Why it matters* slide and the interactive video player. |
 | `js/engine.js`, `js/ui.js` | Course model, exams, pages and slides. |

@@ -144,17 +144,29 @@ function exampleSlide(h,cid,l,start){
 }
 
 // ---------- random problem wheel ----------
+// one segment for each student in the class's seating plan (🪑), with their alias; 8 numbered segments if there is no class list
 function wheelSlide(h,cid,l){
-  const N=8,cols=['#2455d6','#d9480f','#16a34a','#7c3aed','#0891b2','#be185d','#b45309','#4f46e5'];let rot=0,probs;
-  const fresh=()=>{probs=lessonProblems(cid,l,N,rndSeed(),[0,1,0,1,2,1,0,2])};fresh();
-  let g='';for(let i=0;i<N;i++){const a0=90-i*45,a1=a0-45,[x0,y0]=P(150,150,140,a0),[x1,y1]=P(150,150,140,a1);g+=`<path d="M150,150 L${f1(x0)},${f1(y0)} A140,140 0 0 1 ${f1(x1)},${f1(y1)} Z" fill="${cols[i]}" stroke="#fff" stroke-width="3"/>`;const [tx,ty]=P(150,150,95,a0-22.5);g+=`<text x="${f1(tx)}" y="${f1(ty)}" font-size="26" font-weight="800" fill="#fff" text-anchor="middle" dominant-baseline="central">${i+1}</text>`}
+  const kids=classSeats(cid).filter(Boolean),named=kids.length>=2,N=named?kids.length:8,A=360/N;
+  const base=['#2455d6','#d9480f','#16a34a','#7c3aed','#0891b2','#be185d','#b45309','#4f46e5'];
+  const cols=Array.from({length:N},(_,i)=>N<=8||N%8>1?base[i%8]:`hsl(${Math.round(i*360/N+220)%360} 68% 40%)`);
+  const pat=[0,1,0,1,2,1,0,2];let rot=0,probs;
+  const fresh=()=>{probs=lessonProblems(cid,l,N,rndSeed(),Array.from({length:N},(_,i)=>pat[i%8]))};fresh();
+  const short=n=>{const w=String(n).trim().split(/\s+/)[0];return w.length>9?w.slice(0,8)+'…':w};
+  let g='';for(let i=0;i<N;i++){const a0=90-i*A,a1=a0-A,[x0,y0]=P(150,150,140,a0),[x1,y1]=P(150,150,140,a1);
+    g+=`<path d="M150,150 L${f1(x0)},${f1(y0)} A140,140 0 ${A>180?1:0} 1 ${f1(x1)},${f1(y1)} Z" fill="${cols[i]}" stroke="#fff" stroke-width="${N>14?2:3}"/>`;
+    const m=a0-A/2;
+    if(named){const [tx,ty]=P(150,150,88,m),t=((-m)%360+360)%360,up=t>90&&t<270,fs=Math.max(9,Math.min(20,Math.round(220/N+4)));
+      g+=`<text x="${f1(tx)}" y="${f1(ty)}" font-size="${fs}" font-weight="800" fill="#fff" text-anchor="middle" dominant-baseline="central" transform="rotate(${f1(up?t-180:t)} ${f1(tx)} ${f1(ty)})">${esc(short(kids[i].name))}</text>`}
+    else{const [tx,ty]=P(150,150,95,m);g+=`<text x="${f1(tx)}" y="${f1(ty)}" font-size="26" font-weight="800" fill="#fff" text-anchor="middle" dominant-baseline="central">${i+1}</text>`}}
   h.innerHTML=`<div class="wheelwrap"><div class="wheelbox"><div class="pointer">▼</div><svg viewBox="0 0 300 300" class="wheel">${g}<circle cx="150" cy="150" r="16" fill="#fff" stroke="#111827" stroke-width="3"/></svg>
     <div class="row" style="justify-content:center"><button class="btn spinw">Spin the wheel</button><button class="btn alt neww">New problems</button></div>
-    <p class="note">Spin for a random problem from this topic. To pick a student, use <a href="https://spinthewheel.io/" target="_blank" rel="noopener">Wheel of names ↗</a>.</p></div><div class="wheelq"><div class="big">Random problem</div><p class="note">Press “Spin the wheel”.</p></div></div>`;
-  const wheel=$('.wheel',h);
+    <p class="note">${named?`${N} students from the seating plan: each one has a problem from this topic. Spin to pick who answers.`:`Spin for a random problem from this topic. Add the class in <button class="linkbtn" data-tool="seat" data-cid="${cid}">🪑 Seating plan</button> to put each student on the wheel.`}</p></div><div class="wheelq"><div class="big">Random problem</div><p class="note">Press “Spin the wheel”.</p></div></div>`;
+  const wheel=$('.wheel',h);h.wheelN=N;
   $('.neww',h).onclick=()=>{fresh();$('.wheelq',h).innerHTML='<div class="big">Random problem</div><p class="note">New problems are ready. Spin!</p>'};
   $('.spinw',h).onclick=()=>{const b=$('.spinw',h);b.disabled=true;rot+=1440+Math.floor(Math.random()*360);wheel.style.transform=`rotate(${rot}deg)`;
-    setTimeout(()=>{const k=Math.floor(((360-rot%360)%360)/45);const q=$('.wheelq',h);q.innerHTML=`<div class="big" style="color:${cols[k]}">Problem ${k+1}</div>`;q.appendChild(problemCard(probs[k],{title:`Problem ${k+1}`}).el);b.disabled=false},3200)};
+    setTimeout(()=>{const k=Math.min(N-1,Math.floor(((360-rot%360)%360)/A)),q=$('.wheelq',h),who=named?kids[k]:null;h.wheelPick=k;
+      q.innerHTML=who?`<div class="big wwho" style="color:${cols[k]}">${avHTML(who)}<span>${esc(who.name)}</span></div>`:`<div class="big" style="color:${cols[k]}">Problem ${k+1}</div>`;
+      q.appendChild(problemCard(probs[k],{title:who?`${esc(who.name)}'s problem`:`Problem ${k+1}`}).el);b.disabled=false},3200)};
 }
 
 // ---------- slides ----------
@@ -163,6 +175,7 @@ function slides(cid,l){
   const ex=[0,1,2].map(i=>({skill:sk[i%sk.length],lv:i}));
   const items=[
     {name:'Title',mount:h=>titleSlide(h,cid,l,m,c)},
+    ...(termsFor(cid,l).length?[{name:'Key words',mount:h=>termsSlide(h,cid,l)},{name:'Word meanings',mount:h=>termsExplain(h,cid,l)}]:[]),
     ...(extrasFor(cid,l)?[{name:'Why it matters',mount:h=>whySlide(h,cid,l)}]:[]),
     ...(l.videos?[{name:'Video',mount:h=>{h.appendChild(videoBlock(cid,l))}}]:[]),
     ...(demo&&DEMOS[demo]?[{name:'Interactive demo',mount:h=>{const d=document.createElement('div');h.appendChild(d);mountDemo(d,DEMOS[demo]);h.stepNext=()=>d.demoNext?d.demoNext():false}}]:[]),
@@ -176,7 +189,7 @@ function slides(cid,l){
   ];
   body.innerHTML=`<div class="deck" id="deck" style="--mc:${m.color}"><div class="deckbar"><span id="dn"></span><div class="dots" id="dots"></div><span class="sp"></span>${timerHTML()}<details class="dtools"><summary>Tools</summary><div>${classTools()}${toolLinks()}</div></details><button class="ghost" data-tool="exit" title="Exit ticket for the last 5 minutes">🎟 Exit ticket</button><button class="ghost" data-tool="battle">⚔️ Battle</button><button class="ghost" data-tool="board">🖊 Board</button><button class="ghost" id="pen" title="Draw on the slide (P)" aria-pressed="false">✏️ Pen</button><button class="ghost" id="fs">Full screen</button></div><div class="stage" id="stage"></div>${penHTML()}<div class="decknav"><button class="btn alt" id="pv">Back</button><span id="num"></span><span class="note">Space = next step</span><button class="btn" id="nt">Next</button></div></div>`;
   DECK={i:0,items,h:null};
-  $('#pv').onclick=()=>go(DECK.i-1);$('#nt').onclick=()=>go(DECK.i+1);$('#fs').onclick=toggleFS;$('#pen').onclick=()=>penToggle();penMount($('#deck'));
+  $('#pv').onclick=()=>go(DECK.i-1);$('#nt').onclick=()=>go(DECK.i+1);$('#fs').onclick=toggleFS;$('#pen').onclick=()=>penToggle();penMount($('#deck'),`maths.pen.${cid}.${l.n}`);
   go(0);ltTick();fsState();
 }
 function go(i){

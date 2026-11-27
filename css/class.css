@@ -45,3 +45,27 @@
 .penbar [data-w="3"]{font-size:.6rem}.penbar .pbig{font-size:1.3rem}
 .penbar .pdone{background:var(--mc,var(--brand));color:#fff;border:0;padding:0 .9rem}
 .penbar .psep{width:1px;align-self:stretch;background:var(--line);margin:0 .15rem}
+
+/* wheel with the students' names */
+.wwho{display:flex;align-items:center;gap:.5em}.wwho .av{height:2.2em}
+.linkbtn{border:0;background:none;padding:0;color:var(--brand);font:inherit;font-weight:600;cursor:pointer;text-decoration:underline}
+
+/* key words slides */
+.tru{color:var(--mute);font-weight:600;font-size:.8em}
+.tterms{border-collapse:collapse;width:100%;max-width:56rem;font-size:1.25rem;margin:.4rem 0}
+.tterms th{text-align:left;color:var(--mute);font-size:.8em;padding:.2rem .8rem;border-bottom:2px solid var(--line)}
+.tterms td{padding:.45rem .8rem;border-bottom:1px solid var(--line)}.tterms tr td:first-child{width:2.2rem}
+.tterms .tn{font-weight:900;color:#fff;text-align:center}.tterms .tn{background:var(--tc);border-radius:8px}
+.tterms b{color:var(--tc)}
+.tsay{border:0;background:none;cursor:pointer;font-size:.85em;padding:0 .2rem;opacity:.7}.tsay:hover{opacity:1}
+.tbar{align-items:center;margin-bottom:.4rem}
+.kwcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}
+.kwcard{display:flex;align-items:center;gap:.7rem;background:var(--panel);border:1px solid var(--line);border-top:5px solid var(--tc);border-radius:12px;padding:.55rem .7rem;transition:opacity .3s,filter .3s}
+.kwcard.dim{opacity:.18;filter:blur(2px)}
+.tvwrap{flex:0 0 38%;height:7.2rem;display:grid;place-items:center;color:var(--ink)}.kwcards.n4 .tvwrap,.kwcards.n3 .tvwrap,.kwcards.n2 .tvwrap{height:10rem}
+.ttxt{flex:1;min-width:0}
+.tvis{height:100%;width:100%;max-width:15rem}
+.tvx{font-size:1.35rem;font-weight:700;text-align:center;line-height:1.3}.tvx mark{background:none;color:var(--tc);border:2px solid var(--tc);border-radius:6px;padding:0 .15em}
+.tname{font-weight:800;font-size:1.1rem;color:var(--tc)}.tname .tru{display:block;font-size:.85rem}
+.tdef{font-size:.95rem;line-height:1.3}.tex{font-size:.9rem;color:var(--mute);line-height:1.3}.tex b{color:var(--ink)}
+@media(max-width:900px){.kwcards{grid-template-columns:1fr}}

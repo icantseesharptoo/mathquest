@@ -7,7 +7,9 @@ function openOverlay(cls,html){
   $$('[data-close]',o).forEach(b=>b.onclick=closeOverlay);
   return o;
 }
-function closeOverlay(){const o=$('.ovl');if(o){if(o.cleanup)o.cleanup();o.remove()}}
+function closeOverlay(){const o=$('.ovl');if(o){if(o.cleanup)o.cleanup();o.remove();
+  // the wheel shows the class list, so draw it again after the seating plan changes
+  if(o.classList.contains('seats')&&typeof DECK!=='undefined'&&DECK&&DECK.h&&DECK.h.wheelN!==undefined)go(DECK.i)}}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('.ovl')&&!['INPUT','TEXTAREA'].includes(e.target.tagName))closeOverlay()},true);
 const stripTags=s=>String(s||'').replace(/<svg[\s\S]*?<\/svg>/g,'').replace(/<[^>]+>/g,'');
 // a figure is shown only when the question refers to it (some figures are blank grids to draw on)

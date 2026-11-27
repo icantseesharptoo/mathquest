@@ -79,3 +79,7 @@ table.mini{border-collapse:collapse}table.mini th,table.mini td{border:1px solid
 .timer .time{font-weight:800;font-size:1.2rem;font-variant-numeric:tabular-nums}
 .result{font-size:1.5rem;font-weight:800;margin:.5rem 0}
 @media(max-width:700px){main{padding:1rem}.deck{height:auto;min-height:70vh}header.top{flex-wrap:wrap}}
+
+/* solution steps are numbered 1) 2) 3) */
+@counter-style paren{system:extends decimal;suffix:") "}
+ol.sol,ol.steplist{list-style-type:paren}
