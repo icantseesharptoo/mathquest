@@ -4,6 +4,7 @@ Interactive maths lessons for Year 8 and Year 10. Open `index.html` in Chrome or
 
 ## What is in it
 - **Year 8 and Year 10 courses.** The topics come from the school's Edupage teaching plans (`y8_plan_edupage.xls`, `y10_plan_edupage.xls`). Each chapter of a plan is a **module**, and each row is a **topic card** that shows its lesson numbers. Each module lists its curriculum objectives and has a module test.
+- **Mark as learned.** Each topic has a *Mark as learned* button: on the topic cards, next to the Slides and Practice tabs, and on the last slide. Learned topics turn green, and the course page shows how many topics are learned in total and in each module. This is saved in the browser (localStorage `maths.v2`, with the other progress); click again to undo.
 - **Slides for every topic**, in this order:
   1. Title. The title's letters fade away and come back. This happens rarely (one effect every few seconds), and now and then a letter hangs from its last nail, wobbles and falls.
   2. Key words: the topic's words in English and Russian, with 🔊 buttons that read each word aloud (English and Russian voices, if the computer has them).

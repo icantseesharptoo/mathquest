@@ -131,6 +131,14 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
    h.querySelector('.spinw').click();await wait(3400);const who=(h.querySelector('.wwho')||{}).textContent||'';
    log(`wheel: ${segs} segments, picked "${who}" (${h.wheelPick}), problem card ${!!h.querySelector('.wheelq .q')}`);if(segs!==15||!/Student [A-O]/.test(who)||!h.querySelector('.wheelq .q'))fail('wheel with students');
    saved===null?localStorage.removeItem('maths.class.y8'):localStorage.setItem('maths.class.y8',saved);go(DECK.i);if(DECK.h.querySelectorAll('.wheel path').length!==(classCount('y8')>=2?classCount('y8'):8))fail('wheel after class change')}
+  // mark as learned: lesson page, last slide, course card; saved
+  {location.hash='#/y8/l/7/slides';await wait(30);const b=document.getElementById('learn');b.click();const on=b.classList.contains('on'),saved=JSON.parse(localStorage.getItem(STORE_KEY)).learned['y8-7'];
+   go(DECK.items.length-1);const sl=document.querySelector('.learnslide');const slOn=sl&&sl.classList.contains('on');
+   location.hash='#/y8';await wait(40);const card=[...document.querySelectorAll('a.tcard')].find(c=>c.getAttribute('href')==='#/y8/l/7'),cardOn=card.classList.contains('learned');
+   const before=location.hash;card.querySelector('.tc-learn').click();await wait(20);const card2=[...document.querySelectorAll('a.tcard')].find(c=>c.getAttribute('href')==='#/y8/l/7');
+   const off=!card2.classList.contains('learned')&&!isLearned('y8',7)&&location.hash===before;card2.querySelector('.tc-learn').click();await wait(20);
+   log(`learned: lesson button ${on} saved ${saved}, slide ${slOn}, card ${cardOn}, card undo ${off}, again ${isLearned('y8',7)}, bar "${document.querySelector('.lrnbar').textContent.trim()}"`);
+   if(!on||!saved||!slOn||!cardOn||!off||!isLearned('y8',7)||!/1 \/ \d+ topics learned/.test(document.querySelector('.lrnbar').textContent))fail('mark as learned');setLearned('y8',7,false)}
   // whiteboard: draw, undo, text
   document.querySelector('#toolsMenu [data-tool=board]').click();await wait(50);
   const cv=document.querySelector('.wbcanvas'),r=cv.getBoundingClientRect(),ev=(t,x,y)=>cv.dispatchEvent(new PointerEvent(t,{clientX:r.left+x,clientY:r.top+y,pointerId:1,bubbles:true,pointerType:'mouse'}));

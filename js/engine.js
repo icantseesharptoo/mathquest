@@ -2,7 +2,7 @@
 const LEVELS=['easy','medium','hard'];
 const STORE_KEY='maths.v2';
 let ST=(()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY))||{}}catch(e){return{}}})();
-ST.done=ST.done||{};ST.exams=ST.exams||{};ST.theme=ST.theme||'system';
+ST.done=ST.done||{};ST.exams=ST.exams||{};ST.learned=ST.learned&&typeof ST.learned==='object'?ST.learned:{};ST.theme=ST.theme||'system';
 const saveState=()=>{try{localStorage.setItem(STORE_KEY,JSON.stringify(ST))}catch(e){}};
 
 // ---------- courses: plan chapters -> modules, plan rows -> topics (one card each) ----------
@@ -67,4 +67,8 @@ function examDefs(cid){
 const markLessonDone=(cid,n,score,total)=>{const k=`${cid}-${n}`,o=ST.done[k]||{best:0,total};o.best=Math.max(o.best,score);o.total=total;ST.done[k]=o;saveState()};
 const lessonProgress=(cid,n)=>ST.done[`${cid}-${n}`];
 const lessonComplete=(cid,n)=>{const o=lessonProgress(cid,n);return !!o&&o.best>=Math.ceil(o.total*.7)};
+// topics the teacher has marked as learned: ST.learned['y8-5'] = date it was marked
+const isLearned=(cid,n)=>!!ST.learned[`${cid}-${n}`];
+const setLearned=(cid,n,v)=>{const k=`${cid}-${n}`;if(v)ST.learned[k]=new Date().toISOString().slice(0,10);else delete ST.learned[k];saveState()};
+const learnedCount=cid=>allLessons(cid).filter(l=>isLearned(cid,l.n)).length;
 const rndSeed=()=>Math.floor(Math.random()*1e9);

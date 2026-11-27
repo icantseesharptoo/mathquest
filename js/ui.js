@@ -53,7 +53,7 @@ function setNav(k){$$('header nav a').forEach(a=>a.classList.toggle('on',a.datas
 
 function home(){
   setNav('');
-  app.innerHTML=`<h1>Mathematics</h1><div class="cards">${COURSE_IDS.map(id=>{const c=course(id);return `<a class="card" href="#/${id}"><div class="t">${c.name}</div><div class="m">${c.modules.length} modules · ${allLessons(id).length} topics</div><div class="m small">From ${c.source}</div><div class="go">Open →</div></a>`}).join('')}
+  app.innerHTML=`<h1>Mathematics</h1><div class="cards">${COURSE_IDS.map(id=>{const c=course(id);return `<a class="card" href="#/${id}"><div class="t">${c.name}</div><div class="m">${c.modules.length} modules · ${allLessons(id).length} topics${learnedCount(id)?` · <b class="lrn">${learnedCount(id)} learned</b>`:''}</div><div class="m small">From ${c.source}</div><div class="go">Open →</div></a>`}).join('')}
     <a class="card" href="#/exams"><div class="t">Exams</div><div class="m">${examDefs('y8').length+examDefs('y10').length} tests and exams</div><div class="go">Open →</div></a></div>
     <h2>Classroom tools</h2><div class="cards">${TOOLS.map(t=>`<a class="card" href="${t.u}" target="_blank" rel="noopener"><div class="t">${t.n} ↗</div><div class="m">${t.d}</div></a>`).join('')}<div class="card"><div class="t">Lesson timer</div><div class="m">40 minutes, with a sound when 5 minutes are left. It is at the top of every page and in full-screen slides.</div><div style="margin-top:.6rem">${timerHTML()}</div></div></div>`;
   ltTick();
@@ -61,17 +61,19 @@ function home(){
 
 function coursePage(cid){
   setNav(cid);const c=course(cid);
-  const card=l=>{const pg=lessonProgress(cid,l.n);return `<a class="tcard" href="#/${cid}/l/${l.n}" data-t="${(l.title+' '+l.plan).toLowerCase()}">
-      <div class="tc-top"><span class="tc-n">${l.sec}</span><span class="tc-l">Lesson${l.nLessons>1?'s':''} ${l.lessons}</span>${lessonComplete(cid,l.n)?'<span class="tc-ok">✓</span>':''}</div>
+  const card=l=>{const pg=lessonProgress(cid,l.n),lr=isLearned(cid,l.n);return `<a class="tcard${lr?' learned':''}" href="#/${cid}/l/${l.n}" data-t="${(l.title+' '+l.plan).toLowerCase()}">
+      <div class="tc-top"><span class="tc-n">${l.sec}</span><span class="tc-l">Lesson${l.nLessons>1?'s':''} ${l.lessons}</span>${lessonComplete(cid,l.n)?'<span class="tc-ok" title="Practice passed">✓</span>':''}<button class="tc-learn" data-learn="${l.n}" aria-pressed="${lr}" title="${lr?'Learned: click to undo':'Mark as learned'}">${lr?'✔ Learned':'Mark learned'}</button></div>
       <div class="tc-t">${l.title}</div>
       <div class="tc-m">${l.review?'Mixed questions from the whole year':`${l.skills.length} question type${l.skills.length>1?'s':''}`}${demoFor(l)?' · interactive demo':''}${l.videos?` · ${l.videos.length} video${l.videos.length>1?'s':''}`:''}</div>
       ${pg?`<div class="progress"><i style="width:${Math.min(100,pg.best/pg.total*100)}%"></i></div>`:''}</a>`};
-  app.innerHTML=`${crumbs(['Home','#/'],[c.name])}<div class="row"><h1>${c.name}</h1><span class="sp"></span><button class="btn alt" data-tool="seat" data-cid="${cid}">🪑 Seating plan</button></div><p class="lead">Topics from the school teaching plan (<i>${c.source}</i>), grouped by module. Each card opens interactive slides and practice.</p>
+  app.innerHTML=`${crumbs(['Home','#/'],[c.name])}<div class="row"><h1>${c.name}</h1><span class="sp"></span><button class="btn alt" data-tool="seat" data-cid="${cid}">🪑 Seating plan</button></div><div class="lrnbar"><b>${learnedCount(cid)} / ${allLessons(cid).length}</b> topics learned<div class="progress"><i style="width:${learnedCount(cid)/allLessons(cid).length*100}%"></i></div></div><p class="lead">Topics from the school teaching plan (<i>${c.source}</i>), grouped by module. Each card opens interactive slides and practice.</p>
    <input type="search" class="search" placeholder="Search topics" aria-label="Search topics">
-   ${c.modules.map(m=>{const done=m.lessons.filter(l=>lessonComplete(cid,l.n)).length,ex=ST.exams[`${cid}-m${m.n}`],real=m.lessons.some(l=>!l.review);
-     return `<section class="module" style="--mc:${m.color}"><div class="modh"><span class="mnum">${m.n}</span><div class="mtt"><div class="mk">Module ${m.n} · lessons ${m.lessons[0].lessons.split('–')[0]}–${m.lessons[m.lessons.length-1].lessons.split('–').pop()}</div><h2>${m.title}</h2></div><span class="sp"></span><span class="wp">${done} / ${m.lessons.length} done</span>${real?`<a class="btn alt" href="#/exam/${cid}-m${m.n}">Module test${ex?` · best ${ex.best}/${ex.total}`:''}</a>`:''}</div>
+   ${c.modules.map(m=>{const done=m.lessons.filter(l=>lessonComplete(cid,l.n)).length,lrn=m.lessons.filter(l=>isLearned(cid,l.n)).length,ex=ST.exams[`${cid}-m${m.n}`],real=m.lessons.some(l=>!l.review);
+     return `<section class="module" style="--mc:${m.color}"><div class="modh"><span class="mnum">${m.n}</span><div class="mtt"><div class="mk">Module ${m.n} · lessons ${m.lessons[0].lessons.split('–')[0]}–${m.lessons[m.lessons.length-1].lessons.split('–').pop()}</div><h2>${m.title}</h2></div><span class="sp"></span><span class="wp">${lrn} / ${m.lessons.length} learned · ${done} practised</span>${real?`<a class="btn alt" href="#/exam/${cid}-m${m.n}">Module test${ex?` · best ${ex.best}/${ex.total}`:''}</a>`:''}</div>
       ${m.goals.length?`<details class="goals"><summary>Curriculum objectives (${m.goals.length})</summary><ul>${m.goals.map(g=>`<li>${g}</li>`).join('')}</ul></details>`:''}
       <div class="tcards">${m.lessons.map(card).join('')}</div></section>`}).join('')}`;
+  // the learned button sits inside the card's link, so it must not open the topic
+  $$('.tc-learn').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();const n=+b.dataset.learn;setLearned(cid,n,!isLearned(cid,n));const y=scrollY,q=$('.search').value;coursePage(cid);if(q){$('.search').value=q;$('.search').oninput()}scrollTo(0,y)});
   const s=$('.search');s.oninput=()=>{const q=s.value.trim().toLowerCase();$$('section.module').forEach(sec=>{let any=false;$$('.tcard',sec).forEach(c=>{const m=!q||c.dataset.t.includes(q);c.style.display=m?'':'none';if(m)any=true});sec.style.display=any?'':'none'})};
 }
 
@@ -80,11 +82,16 @@ function lessonPage(cid,n,tab,slide){
   if(!l){app.innerHTML='<h1>Not found</h1>';return}
   CUR={cid,l};refreshTools();const m=c.modules[l.week-1];
   app.innerHTML=`${crumbs(['Home','#/'],[c.name,`#/${cid}`],[`Module ${l.week}: ${m.title}`])}<h1>${l.title}</h1>
-    <div class="tabs"><a href="#/${cid}/l/${n}/slides" class="${tab==='slides'?'on':''}">Slides</a><a href="#/${cid}/l/${n}/practice" class="${tab==='practice'?'on':''}">Practice</a>${l.videos||extrasFor(cid,l)?`<a href="#/${cid}/l/${n}/videos" class="${tab==='videos'?'on':''}">Videos${l.videos?` (${l.videos.length})`:''}</a>`:''}<span class="sp"></span>
+    <div class="tabs"><a href="#/${cid}/l/${n}/slides" class="${tab==='slides'?'on':''}">Slides</a><a href="#/${cid}/l/${n}/practice" class="${tab==='practice'?'on':''}">Practice</a><button class="learnbtn" id="learn"></button>${l.videos||extrasFor(cid,l)?`<a href="#/${cid}/l/${n}/videos" class="${tab==='videos'?'on':''}">Videos${l.videos?` (${l.videos.length})`:''}</a>`:''}<span class="sp"></span>
     ${n>1?`<a href="#/${cid}/l/${n-1}/${tab}" class="pn">← Previous topic</a>`:''}${n<allLessons(cid).length?`<a href="#/${cid}/l/${n+1}/${tab}" class="pn">Next topic →</a>`:''}</div><div id="tabBody"></div>`;
+  learnBtn(cid,n);
   if(tab==='practice')practice(cid,l);else if(tab==='videos')videosTab(cid,l);else{slides(cid,l);if(slide)go(+slide)}
   window.scrollTo(0,0);
 }
+
+// "Mark as learned" button for a topic (lesson page and last slide); saved in localStorage with the rest of the progress
+function learnBtn(cid,n){$$('#learn,.learnslide').forEach(b=>{const v=isLearned(cid,n);b.classList.toggle('on',v);b.setAttribute('aria-pressed',v);
+  b.innerHTML=v?`✔ Learned <small>${ST.learned[`${cid}-${n}`]} · click to undo</small>`:'☐ Mark as learned';b.onclick=()=>{setLearned(cid,n,!isLearned(cid,n));learnBtn(cid,n)}})}
 
 // ---------- videos ----------
 const fileNote=()=>location.protocol==='file:'?`<p class="note">YouTube does not play videos inside a page opened straight from a file. Use “Open on YouTube”, or open the site through a web address (for example GitHub Pages).</p>`:'';
@@ -185,7 +192,7 @@ function slides(cid,l){
     {name:'Check',mount:h=>{
       const ps=lessonProblems(cid,l,3,rndSeed(),[0,1,2]);h.innerHTML='<div class="big">Check your understanding</div><div id="ck"></div>';
       ps.forEach((p,i)=>$('#ck',h).appendChild(problemCard(p,{title:`Question ${i+1}`}).el))}},
-    {name:'Practice',mount:h=>{h.innerHTML=`<div class="big">Practice</div><p><a class="btn" href="#/${cid}/l/${l.n}/practice">Start practice (12 questions)</a></p>${l.n<allLessons(cid).length?`<p><a href="#/${cid}/l/${l.n+1}">Next topic: ${lessonN(cid,l.n+1).title} →</a></p>`:''}<p class="note">Quiz the class on Kahoot: <a href="${TOOLS[2].u}" target="_blank" rel="noopener">open the channel ↗</a></p>`}},
+    {name:'Practice',mount:h=>{h.innerHTML=`<div class="big">Practice</div><p><button class="learnbtn learnslide"></button></p><p><a class="btn" href="#/${cid}/l/${l.n}/practice">Start practice (12 questions)</a></p>${l.n<allLessons(cid).length?`<p><a href="#/${cid}/l/${l.n+1}">Next topic: ${lessonN(cid,l.n+1).title} →</a></p>`:''}<p class="note">Quiz the class on Kahoot: <a href="${TOOLS[2].u}" target="_blank" rel="noopener">open the channel ↗</a></p>`;learnBtn(cid,l.n)}},
   ];
   body.innerHTML=`<div class="deck" id="deck" style="--mc:${m.color}"><div class="deckbar"><span id="dn"></span><div class="dots" id="dots"></div><span class="sp"></span>${timerHTML()}<details class="dtools"><summary>Tools</summary><div>${classTools()}${toolLinks()}</div></details><button class="ghost" data-tool="exit" title="Exit ticket for the last 5 minutes">🎟 Exit ticket</button><button class="ghost" data-tool="battle">⚔️ Battle</button><button class="ghost" data-tool="board">🖊 Board</button><button class="ghost" id="pen" title="Draw on the slide (P)" aria-pressed="false">✏️ Pen</button><button class="ghost" id="fs">Full screen</button></div><div class="stage" id="stage"></div>${penHTML()}<div class="decknav"><button class="btn alt" id="pv">Back</button><span id="num"></span><span class="note">Space = next step</span><button class="btn" id="nt">Next</button></div></div>`;
   DECK={i:0,items,h:null};
